@@ -13,9 +13,9 @@ public interface grausuConstants {
   /** RegularExpression Id. */
   int Crear = 6;
   /** RegularExpression Id. */
-  int Nombrei = 7;
+  int Usar = 7;
   /** RegularExpression Id. */
-  int Nombref = 8;
+  int Alterar = 8;
   /** RegularExpression Id. */
   int BaseD = 9;
   /** RegularExpression Id. */
@@ -29,55 +29,71 @@ public interface grausuConstants {
   /** RegularExpression Id. */
   int Tabla = 14;
   /** RegularExpression Id. */
-  int Text = 15;
+  int Usuario = 15;
   /** RegularExpression Id. */
-  int Integer = 16;
+  int Colocar = 16;
   /** RegularExpression Id. */
-  int Double = 17;
+  int Pass = 17;
   /** RegularExpression Id. */
-  int Bool = 18;
+  int Agregar = 18;
   /** RegularExpression Id. */
-  int TDate = 19;
+  int Quitar = 19;
   /** RegularExpression Id. */
-  int TDateT = 20;
+  int Cambiar = 20;
   /** RegularExpression Id. */
-  int NoNulo = 21;
+  int Text = 21;
   /** RegularExpression Id. */
-  int Nulo = 22;
+  int Integer = 22;
   /** RegularExpression Id. */
-  int AutoI = 23;
+  int Double = 23;
   /** RegularExpression Id. */
-  int LlaveP = 24;
+  int Bool = 24;
   /** RegularExpression Id. */
-  int LlaveF = 25;
+  int TDate = 25;
   /** RegularExpression Id. */
-  int Unico = 26;
+  int TDateT = 26;
   /** RegularExpression Id. */
-  int Id = 27;
+  int Retorno = 27;
   /** RegularExpression Id. */
-  int Aid = 28;
+  int NoNulo = 28;
   /** RegularExpression Id. */
-  int Ruta = 29;
+  int Nulo = 29;
   /** RegularExpression Id. */
-  int Num = 30;
+  int AutoI = 30;
   /** RegularExpression Id. */
-  int Date = 31;
+  int LlaveP = 31;
   /** RegularExpression Id. */
-  int Datetime = 32;
+  int LlaveF = 32;
   /** RegularExpression Id. */
-  int Pai = 33;
+  int Unico = 33;
   /** RegularExpression Id. */
-  int Paf = 34;
+  int Id = 34;
   /** RegularExpression Id. */
-  int Pt = 35;
+  int Aid = 35;
   /** RegularExpression Id. */
-  int Cm = 36;
+  int Ruta = 36;
   /** RegularExpression Id. */
-  int Lli = 37;
+  int Num = 37;
   /** RegularExpression Id. */
-  int Llf = 38;
+  int Date = 38;
   /** RegularExpression Id. */
-  int Texto = 39;
+  int Datetime = 39;
+  /** RegularExpression Id. */
+  int Pai = 40;
+  /** RegularExpression Id. */
+  int Paf = 41;
+  /** RegularExpression Id. */
+  int Pt = 42;
+  /** RegularExpression Id. */
+  int Cm = 43;
+  /** RegularExpression Id. */
+  int Lli = 44;
+  /** RegularExpression Id. */
+  int Llf = 45;
+  /** RegularExpression Id. */
+  int Igual = 46;
+  /** RegularExpression Id. */
+  int Texto = 47;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -91,20 +107,27 @@ public interface grausuConstants {
     "\"\\r\\n\"",
     "\"\\t\"",
     "\"crear\"",
-    "\"<nombre>\"",
-    "\"</nombre>\"",
+    "\"usar\"",
+    "\"Alterar\"",
     "\"base_datos\"",
     "\"nombre_tabla\"",
     "\"Objeto\"",
     "\"Procedimiento\"",
     "\"funcion\"",
     "\"tabla\"",
+    "\"usuario\"",
+    "\"colocar\"",
+    "\"password\"",
+    "\"Agregar\"",
+    "\"quitar\"",
+    "\"cambiar\"",
     "\"text\"",
     "\"integer\"",
     "\"double\"",
     "\"bool\"",
     "\"date\"",
     "\"datetime\"",
+    "\"retorno\"",
     "\"no nulo\"",
     "\"nulo\"",
     "\"autoincrementable\"",
@@ -123,6 +146,7 @@ public interface grausuConstants {
     "\",\"",
     "\"{\"",
     "\"}\"",
+    "\"=\"",
     "<Texto>",
   };
 

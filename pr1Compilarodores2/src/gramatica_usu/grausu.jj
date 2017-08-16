@@ -41,8 +41,8 @@ SKIP :
 TOKEN :
 {
       < Crear: "crear" >
-    | < Nombrei: "<nombre>" >
-    | < Nombref: "</nombre>" >
+    | < Usar: "usar" >
+    | < Alterar: "Alterar" >
 }
 
 TOKEN :
@@ -53,6 +53,12 @@ TOKEN :
     | < Procedimiento: "Procedimiento" >
     | < Funcion: "funcion">
     | < Tabla: "tabla">
+    | < Usuario: "usuario">
+    | < Colocar: "colocar">
+    | < Pass: "password">
+    | < Agregar: "Agregar">
+    | < Quitar: "quitar">
+    | < Cambiar: "cambiar">
 }
 
 TOKEN :
@@ -63,6 +69,7 @@ TOKEN :
     | < Bool: "bool" >
     | < TDate: "date" >
     | < TDateT: "datetime" >
+    | < Retorno: "retorno" >
 }
 
 TOKEN:{
@@ -72,7 +79,6 @@ TOKEN:{
     | < LlaveP : "llave_primaria"> 
     | < LlaveF : "llave_foranea">
     | < Unico  : "unico">
-
 }
 
 TOKEN :
@@ -93,6 +99,7 @@ TOKEN :
     | <Cm: ",">
     | <Lli: "{">
     | <Llf: "}">
+    | <Igual : "=">
 }
 
 TOKEN :
@@ -120,7 +127,9 @@ void inicio() :
 void instrucciones():
 {}
 {
-  crear() 
+      crear()
+    | usar()
+    | <Alterar> alterar()
 }
 
 //*********************************************************************************Instruccion CREAR
@@ -137,7 +146,8 @@ void tipocrear():{}
     |<Tabla> creartabla()
     |<Objeto> crearobjeto()
     |<Procedimiento> crearproce()
-    |<Funcion>
+    |<Funcion> crearfuncion()
+    |<Usuario> crearusuario()
 }
 
 void crearbase():{
@@ -186,7 +196,7 @@ void tipodato():
 
 void crearproce():
 {}{
-    <Id> <Pai> paraproce() <Paf> <Lli> <Llf>
+    <Id> <Pai> paraproce() <Paf> <Lli> llf() 
 }
 
 void paraproce():
@@ -203,6 +213,11 @@ void cmproce():
     | { return; }
 }
 
+void crearfuncion():
+{}{
+    <Id> <Pai> paraproce() <Paf> <Lli> llf() 
+}
+
 void pt():
 {}
 {
@@ -217,3 +232,89 @@ void pt():
 	}
 }
 
+void llf():
+{}
+{
+	try{
+		<Llf>
+	}catch(ParseException x){
+		System.out.println(x.toString());
+		Token t;
+		do {
+			t = getNextToken();
+	} while (t.kind != Llf); 
+	}
+}
+
+void crearusuario():
+{}{
+    <Id> <Colocar> <Pass> <Igual> <Texto> pt() 
+}
+
+//**************************************************************************INSTRUCCION USAR
+
+void usar():
+{}
+{
+    <Usar> <Id> pt()
+}
+
+//****************************************************************************INSTRUCCION ALTERAR
+
+void alterar():
+{}
+{
+     <Tabla> <Id> tablaalt()
+    |<Objeto> <Id> objalt()
+    |<Usuario> <Id> usualt()
+}
+
+void tablaalt():
+{ }
+{
+      <Agregar> <Pai> tipodato() <Id> compoalt() setablaalt() <Paf> pt()
+    | <Quitar> <Id>  quitarseg() pt()
+}
+
+void quitarseg():
+{}
+{
+      <Cm> <Id> quitarseg()
+    | { return; }
+}
+
+void setablaalt():
+{ }
+{
+       <Cm> tipodato() <Id> compoalt() setablaalt()
+    | {return;}
+}
+
+void compoalt():
+{}
+{
+     <Nulo> compoalt()
+   | <NoNulo> compoalt()
+   | <AutoI> compoalt()
+   | <LlaveP> compoalt()
+   | <LlaveF> <Id>
+   | { return; }
+}
+
+void objalt():
+{}{
+     <Agregar> <Pai> tipodato() <Id> segobjalt() <Paf> pt()
+    |<Quitar> <Id>  quitarseg() pt()
+}
+
+void segobjalt():
+{ }
+{
+       <Cm> tipodato() <Id> compoalt() segobjalt()
+    | {return;}
+}
+
+void usualt():
+{}{
+    <Cambiar> <Pass> <Igual> <Texto> pt()
+}
