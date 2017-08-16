@@ -11,151 +11,151 @@ public interface graxmlConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int Dbi = 5;
+  int Dbi = 6;
   /** RegularExpression Id. */
-  int Dbf = 6;
+  int Dbf = 7;
   /** RegularExpression Id. */
-  int Nombrei = 7;
+  int Nombrei = 8;
   /** RegularExpression Id. */
-  int Nombref = 8;
+  int Nombref = 9;
   /** RegularExpression Id. */
-  int Pathi = 9;
+  int Pathi = 10;
   /** RegularExpression Id. */
-  int Pathf = 10;
+  int Pathf = 11;
   /** RegularExpression Id. */
-  int Registroi = 11;
+  int Registroi = 12;
   /** RegularExpression Id. */
-  int Registrof = 12;
+  int Registrof = 13;
   /** RegularExpression Id. */
-  int Rowsi = 13;
+  int Rowsi = 14;
   /** RegularExpression Id. */
-  int Rowsf = 14;
+  int Rowsf = 15;
   /** RegularExpression Id. */
-  int Rowi = 15;
+  int Rowi = 16;
   /** RegularExpression Id. */
-  int Rowf = 16;
+  int Rowf = 17;
   /** RegularExpression Id. */
-  int Objecti = 17;
+  int Objecti = 18;
   /** RegularExpression Id. */
-  int Objectf = 18;
+  int Objectf = 19;
   /** RegularExpression Id. */
-  int Tablai = 19;
+  int Tablai = 20;
   /** RegularExpression Id. */
-  int Tablaf = 20;
+  int Tablaf = 21;
   /** RegularExpression Id. */
-  int Procedurei = 21;
+  int Procedurei = 22;
   /** RegularExpression Id. */
-  int Proceduref = 22;
+  int Proceduref = 23;
   /** RegularExpression Id. */
-  int Texti = 23;
+  int Texti = 24;
   /** RegularExpression Id. */
-  int Textf = 24;
+  int Textf = 25;
   /** RegularExpression Id. */
-  int Inti = 25;
+  int Inti = 26;
   /** RegularExpression Id. */
-  int Intf = 26;
+  int Intf = 27;
   /** RegularExpression Id. */
-  int Doublei = 27;
+  int Doublei = 28;
   /** RegularExpression Id. */
-  int Doublef = 28;
+  int Doublef = 29;
   /** RegularExpression Id. */
-  int Booli = 29;
+  int Booli = 30;
   /** RegularExpression Id. */
-  int Boolf = 30;
+  int Boolf = 31;
   /** RegularExpression Id. */
-  int Datei = 31;
+  int Datei = 32;
   /** RegularExpression Id. */
-  int Datef = 32;
+  int Datef = 33;
   /** RegularExpression Id. */
-  int Dateti = 33;
+  int Dateti = 34;
   /** RegularExpression Id. */
-  int Datetf = 34;
+  int Datetf = 35;
   /** RegularExpression Id. */
-  int Attri = 35;
+  int Attri = 36;
   /** RegularExpression Id. */
-  int Attrf = 36;
+  int Attrf = 37;
   /** RegularExpression Id. */
-  int Obji = 37;
+  int Obji = 38;
   /** RegularExpression Id. */
-  int Objf = 38;
+  int Objf = 39;
   /** RegularExpression Id. */
-  int Srci = 39;
+  int Srci = 40;
   /** RegularExpression Id. */
-  int Srcf = 40;
+  int Srcf = 41;
   /** RegularExpression Id. */
-  int Paramsi = 41;
+  int Paramsi = 42;
   /** RegularExpression Id. */
-  int Paramsf = 42;
+  int Paramsf = 43;
   /** RegularExpression Id. */
-  int Proci = 43;
+  int Proci = 44;
   /** RegularExpression Id. */
-  int Procf = 44;
+  int Procf = 45;
   /** RegularExpression Id. */
-  int Artablai = 45;
+  int Artablai = 46;
   /** RegularExpression Id. */
-  int Artablaf = 46;
+  int Artablaf = 47;
   /** RegularExpression Id. */
-  int Arobji = 47;
+  int Arobji = 48;
   /** RegularExpression Id. */
-  int Arobjf = 48;
+  int Arobjf = 49;
   /** RegularExpression Id. */
-  int Arusui = 49;
+  int Arusui = 50;
   /** RegularExpression Id. */
-  int Arusuf = 50;
+  int Arusuf = 51;
   /** RegularExpression Id. */
-  int Usui = 51;
+  int Usui = 52;
   /** RegularExpression Id. */
-  int Usuf = 52;
+  int Usuf = 53;
   /** RegularExpression Id. */
-  int Contai = 53;
+  int Contai = 54;
   /** RegularExpression Id. */
-  int Contaf = 54;
+  int Contaf = 55;
   /** RegularExpression Id. */
-  int Noperi = 55;
+  int Noperi = 56;
   /** RegularExpression Id. */
-  int Noperf = 56;
+  int Noperf = 57;
   /** RegularExpression Id. */
-  int Permisoi = 57;
+  int Permisoi = 58;
   /** RegularExpression Id. */
-  int Permisof = 58;
+  int Permisof = 59;
   /** RegularExpression Id. */
-  int Obusui = 59;
+  int Obusui = 60;
   /** RegularExpression Id. */
-  int Obusuf = 60;
+  int Obusuf = 61;
   /** RegularExpression Id. */
-  int Todos = 61;
+  int Todos = 62;
   /** RegularExpression Id. */
-  int Pk = 62;
+  int Pk = 63;
   /** RegularExpression Id. */
-  int Fki = 63;
+  int Fki = 64;
   /** RegularExpression Id. */
-  int Fkf = 64;
+  int Fkf = 65;
   /** RegularExpression Id. */
-  int Nulo = 65;
+  int Nulo = 66;
   /** RegularExpression Id. */
-  int Auto = 66;
+  int Auto = 67;
   /** RegularExpression Id. */
-  int Unico = 67;
+  int Unico = 68;
   /** RegularExpression Id. */
-  int Nnulo = 68;
+  int Nnulo = 69;
   /** RegularExpression Id. */
-  int Id = 69;
+  int Id = 70;
   /** RegularExpression Id. */
-  int Ruta = 70;
+  int Ruta = 71;
   /** RegularExpression Id. */
-  int Num = 71;
+  int Num = 72;
   /** RegularExpression Id. */
-  int Date = 72;
+  int Date = 73;
   /** RegularExpression Id. */
-  int Datetime = 73;
+  int Datetime = 74;
   /** RegularExpression Id. */
-  int Ai = 74;
+  int Ai = 75;
   /** RegularExpression Id. */
-  int Af = 75;
+  int Af = 76;
   /** RegularExpression Id. */
-  int D = 76;
+  int D = 77;
   /** RegularExpression Id. */
-  int Texto = 77;
+  int Texto = 78;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -167,6 +167,7 @@ public interface graxmlConstants {
     "\"\\n\"",
     "\"\\r\"",
     "\"\\r\\n\"",
+    "\"\\t\"",
     "\"<DB>\"",
     "\"</DB>\"",
     "\"<nombre>\"",

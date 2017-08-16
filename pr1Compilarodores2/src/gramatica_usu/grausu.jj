@@ -1,0 +1,219 @@
+options{
+STATIC = false;
+DEBUG_LOOKAHEAD = false;
+IGNORE_CASE = true;
+}
+
+PARSER_BEGIN(grausu)
+
+package gramatica_usu;
+import java.io.*;
+import java.util.*;
+
+public class grausu
+{
+    public static void main( String[] args )throws ParseException
+	{
+		try
+		{
+			grausu analizador = new grausu( System.in ) ;
+                        analizador.inicio();
+                        System.out.println("analisis correcto");
+		}
+		catch(ParseException e)
+		{
+			System.out.println(e.getMessage());
+			System.out.println("Analizador: Se han encontrado errores en el analisis.");
+		}
+	}
+}
+PARSER_END(grausu)
+
+TOKEN_MGR_DECLS : {
+     Token tok;
+}
+SKIP : 
+{ 
+	" "|"\n" | "\r" | "\r\n" | "\t"
+}
+
+
+TOKEN :
+{
+      < Crear: "crear" >
+    | < Nombrei: "<nombre>" >
+    | < Nombref: "</nombre>" >
+}
+
+TOKEN :
+{
+      < BaseD: "base_datos" >
+    | < NombreT: "nombre_tabla" >
+    | < Objeto: "Objeto" >
+    | < Procedimiento: "Procedimiento" >
+    | < Funcion: "funcion">
+    | < Tabla: "tabla">
+}
+
+TOKEN :
+{
+      < Text: "text" >
+    | < Integer: "integer" >
+    | < Double: "double" >
+    | < Bool: "bool" >
+    | < TDate: "date" >
+    | < TDateT: "datetime" >
+}
+
+TOKEN:{
+      < NoNulo :"no nulo">
+    | < Nulo : "nulo">
+    | < AutoI : "autoincrementable">
+    | < LlaveP : "llave_primaria"> 
+    | < LlaveF : "llave_foranea">
+    | < Unico  : "unico">
+
+}
+
+TOKEN :
+{
+      <Id: (["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*)>
+     |<Aid: (("@")["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*)>
+     |<Ruta: (("c:")(("/")["a"-"z"](["a"-"z"]|"_"|["0"-"9"])*)*(".usac")) >
+     |<Num: ((["0"-"9"])+("."(["0"-"9"])+)?)>
+     |<Date: (((("0")?["1"-"9"])|(["1"-"3"]["0"-"9"]))("-")((("0")?["1"-"9"])|(["1"]["0"-"2"]))("-")["1"-"9"]["0"-"9"]["0"-"9"]["0"-"9"])>
+     |<Datetime: (((("0")?["1"-"9"])|(["1"-"3"]["0"-"9"]))("-")((("0")?["1"-"9"])|(["1"]["0"-"2"]))("-")["1"-"9"]["0"-"9"]["0"-"9"]["0"-"9"]" "["0"-"9"]["0"-"9"]":"["0"-"9"]["0"-"9"]":"["0"-"9"]["0"-"9"])> 
+}
+
+TOKEN :
+{
+      <Pai: "(">
+    | <Paf: ")">
+    | <Pt: ";">
+    | <Cm: ",">
+    | <Lli: "{">
+    | <Llf: "}">
+}
+
+TOKEN :
+{
+     < Texto:
+      "\""
+      (   (~["\"","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )*
+      "\""
+  >
+}
+
+void inicio() :
+{ }
+{
+	instrucciones()<EOF>
+}
+
+void instrucciones():
+{}
+{
+  crear() 
+}
+
+//*********************************************************************************Instruccion CREAR
+
+void crear():
+{}
+{
+    <Crear> tipocrear() 
+}
+
+void tipocrear():{}
+{
+     <BaseD> crearbase() 
+    |<Tabla> creartabla()
+    |<Objeto> crearobjeto()
+    |<Procedimiento> crearproce()
+    |<Funcion>
+}
+
+void crearbase():{
+}{
+    <Id> pt()
+}
+
+void creartabla():
+{}{
+    <Id> <Pai> creaparametros() <Paf> pt()
+}
+
+void crearobjeto():
+{ }{
+    <Id> <Pai> creaparametros() <Paf> pt()
+}
+
+void creaparametros():
+{}{
+      tipodato() <Id> complemento()
+    | { return; }
+}
+
+void complemento():
+{}
+{
+     <Nulo> complemento()
+   | <NoNulo> complemento()
+   | <AutoI> complemento()
+   | <LlaveP> complemento()
+   | <LlaveF> <Id>
+   | <Cm> creaparametros()
+   | { return; }
+}
+
+void tipodato():
+{}{
+      <Text>
+    | <Integer>
+    | <Double>
+    | <Bool>
+    | <TDate>
+    | <TDateT>
+    | <Id>
+}
+
+void crearproce():
+{}{
+    <Id> <Pai> paraproce() <Paf> <Lli> <Llf>
+}
+
+void paraproce():
+{}
+{
+      tipodato() <Aid> cmproce()
+    | { return; }
+}
+
+void cmproce():
+{}
+{
+       <Cm> paraproce()
+    | { return; }
+}
+
+void pt():
+{}
+{
+	try{
+		<Pt>
+	}catch(ParseException x){
+		System.out.println(x.toString());
+		Token t;
+		do {
+			t = getNextToken();
+	} while (t.kind != Pt); 
+	}
+}
+

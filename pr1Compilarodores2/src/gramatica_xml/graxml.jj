@@ -35,7 +35,7 @@ TOKEN_MGR_DECLS : {
 }
 SKIP : 
 { 
-	" "|"\n" | "\r" | "\r\n" 
+	" "|"\n" | "\r" | "\r\n" | "\t"
 }
 
 TOKEN :
