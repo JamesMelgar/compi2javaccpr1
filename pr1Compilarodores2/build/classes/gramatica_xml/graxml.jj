@@ -1,0 +1,335 @@
+options{
+STATIC = false;
+DEBUG_LOOKAHEAD = false;
+IGNORE_CASE = true;
+}
+
+PARSER_BEGIN(graxml)
+
+package gramatica_xml;
+import java.io.*;
+import java.util.*;
+
+public class graxml
+{
+    public static void main( String[] args )throws ParseException
+	{
+		try
+		{
+			graxml analizador = new graxml( System.in ) ;
+                        analizador.inicio();
+                        System.out.println("analisis correcto");
+		}
+		catch(ParseException e)
+		{
+			System.out.println(e.getMessage());
+			System.out.println("Analizador: Se han encontrado errores en el analisis.");
+		}
+	}
+}
+PARSER_END(graxml)
+
+
+TOKEN_MGR_DECLS : {
+     Token tok;
+}
+SKIP : 
+{ 
+	" "|"\n" | "\r" | "\r\n" 
+}
+
+TOKEN :
+{
+      < Dbi: "<DB>" >
+    | < Dbf: "</DB>" >
+    | < Nombrei: "<nombre>" >
+    | < Nombref: "</nombre>" >
+    | < Pathi: "<path>" >
+    | < Pathf: "</path>" >
+    | < Registroi: "<registro>">
+    | < Registrof: "</registro>">
+    | < Rowsi: "<rows>">
+    | < Rowsf: "</rows>">
+    | < Rowi: "<row>">
+    | < Rowf: "</row>">
+    | < Objecti: "<object>">
+    | < Objectf: "</object>">
+    | < Tablai: "<tabla>">
+    | < Tablaf: "</tabla>">
+    | < Procedurei: "<procedure>">
+    | < Proceduref: "</procedure>">
+    | < Texti: "<text>">
+    | < Textf: "</text>">
+    | < Inti: "<int>">
+    | < Intf: "</int>">
+    | < Doublei: "<Doublei>">
+    | < Doublef: "</Doublef>">
+    | < Booli: "<bool>">
+    | < Boolf: "</bool>">
+    | < Datei: "<date>">
+    | < Datef: "</date>">
+    | < Dateti: "<datetime>">
+    | < Datetf: "</datetime>">
+    | < Attri: "<attr>">
+    | < Attrf: "</attr>">
+    | < Obji: "<obj>">
+    | < Objf: "</obj>">
+    | < Srci: "<src>">
+    | < Srcf: "</src>">
+    | < Paramsi: "<params>">
+    | < Paramsf: "</params>">
+    | < Proci: "<proc>">
+    | < Procf: "</proc>">
+    | < Artablai: "<artabla>" >
+    |  < Artablaf: "</artabla>">
+    | < Arobji: "<arobj>" >
+    | < Arobjf: "</arobj>">
+    | <  Arusui :"<arusu>">
+    | < Arusuf :"</arusu>">
+    | <  Usui :"<usu>">
+    | < Usuf:"</usu>">
+    | < Contai:"<conta>">
+    | < Contaf:"</conta>">
+    | < Noperi:"<noper>">
+    | < Noperf:"</noper>">
+    | < Permisoi:"<permiso>">
+    | < Permisof:"</permiso>">
+    | < Obusui:"<Obusu>">
+    | < Obusuf:"</Obusu>">
+    | < Todos:"<todos>">
+}
+
+TOKEN :
+{
+    <Pk: "<pk>" >
+    |<Fki: "<fk>" >
+    |<Fkf: "</fk>" >
+    |<Nulo: "<nulo>" >
+    |<Auto: "<auto>" >
+    |<Unico: "<unico>" >
+    |<Nnulo: "<nnulo>" >
+}
+
+TOKEN :
+{
+      <Id: (["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*)>
+     |<Ruta: (("c:")(("/")["a"-"z"](["a"-"z"]|"_"|["0"-"9"])*)*(".usac")) >
+     |<Num: ((["0"-"9"])+("."(["0"-"9"])+)?)>
+     |<Date: (((("0")?["1"-"9"])|(["1"-"3"]["0"-"9"]))("-")((("0")?["1"-"9"])|(["1"]["0"-"2"]))("-")["1"-"9"]["0"-"9"]["0"-"9"]["0"-"9"])>
+     |<Datetime: (((("0")?["1"-"9"])|(["1"-"3"]["0"-"9"]))("-")((("0")?["1"-"9"])|(["1"]["0"-"2"]))("-")["1"-"9"]["0"-"9"]["0"-"9"]["0"-"9"]" "["0"-"9"]["0"-"9"]":"["0"-"9"]["0"-"9"]":"["0"-"9"]["0"-"9"])> 
+}
+
+TOKEN :
+{
+      <Ai: "<">
+    | <Af: ">">
+    | <D: "/">
+}
+
+TOKEN :
+{
+     < Texto:
+      "\""
+      (   (~["\"","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )*
+      "\""
+  >
+}
+
+void inicio() :
+{ }
+{
+	interno()<EOF>
+}
+
+void interno():
+{ }
+{
+    maestro() 
+   |registro()
+   |archivotabla()
+   |archivoobj()
+   |arusu()
+}
+//***********************ARCHIVO MAESTRO
+
+void maestro() :
+{}
+{
+    <Dbi> Manombre() <Dbf> Masig()
+}
+
+void Manombre() :
+{}
+{
+    <Nombrei> <Id> <Nombref> Maruta()
+}
+
+void Maruta():
+{}
+{
+    <Pathi> <Ruta> <Pathf> 
+}
+
+void Masig():
+{}
+{
+     maestro()
+    | { return; }
+}
+
+//*********************Archivo registro
+
+void registro():
+{}
+{
+    <Registroi> recontenido() <Registrof>
+}
+
+void recontenido():
+{}{
+      <Procedurei> Maruta() <Proceduref> recontenido()
+    | <Objecti> Maruta() <Objectf> recontenido()
+    | <Tablai> tabla() <Tablaf>  recontenido()
+    | { return; }
+}
+
+void tabla():
+{}{
+    <Nombrei> <Id> <Nombref> <Pathi> <Ruta> <Pathf> <Rowsi> tbcont() <Rowsf>
+}
+
+void tbcont():
+{ }{
+    <Inti> <Id> <Intf> complemento() tbcont()
+   |<Texti> <Id> <Textf> complemento() tbcont()
+   |<Doublei> <Id> <Doublef> complemento() tbcont()
+   |<Booli> <Id> <Boolf> complemento() tbcont()
+   |<Datei> <Id> <Datef> complemento() tbcont()
+   |<Dateti> <Id> <Datetf> complemento()  tbcont()
+   |<Obji> <Id> <Objf>
+   | {return;}
+}
+
+void complemento():
+{}{
+     <Pk> complemento()
+    | <Fki> <Id> <Fkf> complemento()
+    | <Nulo> complemento()
+    | <Nnulo> complemento()
+    | <Auto> complemento()
+    | <Unico> complemento()
+    | {return; }
+}
+
+//***************************** ARCHIVO TABLA
+
+void archivotabla():
+{}{
+   <Artablai> conttabla() <Artablaf> 
+}
+
+void conttabla():{}{
+    <Rowi> contcolumna() <Rowf> conttabla()
+   | {return;}
+}
+
+void contcolumna():
+{}
+{
+    <Ai> <Id> <Af> tipo() <Ai> <D> <Id> <Af> contcolumna()
+   | <Obji> <Id> contcolumna() <Objf> contcolumna()
+   | {return;}
+}
+
+void tipo():
+{}
+{
+      <Id>
+    |<Num>
+    |<Texto>
+    |<Date>
+    |<Datetime>
+}
+
+//******************************************ARCHIVO OBJETO
+
+void archivoobj():
+{}
+{
+    <Arobji> obrows() <Arobjf>
+}
+
+void obrows():
+{}
+{
+    <Obji> objcont() <Objf> obrows()
+    | { return; }
+}
+
+void objcont():
+{}
+{
+     <Nombrei> <Id> <Nombref> <Attri> tbcont() <Attrf> objcont()
+   | { return; }
+}
+
+//**************************** Archivo Usuarios
+
+void arusu():
+{}
+{
+    <Arusui> usucon() <Arusuf>
+}
+
+void usucon():
+{}
+{
+    <Usui> datousu() <Usuf> usucon()
+   | { return; }
+}
+
+void datousu():
+{}
+{
+      <Nombrei> <Id> <Nombref> datousu()
+    | <Contai> <Id> <Contaf> datousu()
+    | <Noperi> noper() <Noperf> datousu()
+    | <Permisoi> per() <Permisof> datousu()
+    | {return; }
+}
+
+void noper():
+{}
+{
+    <Dbi> <Id> <Dbf> connoper()
+    | {return;}
+}
+
+void connoper():
+{}{
+    <Obusui> <Id> <Obusuf> connoper()
+   | {return;}
+}
+
+void per():
+{}
+{
+    <Dbi> <Id> <Dbf> conper()
+    | {return;}
+}
+
+void conper():
+{}
+{
+     <Obusui> <Id> <Obusuf> per()
+    | <Todos>
+    | {return;}
+}
+
