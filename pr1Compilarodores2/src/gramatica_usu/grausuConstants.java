@@ -11,193 +11,203 @@ public interface grausuConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int SINGLE_LINE_COMMENT = 8;
+  int SINGLE_LINE_COMMENT = 9;
   /** RegularExpression Id. */
-  int MULTI_LINE_COMMENT = 9;
+  int MULTI_LINE_COMMENT = 10;
   /** RegularExpression Id. */
-  int Crear = 11;
+  int Crear = 12;
   /** RegularExpression Id. */
-  int Usar = 12;
+  int Usar = 13;
   /** RegularExpression Id. */
-  int Alterar = 13;
+  int Alterar = 14;
   /** RegularExpression Id. */
-  int Eliminar = 14;
+  int Eliminar = 15;
   /** RegularExpression Id. */
-  int Insertar = 15;
+  int Insertar = 16;
   /** RegularExpression Id. */
-  int Actualizar = 16;
+  int Actualizar = 17;
   /** RegularExpression Id. */
-  int Borrar = 17;
+  int Borrar = 18;
   /** RegularExpression Id. */
-  int Seleccionar = 18;
+  int Seleccionar = 19;
   /** RegularExpression Id. */
-  int Otorgar = 19;
+  int Otorgar = 20;
   /** RegularExpression Id. */
-  int Denegar = 20;
+  int Denegar = 21;
   /** RegularExpression Id. */
-  int Declarar = 21;
+  int Declarar = 22;
   /** RegularExpression Id. */
-  int BackupU = 22;
+  int BackupU = 23;
   /** RegularExpression Id. */
-  int BackupC = 23;
+  int BackupC = 24;
   /** RegularExpression Id. */
-  int RestaU = 24;
+  int RestaU = 25;
   /** RegularExpression Id. */
-  int RestaC = 25;
+  int RestaC = 26;
   /** RegularExpression Id. */
-  int Si = 26;
+  int Si = 27;
   /** RegularExpression Id. */
-  int Selec = 27;
+  int Selec = 28;
   /** RegularExpression Id. */
-  int Caso = 28;
+  int Caso = 29;
   /** RegularExpression Id. */
-  int Defecto = 29;
+  int Defecto = 30;
   /** RegularExpression Id. */
-  int Sino = 30;
+  int Sino = 31;
   /** RegularExpression Id. */
-  int Para = 31;
+  int Para = 32;
   /** RegularExpression Id. */
-  int Mientras = 32;
+  int Mientras = 33;
   /** RegularExpression Id. */
-  int Detener = 33;
+  int Detener = 34;
   /** RegularExpression Id. */
-  int Imprimir = 34;
+  int Imprimir = 35;
   /** RegularExpression Id. */
-  int Fecha = 35;
+  int Fecha = 36;
   /** RegularExpression Id. */
-  int FechaH = 36;
+  int FechaH = 37;
   /** RegularExpression Id. */
-  int contar = 37;
+  int Contar = 38;
   /** RegularExpression Id. */
-  int BaseD = 38;
+  int BaseD = 39;
   /** RegularExpression Id. */
-  int NombreT = 39;
+  int NombreT = 40;
   /** RegularExpression Id. */
-  int Objeto = 40;
+  int Objeto = 41;
   /** RegularExpression Id. */
-  int Procedimiento = 41;
+  int Procedimiento = 42;
   /** RegularExpression Id. */
-  int Funcion = 42;
+  int Funcion = 43;
   /** RegularExpression Id. */
-  int Tabla = 43;
+  int Tabla = 44;
   /** RegularExpression Id. */
-  int Usuario = 44;
+  int Usuario = 45;
   /** RegularExpression Id. */
-  int Colocar = 45;
+  int Colocar = 46;
   /** RegularExpression Id. */
-  int Pass = 46;
+  int Pass = 47;
   /** RegularExpression Id. */
-  int Agregar = 47;
+  int Agregar = 48;
   /** RegularExpression Id. */
-  int Quitar = 48;
+  int Quitar = 49;
   /** RegularExpression Id. */
-  int Cambiar = 49;
+  int Cambiar = 50;
   /** RegularExpression Id. */
-  int En = 50;
+  int En = 51;
   /** RegularExpression Id. */
-  int Valores = 51;
+  int Valores = 52;
   /** RegularExpression Id. */
-  int Retorno = 52;
+  int Retorno = 53;
   /** RegularExpression Id. */
-  int Donde = 53;
+  int Donde = 54;
   /** RegularExpression Id. */
-  int Asc = 54;
+  int Asc = 55;
   /** RegularExpression Id. */
-  int Desc = 55;
+  int Desc = 56;
   /** RegularExpression Id. */
-  int De = 56;
+  int De = 57;
   /** RegularExpression Id. */
-  int OrdenP = 57;
+  int OrdenP = 58;
   /** RegularExpression Id. */
-  int Text = 58;
+  int Text = 59;
   /** RegularExpression Id. */
-  int Integer = 59;
+  int Integer = 60;
   /** RegularExpression Id. */
-  int Double = 60;
+  int Double = 61;
   /** RegularExpression Id. */
-  int Bool = 61;
+  int Bool = 62;
   /** RegularExpression Id. */
-  int TDate = 62;
+  int TDate = 63;
   /** RegularExpression Id. */
-  int TDateT = 63;
+  int TDateT = 64;
   /** RegularExpression Id. */
-  int NoNulo = 64;
+  int NoNulo = 65;
   /** RegularExpression Id. */
-  int Nulo = 65;
+  int Nulo = 66;
   /** RegularExpression Id. */
-  int AutoI = 66;
+  int AutoI = 67;
   /** RegularExpression Id. */
-  int LlaveP = 67;
+  int LlaveP = 68;
   /** RegularExpression Id. */
-  int LlaveF = 68;
+  int LlaveF = 69;
   /** RegularExpression Id. */
-  int Unico = 69;
+  int Unico = 70;
   /** RegularExpression Id. */
-  int Id = 70;
+  int Id = 71;
   /** RegularExpression Id. */
-  int Aid = 71;
+  int Idp = 72;
   /** RegularExpression Id. */
-  int Ruta = 72;
+  int Tid = 73;
   /** RegularExpression Id. */
-  int RutaZ = 73;
+  int Aidp = 74;
   /** RegularExpression Id. */
-  int RutaU = 74;
+  int Aid = 75;
   /** RegularExpression Id. */
-  int Num = 75;
+  int Taid = 76;
   /** RegularExpression Id. */
-  int Date = 76;
+  int Ruta = 77;
   /** RegularExpression Id. */
-  int Datetime = 77;
+  int RutaZ = 78;
   /** RegularExpression Id. */
-  int Suma = 78;
+  int RutaU = 79;
   /** RegularExpression Id. */
-  int Resta = 79;
+  int Num = 80;
   /** RegularExpression Id. */
-  int Divi = 80;
+  int Date = 81;
   /** RegularExpression Id. */
-  int Mult = 81;
+  int Datetime = 82;
   /** RegularExpression Id. */
-  int Pote = 82;
+  int Suma = 83;
   /** RegularExpression Id. */
-  int Iguales = 83;
+  int Resta = 84;
   /** RegularExpression Id. */
-  int Dife = 84;
+  int Divi = 85;
   /** RegularExpression Id. */
-  int Menorq = 85;
+  int Mult = 86;
   /** RegularExpression Id. */
-  int Mayorq = 86;
+  int Pote = 87;
   /** RegularExpression Id. */
-  int Menori = 87;
+  int Iguales = 88;
   /** RegularExpression Id. */
-  int Mayori = 88;
+  int Dife = 89;
   /** RegularExpression Id. */
-  int And = 89;
+  int Menorq = 90;
   /** RegularExpression Id. */
-  int Or = 90;
+  int Mayorq = 91;
   /** RegularExpression Id. */
-  int Not = 91;
+  int Menori = 92;
   /** RegularExpression Id. */
-  int Pai = 92;
+  int Mayori = 93;
   /** RegularExpression Id. */
-  int Paf = 93;
+  int And = 94;
   /** RegularExpression Id. */
-  int Pt = 94;
+  int Or = 95;
   /** RegularExpression Id. */
-  int Cm = 95;
+  int Not = 96;
   /** RegularExpression Id. */
-  int Lli = 96;
+  int Pai = 97;
   /** RegularExpression Id. */
-  int Llf = 97;
+  int Paf = 98;
   /** RegularExpression Id. */
-  int Igual = 98;
+  int Pt = 99;
   /** RegularExpression Id. */
-  int Pp = 99;
+  int Cm = 100;
   /** RegularExpression Id. */
-  int Cii = 100;
+  int Lli = 101;
   /** RegularExpression Id. */
-  int Cif = 101;
+  int Llf = 102;
   /** RegularExpression Id. */
-  int Texto = 102;
+  int Igual = 103;
+  /** RegularExpression Id. */
+  int Pp = 104;
+  /** RegularExpression Id. */
+  int Cii = 105;
+  /** RegularExpression Id. */
+  int Cif = 106;
+  /** RegularExpression Id. */
+  int punto = 107;
+  /** RegularExpression Id. */
+  int Texto = 108;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -214,11 +224,12 @@ public interface grausuConstants {
     "\"\\r\"",
     "\"\\r\\n\"",
     "\"\\t\"",
+    "\"\\u201c\"",
     "\"#\"",
     "\"#*\"",
     "<SINGLE_LINE_COMMENT>",
     "\"*#\"",
-    "<token of kind 10>",
+    "<token of kind 11>",
     "\"crear\"",
     "\"usar\"",
     "\"Alterar\"",
@@ -241,7 +252,7 @@ public interface grausuConstants {
     "\"Sino\"",
     "\"Para\"",
     "\"mientras\"",
-    "\"Detener\"",
+    "\"detener\"",
     "\"Imprimir\"",
     "\"fecha()\"",
     "\"fecha_hora()\"",
@@ -279,7 +290,11 @@ public interface grausuConstants {
     "\"llave_foranea\"",
     "\"unico\"",
     "<Id>",
+    "<Idp>",
+    "<Tid>",
+    "<Aidp>",
     "<Aid>",
+    "<Taid>",
     "<Ruta>",
     "<RutaZ>",
     "<RutaU>",
@@ -310,6 +325,7 @@ public interface grausuConstants {
     "\":\"",
     "\"<<\"",
     "\">>\"",
+    "\".\"",
     "<Texto>",
   };
 

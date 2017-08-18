@@ -35,6 +35,7 @@ TOKEN_MGR_DECLS : {
 SKIP : 
 { 
 	" "|"\n" | "\r" | "\r\n" | "\t"
+        | "\u201c"
 }
 
 MORE :
@@ -91,11 +92,11 @@ TOKEN :
     | < Sino: "Sino">
     | < Para: "Para">
     | < Mientras: "mientras">
-    | < Detener: "Detener">
+    | < Detener: "detener">
     | < Imprimir: "Imprimir">
     | < Fecha: "fecha()">
     | < FechaH: "fecha_hora()">
-    | < contar: "contar">
+    | < Contar: "contar">
 }
 
 
@@ -145,7 +146,11 @@ TOKEN:{
 TOKEN :
 {
       <Id: (["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*)>
+     |<Idp: ((["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*)(".")(["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*))>
+     |<Tid: ((["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*)(".")(["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*)(".")(["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*)) >
+     |<Aidp: ((("@")["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*)(".")(["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*))>
      |<Aid: (("@")["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*)>
+     |<Taid: ((("@")["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*)(".")(["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*)(".")(["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*))>
      |<Ruta: (("c:")(("/")["a"-"z"](["a"-"z"]|"_"|["0"-"9"])*)*(".usac")) >
      |<RutaZ: (("\"")("c:")(("/")["a"-"z"](["a"-"z"]|"_"|["0"-"9"])*)*(".zip")("\"")) >
      |<RutaU: (("\"")("c:")(("/")["a"-"z"](["a"-"z"]|"_"|["0"-"9"])*)*(".udmp")("\"")) >
@@ -184,6 +189,7 @@ TOKEN :
     | <Pp : ":">
     | <Cii : "<<">
     | <Cif : ">>">
+    | <punto: ".">
 }
 
 TOKEN :
@@ -201,6 +207,8 @@ TOKEN :
       "\""
   >
 }
+
+//*********************************************************************************************INICIO
 
 void inicio() :
 { }
@@ -221,6 +229,11 @@ void instrucciones():
     | <RestaU>   restau()
     | <RestaC>   restac()
     | <Actualizar> <Tabla> actualizar()
+    | <Borrar> <En> <Tabla> borrar()
+    | <Seleccionar> seleccionar() pt()
+    | <Contar> contar()
+    | <Otorgar> otorgar()
+    | <Denegar> denegar()
 }
 
 //*********************************************************************************Instruccion CREAR
@@ -284,10 +297,10 @@ void tipodato():
     | <TDateT>
     | <Id>
 }
-
+//*****************************************************************Crear Procedimiento
 void crearproce():
 {}{
-    <Id> <Pai> paraproce() <Paf> <Lli> llf() 
+    <Id> <Pai> paraproce() <Paf> <Lli> proceconte() llf() 
 }
 
 void paraproce():
@@ -302,6 +315,67 @@ void cmproce():
 {
        <Cm> paraproce()
     | { return; }
+}
+
+void proceconte():
+{}
+{
+     <Alterar>  alterar() proceconte()
+    | <Eliminar> eliminar() proceconte()
+    | <Insertar> insertar() proceconte()
+    | <BackupU>  backupu() proceconte()
+    | <BackupC>  backupc() proceconte()
+    | <RestaU>   restau() proceconte()
+    | <RestaC>   restac() proceconte()
+    | <Actualizar> <Tabla> actualizar() proceconte()
+    | <Borrar> <En> <Tabla> borrar() proceconte()
+    | <Seleccionar> seleccionar() pt() proceconte()
+    | <Otorgar> otorgar() proceconte()
+    | <Denegar> denegar() proceconte()
+    | llamadafuncion() pt() proceconte()
+    | llamadametodo() pt() proceconte()
+    | <Declarar> declarar() pt() proceconte()
+    | <Retorno> retorno() pt() proceconte()
+    | <Si> si() proceconte()
+    | <Selec> selecciona() proceconte()
+    | <Para> para() proceconte()
+    | <Mientras> mientras() proceconte() 
+    | <Imprimir> imprimir() proceconte() 
+    | <Detener> detener() proceconte()
+    | <Contar> contar() proceconte()
+    | {return;} 
+}
+
+void llamadafuncion():
+{}
+{
+     <Aid>  <Igual> s0()
+    |<Aidp> <Igual> s0()
+}
+
+void llamadametodo():
+{}
+{
+   <Id> <Pai> tipo() listavalores() <Paf>
+}
+
+void declarar():
+{}
+{
+     <Aid> listavariable() tipodato() expresion()
+}
+
+void expresion():
+{}{
+      <Igual> s0()
+    |{ return; }
+}
+
+void listavariable():
+{}
+{
+      <Cm> <Aid> listavariable()
+    | {return;}
 }
 
 void crearfuncion():
@@ -348,6 +422,13 @@ void usar():
 {}
 {
     <Usar> <Id> pt()
+}
+//**************************************************************************RETORNO
+
+void retorno():
+{}
+{
+    s0()
 }
 
 //****************************************************************************INSTRUCCION ALTERAR
@@ -440,7 +521,9 @@ void tipo():
 {}
 {
       <Id>
-    | <Aid>
+    |<Idp>
+    |<Aidp>
+    |<Aid>
     |<Num>
     |<Texto>
     |<Date>
@@ -484,9 +567,89 @@ void restac():
 void actualizar():
 {}
 {
-    s0()
+    <Id> <Pai> tipoac() listavaloresac() <Paf> especialac() where() pt() 
+}
+
+void listavaloresac():
+{ }
+{
+       <Cm> tipoac() listavaloresac()
+    | { return;}
+}
+
+void tipoac():
+{}
+{
+      <Id>
+    | <Idp>
+    | <Aidp>
+    | <Aid>
+    |<Num>
+    |<Texto>
+    |<Date>
+    |<Datetime>
+}
+
+void especialac():
+{}
+{
+    <Valores> <Pai> s0() <Paf>
+    | {return; }
 } 
 
+void livalores():
+{}{
+     <Cm> s0()  livalores()
+    | {return; }
+}
+
+void where():
+{ }
+{
+     <Donde> s0()
+    | {return; }
+}
+
+//************************************************************************ INSTRUCCION BORRAR
+
+void borrar():
+{}
+{
+    <Id> where() pt()
+}
+//************************************************************************ INSTRUCCION SELECCIONAR
+
+void seleccionar():
+{}
+{
+       <Id> listids() <De> <Id> listids() where() orden() 
+    | <Mult> <De> <Id> listids() where() orden() 
+}
+
+
+void orden():{
+}{
+      <OrdenP> idorden() tipoorden() 
+    | {return;}
+}
+
+void idorden():
+{}{
+       <Id>
+    | <Idp>
+}
+
+void listids():{
+}{    
+     <Cm> <Id> listids()
+    |{return;}
+}
+
+void tipoorden():{
+}{
+      <Asc>
+    | <Desc>
+}
 //************************************************************************ operaciones
 
 void s0():
@@ -536,9 +699,152 @@ void s8():
 {}{
       <Num>
     | <Texto>
-    | <Id>
+    | <Id> fun()
+    | <Idp>
+    | <Tid>
     | <Aid>
+    | <Aidp>
+    | <Taid>
+    | <Fecha>
+    | <FechaH>
     | <Datetime>
     | <Date>
     | <Pai> s0() <Paf>
 }
+
+void fun():
+{}
+{
+    <Pai> funpara() s9() <Paf>
+    |{return;}
+}
+
+void funpara():{
+}{
+       s0()
+    | {return;}
+}
+
+void s9():
+{}
+{
+    <Cm> s0() s9()
+    | {return;}
+}
+
+//*************************************************************************************OTORGAR y DENEGAR
+
+void otorgar():
+{}
+{
+    <Id> <Cm> objetopermiso() pt()
+}
+
+void denegar():
+{}
+{
+    <Id> <Cm> objetopermiso() pt()
+}
+
+void objetopermiso():
+{}
+{
+     <Idp>
+    |<Id> <punto> <Mult>
+}
+
+//**********************************************************************************Funcion SI()
+
+void si():
+{}
+{
+    <Pai> s0() <Paf> <Lli> proceconte() llf() sino()
+}
+
+void sino():
+{}
+{
+      <Sino> <Lli>  proceconte() llf()
+    | { return; }
+}
+
+//*******************************************************************SELECCIONA
+
+void selecciona():
+{}
+{
+    <Pai> s0() <Paf> <Lli> caso() llf()
+}
+
+void caso():
+{}
+{
+    <Caso> puntual() <Pp> proceconte() caso2()
+}
+
+void puntual():
+{}
+{
+      <Texto>
+    | <Num>
+}
+
+void caso2():
+{}
+{
+      <Caso> puntual() <Pp> proceconte() caso2()
+    | <Defecto> <Pp> proceconte() caso2()
+    | {return;}
+}
+
+//*****************************************************************************Instruccion Para
+
+void para():
+{}
+{
+    <Pai> pinterno() <Paf> <Lli> proceconte() llf()
+}
+
+void pinterno():
+{}{
+     <Declarar> <Aid> <Igual> s0() pt() s0() pt() incremento() 
+}
+
+void incremento():
+{}{
+      <Suma> <Suma>
+    | <Resta> <Resta>
+}
+
+//*******************************************************************************Detener()
+
+void detener():
+{}
+{
+    pt()
+}
+
+//*******************************************************************************Mientras
+
+void mientras():
+{}
+{
+    <Pai> s0() <Paf> <Lli> proceconte() llf()
+}
+
+//*******************************************************************************Imprimir
+
+void imprimir():
+{}
+{
+    <Pai> s0() <Paf> pt()
+}
+
+//******************************************************************************CONTAR
+
+void contar():
+{}
+{
+    <Pai> <Cii> <Seleccionar> seleccionar() <Cif> <Paf> pt()
+}
+
