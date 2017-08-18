@@ -178,11 +178,11 @@ public class principal2 extends javax.swing.JFrame {
         String nomeArq = new String (EnderecoTemporario);
         try
 	{
-			gramatica_usu.grausu analizador = new gramatica_usu.grausu(new FileInputStream(nomeArq)) ;
+			gramatica_paquete.grapq analizador = new gramatica_paquete.grapq(new FileInputStream(nomeArq)) ;
 			analizador.inicio(); 
                         System.out.println("Analizador: correcto.");
 	}
-	catch(gramatica_usu.ParseException e)
+	catch(gramatica_paquete.ParseException e)
 	{
 			System.out.println(e.getMessage());
 			System.out.println("Analizador: Se han encontrado errores en el analisis.");
