@@ -176,6 +176,7 @@ TOKEN:
     | <And : "&&">
     | <Or  : "||">
     | <Not : "!">
+    | <Simbolo:"%">
 }
 
 TOKEN :
@@ -214,7 +215,7 @@ TOKEN :
 void inicio() :
 { }
 {
-	instrucciones()<EOF>
+    <Simbolo> instrucciones() <Simbolo> <EOF>
 }
 
 void instrucciones():

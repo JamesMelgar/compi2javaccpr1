@@ -153,61 +153,65 @@ public interface grausuConstants {
   /** RegularExpression Id. */
   int Num = 80;
   /** RegularExpression Id. */
-  int Date = 81;
+  int Dou = 81;
   /** RegularExpression Id. */
-  int Datetime = 82;
+  int Date = 82;
   /** RegularExpression Id. */
-  int Suma = 83;
+  int Datetime = 83;
   /** RegularExpression Id. */
-  int Resta = 84;
+  int Suma = 84;
   /** RegularExpression Id. */
-  int Divi = 85;
+  int Resta = 85;
   /** RegularExpression Id. */
-  int Mult = 86;
+  int Divi = 86;
   /** RegularExpression Id. */
-  int Pote = 87;
+  int Mult = 87;
   /** RegularExpression Id. */
-  int Iguales = 88;
+  int Pote = 88;
   /** RegularExpression Id. */
-  int Dife = 89;
+  int Iguales = 89;
   /** RegularExpression Id. */
-  int Menorq = 90;
+  int Dife = 90;
   /** RegularExpression Id. */
-  int Mayorq = 91;
+  int Menorq = 91;
   /** RegularExpression Id. */
-  int Menori = 92;
+  int Mayorq = 92;
   /** RegularExpression Id. */
-  int Mayori = 93;
+  int Menori = 93;
   /** RegularExpression Id. */
-  int And = 94;
+  int Mayori = 94;
   /** RegularExpression Id. */
-  int Or = 95;
+  int And = 95;
   /** RegularExpression Id. */
-  int Not = 96;
+  int Or = 96;
   /** RegularExpression Id. */
-  int Pai = 97;
+  int Not = 97;
   /** RegularExpression Id. */
-  int Paf = 98;
+  int Simbolo = 98;
   /** RegularExpression Id. */
-  int Pt = 99;
+  int Pai = 99;
   /** RegularExpression Id. */
-  int Cm = 100;
+  int Paf = 100;
   /** RegularExpression Id. */
-  int Lli = 101;
+  int Pt = 101;
   /** RegularExpression Id. */
-  int Llf = 102;
+  int Cm = 102;
   /** RegularExpression Id. */
-  int Igual = 103;
+  int Lli = 103;
   /** RegularExpression Id. */
-  int Pp = 104;
+  int Llf = 104;
   /** RegularExpression Id. */
-  int Cii = 105;
+  int Igual = 105;
   /** RegularExpression Id. */
-  int Cif = 106;
+  int Pp = 106;
   /** RegularExpression Id. */
-  int punto = 107;
+  int Cii = 107;
   /** RegularExpression Id. */
-  int Texto = 108;
+  int Cif = 108;
+  /** RegularExpression Id. */
+  int punto = 109;
+  /** RegularExpression Id. */
+  int Texto = 110;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -299,6 +303,7 @@ public interface grausuConstants {
     "<RutaZ>",
     "<RutaU>",
     "<Num>",
+    "<Dou>",
     "<Date>",
     "<Datetime>",
     "\"+\"",
@@ -315,6 +320,7 @@ public interface grausuConstants {
     "\"&&\"",
     "\"||\"",
     "\"!\"",
+    "\"%\"",
     "\"(\"",
     "\")\"",
     "\";\"",

@@ -1,0 +1,5 @@
+digraph G {node[shape=box, style=filled, color=blanchedalmond]; edge[color=chocolate3];rankdir=UD 
+
+"1_Archivo=null"->"2_Usuario=null""2_Usuario=null"->"3_james=0""2_Usuario=null"->"4_uno=0""2_Usuario=null"->"5_Nopermiso=0""5_Nopermiso=0"->"6_tabla1=0""6_tabla1=0"->"7_obje1=0""6_tabla1=0"->"8_obje1=0""2_Usuario=null"->"9_Permiso=0""9_Permiso=0"->"10_tabla2=0""10_tabla2=0"->"11_Todos=0""1_Archivo=null"->"12_Usuario=null""12_Usuario=null"->"13_james=0""12_Usuario=null"->"14_uno=0""12_Usuario=null"->"15_Nopermiso=0""15_Nopermiso=0"->"16_tabla1=0""16_tabla1=0"->"17_obje1=0""16_tabla1=0"->"18_obje1=0""12_Usuario=null"->"19_Permiso=0""19_Permiso=0"->"20_tabla2=0""20_tabla2=0"->"21_Todos=0"
+
+}

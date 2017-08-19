@@ -23,7 +23,9 @@ public class grausu implements grausuConstants {
 //*********************************************************************************************INICIO
   final public 
 void inicio() throws ParseException {
+    jj_consume_token(Simbolo);
     instrucciones();
+    jj_consume_token(Simbolo);
     jj_consume_token(0);
   }
 
@@ -845,6 +847,10 @@ void insertar() throws ParseException {
       jj_consume_token(Num);
       break;
       }
+    case Dou:{
+      jj_consume_token(Dou);
+      break;
+      }
     case Texto:{
       jj_consume_token(Texto);
       break;
@@ -951,6 +957,10 @@ void actualizar() throws ParseException {
       }
     case Num:{
       jj_consume_token(Num);
+      break;
+      }
+    case Dou:{
+      jj_consume_token(Dou);
       break;
       }
     case Texto:{
@@ -1117,92 +1127,10 @@ void seleccionar() throws ParseException {
 //************************************************************************ operaciones
   final public 
 void s0() throws ParseException {
-    s1();
-    label_1:
-    while (true) {
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case Suma:
-      case Resta:{
-        ;
-        break;
-        }
-      default:
-        jj_la1[32] = jj_gen;
-        break label_1;
-      }
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case Suma:{
-        jj_consume_token(Suma);
-        break;
-        }
-      case Resta:{
-        jj_consume_token(Resta);
-        break;
-        }
-      default:
-        jj_la1[33] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-      s1();
-    }
-  }
-
-  final public void s1() throws ParseException {
-    s2();
-    label_2:
-    while (true) {
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case Divi:
-      case Mult:{
-        ;
-        break;
-        }
-      default:
-        jj_la1[34] = jj_gen;
-        break label_2;
-      }
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case Divi:{
-        jj_consume_token(Divi);
-        break;
-        }
-      case Mult:{
-        jj_consume_token(Mult);
-        break;
-        }
-      default:
-        jj_la1[35] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-      s2();
-    }
-  }
-
-  final public void s2() throws ParseException {
-    s3();
-    label_3:
-    while (true) {
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case Pote:{
-        ;
-        break;
-        }
-      default:
-        jj_la1[36] = jj_gen;
-        break label_3;
-      }
-      jj_consume_token(Pote);
-      s3();
-    }
-  }
-
-  final public void s3() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case Resta:{
-      jj_consume_token(Resta);
-      s4();
+    case Not:{
+      jj_consume_token(Not);
+      s1();
       break;
       }
     case Fecha:
@@ -1214,24 +1142,61 @@ void s0() throws ParseException {
     case Aid:
     case Taid:
     case Num:
+    case Dou:
     case Date:
     case Datetime:
-    case Not:
+    case Resta:
     case Pai:
     case Texto:{
-      s4();
+      s1();
       break;
       }
     default:
-      jj_la1[37] = jj_gen;
+      jj_la1[32] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
   }
 
-  final public void s4() throws ParseException {
-    s5();
-    label_4:
+  final public void s1() throws ParseException {
+    s2();
+    label_1:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case And:{
+        ;
+        break;
+        }
+      default:
+        jj_la1[33] = jj_gen;
+        break label_1;
+      }
+      jj_consume_token(And);
+      s2();
+    }
+  }
+
+  final public void s2() throws ParseException {
+    s3();
+    label_2:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case Or:{
+        ;
+        break;
+        }
+      default:
+        jj_la1[34] = jj_gen;
+        break label_2;
+      }
+      jj_consume_token(Or);
+      s3();
+    }
+  }
+
+  final public void s3() throws ParseException {
+    s4();
+    label_3:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case Iguales:
@@ -1244,8 +1209,8 @@ void s0() throws ParseException {
         break;
         }
       default:
-        jj_la1[38] = jj_gen;
-        break label_4;
+        jj_la1[35] = jj_gen;
+        break label_3;
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case Iguales:{
@@ -1273,7 +1238,39 @@ void s0() throws ParseException {
         break;
         }
       default:
-        jj_la1[39] = jj_gen;
+        jj_la1[36] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+      s4();
+    }
+  }
+
+  final public void s4() throws ParseException {
+    s5();
+    label_4:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case Suma:
+      case Resta:{
+        ;
+        break;
+        }
+      default:
+        jj_la1[37] = jj_gen;
+        break label_4;
+      }
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case Suma:{
+        jj_consume_token(Suma);
+        break;
+        }
+      case Resta:{
+        jj_consume_token(Resta);
+        break;
+        }
+      default:
+        jj_la1[38] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -1286,15 +1283,29 @@ void s0() throws ParseException {
     label_5:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case And:{
+      case Divi:
+      case Mult:{
         ;
         break;
         }
       default:
-        jj_la1[40] = jj_gen;
+        jj_la1[39] = jj_gen;
         break label_5;
       }
-      jj_consume_token(And);
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case Divi:{
+        jj_consume_token(Divi);
+        break;
+        }
+      case Mult:{
+        jj_consume_token(Mult);
+        break;
+        }
+      default:
+        jj_la1[40] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
       s6();
     }
   }
@@ -1304,7 +1315,7 @@ void s0() throws ParseException {
     label_6:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case Or:{
+      case Pote:{
         ;
         break;
         }
@@ -1312,15 +1323,15 @@ void s0() throws ParseException {
         jj_la1[41] = jj_gen;
         break label_6;
       }
-      jj_consume_token(Or);
+      jj_consume_token(Pote);
       s7();
     }
   }
 
   final public void s7() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case Not:{
-      jj_consume_token(Not);
+    case Resta:{
+      jj_consume_token(Resta);
       s8();
       break;
       }
@@ -1333,6 +1344,7 @@ void s0() throws ParseException {
     case Aid:
     case Taid:
     case Num:
+    case Dou:
     case Date:
     case Datetime:
     case Pai:
@@ -1351,6 +1363,10 @@ void s0() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Num:{
       jj_consume_token(Num);
+      break;
+      }
+    case Dou:{
+      jj_consume_token(Dou);
       break;
       }
     case Texto:{
@@ -1437,6 +1453,7 @@ void s0() throws ParseException {
     case Aid:
     case Taid:
     case Num:
+    case Dou:
     case Date:
     case Datetime:
     case Resta:
@@ -1690,13 +1707,13 @@ void contar() throws ParseException {
       jj_la1_0 = new int[] {0x7bff000,0x0,0x0,0x0,0x0,0x0,0x0,0x1fffc000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x80000000,0x0,0x60000000,0x0,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x40,0x3e80,0xf8000000,0x0,0xf8000000,0xf8000000,0x0,0x20004f,0x0,0x0,0x0,0x3200,0x30000,0x0,0x0,0x0,0x30000,0x0,0x3280,0x0,0x0,0x100000,0x0,0x0,0x100000,0x0,0x400000,0x0,0x4000000,0x0,0x0,0x1800000,0x0,0x0,0x0,0x0,0x0,0x30,0x0,0x0,0x0,0x0,0x30,0x30,0x0,0x30,0x0,0x0,0x0,0x0,0x0,0x0,};
+      jj_la1_1 = new int[] {0x40,0x3e80,0xf8000000,0x0,0xf8000000,0xf8000000,0x0,0x20004f,0x0,0x0,0x0,0x3200,0x30000,0x0,0x0,0x0,0x30000,0x0,0x3280,0x0,0x0,0x100000,0x0,0x0,0x100000,0x0,0x400000,0x0,0x4000000,0x0,0x0,0x1800000,0x30,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x30,0x30,0x0,0x30,0x0,0x0,0x0,0x0,0x0,0x0,};
    }
    private static void jj_la1_init_2() {
-      jj_la1_2 = new int[] {0x0,0x0,0x81,0x3e,0x81,0x81,0x0,0xc80,0xc00,0x0,0x0,0x0,0x0,0x0,0x0,0x3e,0x0,0x0,0x0,0x0,0x70d80,0x0,0x0,0x70d80,0x0,0x0,0x0,0x400080,0x0,0x180,0x0,0x0,0x180000,0x180000,0x600000,0x600000,0x800000,0x171f80,0x3f000000,0x3f000000,0x40000000,0x80000000,0x71f80,0x71f80,0x0,0x171f80,0x0,0x180,0x0,0x10000,0x0,0x180000,};
+      jj_la1_2 = new int[] {0x0,0x0,0x81,0x3e,0x81,0x81,0x0,0xc80,0xc00,0x0,0x0,0x0,0x0,0x0,0x0,0x3e,0x0,0x0,0x0,0x0,0xf0d80,0x0,0x0,0xf0d80,0x0,0x0,0x0,0x800080,0x0,0x180,0x0,0x0,0x2f1f80,0x80000000,0x0,0x7e000000,0x7e000000,0x300000,0x300000,0xc00000,0xc00000,0x1000000,0x2f1f80,0xf1f80,0x0,0x2f1f80,0x0,0x180,0x0,0x10000,0x0,0x300000,};
    }
    private static void jj_la1_init_3() {
-      jj_la1_3 = new int[] {0x0,0x0,0x0,0x10,0x0,0x0,0x10,0x0,0x0,0x80,0x10,0x0,0x0,0x10,0x10,0x0,0x0,0x10,0x0,0x10,0x1000,0x0,0x10,0x1000,0x0,0x10,0x0,0x0,0x0,0x0,0x10,0x0,0x0,0x0,0x0,0x0,0x0,0x1003,0x0,0x0,0x0,0x0,0x1003,0x1002,0x2,0x1003,0x10,0x0,0x0,0x1000,0x0,0x0,};
+      jj_la1_3 = new int[] {0x0,0x0,0x0,0x40,0x0,0x0,0x40,0x0,0x0,0x200,0x40,0x0,0x0,0x40,0x40,0x0,0x0,0x40,0x0,0x40,0x4000,0x0,0x40,0x4000,0x0,0x40,0x0,0x0,0x0,0x0,0x40,0x0,0x400a,0x0,0x1,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x4008,0x4008,0x8,0x400a,0x40,0x0,0x0,0x4000,0x0,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -1813,7 +1830,7 @@ void contar() throws ParseException {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[109];
+    boolean[] la1tokens = new boolean[111];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -1836,7 +1853,7 @@ void contar() throws ParseException {
         }
       }
     }
-    for (int i = 0; i < 109; i++) {
+    for (int i = 0; i < 111; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
