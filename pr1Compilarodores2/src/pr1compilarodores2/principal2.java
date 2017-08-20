@@ -23,6 +23,7 @@ public class principal2 extends javax.swing.JFrame {
     public String EnderecoArquivo,EnderecoTemporario,bufferIn;
     public static Nodo master;
     public static Nodo usuarios;
+    public static Nodo paquete;
     
     public principal2() {
         initComponents();
@@ -48,6 +49,7 @@ public class principal2 extends javax.swing.JFrame {
 
         tx_entrada.setColumns(20);
         tx_entrada.setRows(5);
+        tx_entrada.setText("a");
         jScrollPane1.setViewportView(tx_entrada);
 
         jLabel1.setText("Entrada");
@@ -131,22 +133,22 @@ public class principal2 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BotongenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotongenerarActionPerformed
+        String tep;
         if(  principal2.usuarios == null){
             principal2.usuarios = CrearArbol.tryusuario(usuarios);
         }
         if(principal2.master == null){
             principal2.master = CrearArbol.trymaster(master);
-        }else{
-        
         }
-       /* try 
-       {
-            Analise();
-       } catch (IOException ex)
-       {
-            Logger.getLogger(principal2.class.getName()).log(Level.SEVERE, null, ex);
-       }
-        */
+        tep = tx_entrada.getText();
+        if(tep.equals("a") == false){
+             System.out.println(tx_entrada.getText());
+             principal2.paquete = CrearArbol.trypaquete(paquete, tep);
+         }
+        
+        
+        
+  
     }//GEN-LAST:event_BotongenerarActionPerformed
 
     private void BtGraficarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtGraficarActionPerformed
@@ -157,7 +159,12 @@ public class principal2 extends javax.swing.JFrame {
                 graficar(principal2.master,"master");
                 cadena = "Se ha graficado con exito \n";
                 tx_consola.setText(cadena);
-            }
+        }
+        if(principal2.paquete != null){
+            graficar(principal2.paquete,"paquete");
+            cadena = cadena + "Se ha graficado con exito \n";
+            tx_consola.setText(cadena);
+        }
     }//GEN-LAST:event_BtGraficarActionPerformed
 
     /**
@@ -195,31 +202,7 @@ public class principal2 extends javax.swing.JFrame {
         });
     }
     
-    private void Analise() throws IOException
-    {
-        EnderecoTemporario =  System.getProperty("java.io.tmpdir")+"temp.txt";
-        File arquivo = new File(EnderecoTemporario);  
-        FileWriter fw = new FileWriter(arquivo);  
-        BufferedWriter bw = new BufferedWriter(fw);      
-        bw.write(tx_entrada.getText());  
-        bw.flush();  
-        bw.close(); 
       
-                 
-        String nomeArq = new String (EnderecoTemporario);
-        try
-	{
-			gramatica_paquete.grapq analizador = new gramatica_paquete.grapq(new FileInputStream(nomeArq)) ;
-			analizador.inicio(); 
-                        System.out.println("Analizador: correcto.");
-	}
-	catch(gramatica_paquete.ParseException e)
-	{
-			System.out.println(e.getMessage());
-			System.out.println("Analizador: Se han encontrado errores en el analisis.");
-       }       
-}
-    
      public void graficar(Nodo raiz, String texto){
         FileWriter archivo = null;
         PrintWriter pw = null;

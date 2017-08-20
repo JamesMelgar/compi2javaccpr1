@@ -1,0 +1,5 @@
+digraph G {node[shape=box, style=filled, color=blanchedalmond]; edge[color=chocolate3];rankdir=UD 
+
+"0_paquete"->"1_login""1_login"->"2_juan"
+
+}

@@ -7,25 +7,17 @@ IGNORE_CASE = true;
 PARSER_BEGIN(grapq)
 
 package gramatica_paquete;
+import pr1compilarodores2.Nodo;
 import java.io.*;
 import java.util.*;
 
 public class grapq
 {
+    public static int contador;
     public static void main( String[] args )throws ParseException
-	{
-		try
-		{
-			grapq analizador = new grapq( System.in ) ;
-                        analizador.inicio();
-                        System.out.println("analisis correcto");
-		}
-		catch(ParseException e)
-		{
-			System.out.println(e.getMessage());
-			System.out.println("Analizador: Se han encontrado errores en el analisis.");
-		}
-	}
+    {
+            System.out.println("analisis correcto");        
+    }
 }
 PARSER_END(grapq)
 
@@ -125,22 +117,54 @@ TOKEN :
   >
 }
 
-void inicio():
-{}{
-   <Coi> <Validar> <Pp> <Num> <Cm> paquete() <Cof>
-}
 
-void paquete():
-{}{
-     <Login> <Pp> <Coi> <Comando> <Flecha> login() <Cof>
-    | <Paquete> <Pp> tipopaquete()
-}
+//**********************************************************************************************Inicio
 
+//<Coi> <Validar> <Pp> <Num> <Cm> paquete() <Cof>
 
-void login():
-{}
+Nodo inicio(Nodo raiz):
 {
-     <Comilla> <Usuario> <Comi> <Id> <Comi> <And> <Pass> <Flecha> <Comi> <Id> <Comi> <Comilla>
+    Token t1;
+}{
+   <Coi> { Nodo tmp = new Nodo("paquete");
+           tmp.setNumNodo(grapq.contador++);
+           raiz = tmp; }
+   <Validar> <Pp> t1=<Num> { raiz.setValor(t1.image); }
+   <Cm> raiz=paquete(raiz) <Cof> { return raiz; }
+}
+
+ //<Login> <Pp> <Coi> <Comando> <Flecha> login() <Cof> 
+//<Paquete> <Pp> tipopaquete() { return raiz; }
+
+Nodo paquete(Nodo raiz):
+{
+    Nodo nodo1;
+}{
+     <Login> <Pp> <Coi> <Comando> 
+           { Nodo tmp = new Nodo("login");
+             tmp.setNumNodo(grapq.contador++);
+             nodo1 = tmp; }
+    <Flecha> nodo1=login(nodo1) 
+    <Cof> {    raiz.addHijo(nodo1);
+               return raiz; }
+
+    | <Paquete> <Pp> tipopaquete() { return raiz; }
+}
+
+
+Nodo login(Nodo hijo):
+{
+    Token t1;
+    Nodo nodo1;
+}
+{
+     <Comilla>  <Usuario> { Nodo tmp = new Nodo("usuario");
+                              tmp.setNumNodo(grapq.contador++);
+                              nodo1= tmp; } 
+     <Comi>     t1=<Id> { nodo1.setNombre(t1.image); } 
+     <Comi> <And> <Pass> <Flecha> <Comi>
+     t1=<Id> { nodo1.setValor(t1.image); } <Comi> { hijo.addHijo(nodo1); }
+    <Comilla> { return hijo; }
 }
 
 void tipopaquete():

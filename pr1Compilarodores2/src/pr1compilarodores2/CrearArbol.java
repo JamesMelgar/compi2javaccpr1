@@ -152,4 +152,69 @@ public class CrearArbol {
                         return null;
        }
     }
+    
+    public static Nodo archivopaquete(Nodo paquete, String texto) throws IOException
+    {
+        EnderecoTemporario =  System.getProperty("java.io.tmpdir")+"temp.txt";
+        File arquivo = new File(EnderecoTemporario);  
+        FileWriter fw = new FileWriter(arquivo);  
+        BufferedWriter bw = new BufferedWriter(fw);      
+        bw.write(texto);  
+        bw.flush();  
+        bw.close(); 
+                 
+        String nomeArq = new String (EnderecoTemporario);
+        try
+	{
+			gramatica_paquete.grapq analizador = new gramatica_paquete.grapq(new FileInputStream(nomeArq)) ;
+			paquete = analizador.inicio(paquete); 
+                        System.out.println("Analizador paquete: correcto.");
+                        return paquete;
+	}
+	catch(gramatica_paquete.ParseException e)
+	{
+			System.out.println(e.getMessage());
+			System.out.println("Analizador: Se han encontrado errores en el analisis.");
+                        return null;
+       }
+    }
+    
+       public static Nodo trypaquete(Nodo pq,String texto){
+        try 
+       {
+           pq = archivopaquete(pq,texto);
+           return pq;
+       } catch (IOException ex)
+       {
+            Logger.getLogger(principal2.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+       }
+        
+    }
+       
+    public static Nodo archivopq(Nodo pq, String texto) throws IOException
+    {
+        EnderecoTemporario =  System.getProperty("java.io.tmpdir")+"temp.txt";
+        File arquivo = new File(EnderecoTemporario);  
+        FileWriter fw = new FileWriter(arquivo);  
+        BufferedWriter bw = new BufferedWriter(fw);      
+        bw.write(texto);  
+        bw.flush();  
+        bw.close(); 
+                 
+        String nomeArq = new String (EnderecoTemporario);
+        try
+	{
+			gramatica_paquete.grapq analizador = new gramatica_paquete.grapq(new FileInputStream(nomeArq)) ;
+			pq = analizador.inicio(pq); 
+                        System.out.println("Analizador pq: correcto.");
+                        return pq;
+	}
+	catch(gramatica_paquete.ParseException e)
+	{
+			System.out.println(e.getMessage());
+			System.out.println("Analizador: Se han encontrado errores en el analisis.");
+                        return null;
+       }
+    }
 }
