@@ -113,4 +113,43 @@ public class CrearArbol {
         return almacenar;
     }
 
+    public static Nodo Analisisxml(Nodo hijo, String ruta){
+        String texto;
+        try 
+       {
+           texto = muestraContenido(ruta);
+           hijo = archivoxml(hijo,texto);
+           return hijo;
+       } catch (IOException ex)
+       {
+            Logger.getLogger(principal2.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+       }
+    }
+    
+    public static Nodo archivoxml(Nodo hijo, String texto) throws IOException
+    {
+        EnderecoTemporario =  System.getProperty("java.io.tmpdir")+"temp.txt";
+        File arquivo = new File(EnderecoTemporario);  
+        FileWriter fw = new FileWriter(arquivo);  
+        BufferedWriter bw = new BufferedWriter(fw);      
+        bw.write(texto);  
+        bw.flush();  
+        bw.close(); 
+                 
+        String nomeArq = new String (EnderecoTemporario);
+        try
+	{
+			gramatica_xml.graxml analizador = new gramatica_xml.graxml(new FileInputStream(nomeArq)) ;
+			hijo = analizador.inicio(hijo); 
+                        System.out.println("Analizador: correcto.");
+                        return hijo;
+	}
+	catch(gramatica_xml.ParseException e)
+	{
+			System.out.println(e.getMessage());
+			System.out.println("Analizador: Se han encontrado errores en el analisis.");
+                        return null;
+       }
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+  To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -87,9 +87,9 @@ public class principal2 extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(18, 18, 18)
+                            .addComponent(jLabel1)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
@@ -249,7 +249,7 @@ public class principal2 extends javax.swing.JFrame {
         String cadena = "";
         for(Nodo hijos : nodo.getHijos())
         {
-            cadena += "\"" + nodo.getNumNodo() + "_" + nodo.getNombre() + "=" + nodo.getValor() + "\"->\"" + hijos.getNumNodo() + "_" + hijos.getNombre() + "=" + hijos.getValor() + "\"";
+            cadena += "\"" + nodo.getNumNodo() + "_" + nodo.getNombre() + "\"->\"" + hijos.getNumNodo() + "_" + hijos.getNombre()  + "\"";
             cadena += graficarNodo(hijos);
         }
         return cadena;

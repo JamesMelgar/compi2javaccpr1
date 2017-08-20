@@ -152,9 +152,9 @@ Nodo interno(Nodo raiz):
 }
 {
     raiz=tabmaestro(raiz) { return raiz; } 
-   |registro()
-   |archivotabla()
-   |archivoobj()
+   |raiz=registro(raiz)   { return raiz; }
+   |raiz=archivotabla(raiz)
+   |raiz=archivoobj(raiz) { return raiz; }
    |raiz=arusu(raiz) {return raiz;}
 }
 
@@ -191,7 +191,8 @@ Nodo Manombre(Nodo raiz) :
                         tmp.setFila(t1.beginLine);
                         tmp.setValor("0");
                         nodo1 = tmp; }
-    <Nombref> nodo1=Maruta(nodo1) { raiz.addHijo(nodo1);
+    <Nombref> nodo1=Maruta(nodo1) { nodo1 = pr1compilarodores2.CrearArbol.Analisisxml(nodo1, nodo1.getValor());
+                                    raiz.addHijo(nodo1);
                                     return raiz; }
 }
 
@@ -211,57 +212,186 @@ Nodo Masig(Nodo raiz):
     | { return raiz; }
 }
 
-//*********************Archivo registro
+//************************************************************************************Archivo registro
 
-void registro():
+Nodo registro(Nodo raiz):
 {}
 {
-    <Registroi> recontenido() <Registrof>
+    <Registroi> raiz=recontenido(raiz) <Registrof>  {return raiz;}
 }
 
-void recontenido():
+/*
+  <Procedurei> nodo1=Maruta(null) <Proceduref> recontenido()
+| <Objecti> Maruta()<Objectf> recontenido()
+| <Tablai> tabla() <Tablaf>  recontenido()
+| { return; }
+ */
+
+
+Nodo recontenido(Nodo raiz):
 {
     Nodo nodo1;
 }{
-      <Procedurei> nodo1=Maruta(null) <Proceduref> recontenido()
-    | <Objecti> nodo1=Maruta(null) <Objectf> recontenido()
-    | <Tablai> tabla() <Tablaf>  recontenido()
-    | { return; }
+      <Procedurei> { Nodo tmp = new Nodo("Procedure");
+                     tmp.setNumNodo(graxml.contador++);
+                     tmp.setValor("0");
+                     nodo1 = tmp; 
+                    }
+     nodo1=Maruta(nodo1) <Proceduref> { raiz.addHijo(nodo1); }
+     raiz=recontenido(raiz) { return raiz; }
+
+    | <Objecti> { Nodo tmp = new Nodo("Objeto");
+                  tmp.setNumNodo(graxml.contador++);
+                  tmp.setValor("0");
+                  nodo1 = tmp; 
+                 }
+      nodo1=Maruta(nodo1) { nodo1 = pr1compilarodores2.CrearArbol.Analisisxml(nodo1, nodo1.getValor()); }
+      <Objectf> { raiz.addHijo(nodo1); } 
+      raiz=recontenido(raiz) { return raiz; }
+
+    | <Tablai> { Nodo tmp = new Nodo("Tabla");
+                 tmp.setNumNodo(graxml.contador++);
+                 tmp.setValor("0");
+                 nodo1 = tmp; 
+                }
+      nodo1=tabla(nodo1) <Tablaf> { raiz.addHijo(nodo1); } raiz=recontenido(raiz) { return raiz; }
+
+    | { return raiz; }
 }
 
-void tabla():
-{}{
-    <Nombrei> <Id> <Nombref> <Pathi> <Ruta> <Pathf> <Rowsi> tbcont() <Rowsf>
+//<Nombrei> <Id> <Nombref> <Pathi> <Ruta> <Pathf> <Rowsi> tbcont() <Rowsf>
+
+Nodo tabla(Nodo raiz):
+{
+    Token t1;
+}{
+    <Nombrei> t1=<Id> { raiz.setNombre(t1.image); }
+    <Nombref> <Pathi> t1=<Ruta> { raiz.setValor(t1.image); }
+    <Pathf> <Rowsi> raiz=tbcont(raiz) <Rowsf> { return raiz; }
 }
 
-void tbcont():
-{ }{
-    <Inti> <Id> <Intf> complemento() tbcont()
-   |<Texti> <Id> <Textf> complemento() tbcont()
-   |<Doublei> <Id> <Doublef> complemento() tbcont()
-   |<Booli> <Id> <Boolf> complemento() tbcont()
-   |<Datei> <Id> <Datef> complemento() tbcont()
-   |<Dateti> <Id> <Datetf> complemento()  tbcont()
-   |<Obji> <Id> <Objf>
-   | {return;}
+/*
+ <Inti> <Id> <Intf> complemento() tbcont()
+|<Texti> <Id> <Textf> complemento() tbcont()
+|<Doublei> <Id> <Doublef> complemento() tbcont()
+|<Booli> <Id> <Boolf> complemento() tbcont()
+|<Datei> <Id> <Datef> complemento() tbcont()
+|<Dateti> <Id> <Datetf> complemento()  tbcont()
+|<Obji> <Id> <Objf>
+| {return;}
+*/
+
+Nodo tbcont(Nodo raiz):
+{ 
+    Nodo nodo1;
+    Token t1;
+}{
+    <Inti> t1=<Id> { Nodo tmp = new Nodo(t1.image);
+                     tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor("int");
+                     nodo1 = tmp; 
+                 } 
+    <Intf> nodo1=complemento(nodo1) {raiz.addHijo(nodo1);} raiz=tbcont(raiz) { return raiz; }
+
+   |<Texti> t1=<Id> { Nodo tmp = new Nodo(t1.image);
+                     tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor("texto");
+                     nodo1 = tmp; 
+                 } 
+     <Textf> nodo1=complemento(nodo1) {raiz.addHijo(nodo1);} raiz=tbcont(raiz) { return raiz; }
+
+   |<Doublei> t1=<Id> { Nodo tmp = new Nodo(t1.image);
+                        tmp.setNumNodo(graxml.contador++);
+                        tmp.setColumna(t1.beginColumn);
+                        tmp.setFila(t1.beginLine);
+                        tmp.setValor("double");
+                        nodo1 = tmp; 
+                    } 
+    <Doublef> nodo1=complemento(nodo1) {raiz.addHijo(nodo1);} raiz=tbcont(raiz) { return raiz; }
+
+   |<Booli> t1=<Id> { Nodo tmp = new Nodo(t1.image);
+                     tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor("Bool");
+                     nodo1 = tmp; 
+                 } 
+     <Boolf> nodo1=complemento(nodo1)  {raiz.addHijo(nodo1);} raiz=tbcont(raiz) { return raiz; }
+
+   |<Datei> t1=<Id> { Nodo tmp = new Nodo(t1.image);
+                      tmp.setNumNodo(graxml.contador++);
+                      tmp.setColumna(t1.beginColumn);
+                      tmp.setFila(t1.beginLine);
+                      tmp.setValor("date");
+                      nodo1 = tmp; 
+                   } 
+     <Datef> nodo1=complemento(nodo1)   {raiz.addHijo(nodo1);} raiz=tbcont(raiz) { return raiz; }
+
+   |<Dateti> t1=<Id> { Nodo tmp = new Nodo(t1.image);
+                      tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor("datetime");
+                     nodo1 = tmp; 
+                 } 
+     <Datetf> nodo1=complemento(nodo1) {raiz.addHijo(nodo1);} raiz=tbcont(raiz) { return raiz; }
+
+   |<Obji> t1=<Id> { Nodo tmp = new Nodo(t1.image);
+                     tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor("obj");
+                     nodo1 = tmp; 
+                   } 
+     <Objf> nodo1=complemento(nodo1) {raiz.addHijo(nodo1);} raiz=tbcont(raiz) { return raiz; }
+   | {return raiz;}
 }
 
-void complemento():
-{}{
-     <Pk> complemento()
-    | <Fki> <Id> <Fkf> complemento()
-    | <Nulo> complemento()
-    | <Nnulo> complemento()
-    | <Auto> complemento()
-    | <Unico> complemento()
-    | {return; }
+
+Nodo complemento(Nodo hijo):
+{
+   Token t1;
+}{
+      t1=tipocomplemento() { Nodo tmp = new Nodo(t1.image);
+                            tmp.setNumNodo(graxml.contador++);
+                            tmp.setColumna(t1.beginColumn);
+                            tmp.setFila(t1.beginLine);
+                            tmp.setValor("");
+                            hijo.addHijo(tmp);
+                   } 
+     hijo=complemento(hijo) { return hijo; }
+
+    | <Fki> t1=<Id> { Nodo tmp = new Nodo(t1.image);
+                            tmp.setNumNodo(graxml.contador++);
+                            tmp.setColumna(t1.beginColumn);
+                            tmp.setFila(t1.beginLine);
+                            tmp.setValor("");
+                            hijo.addHijo(tmp);
+                   } 
+     <Fkf> hijo=complemento(hijo) { return hijo; }
+
+    | {return hijo; }
 }
 
+Token tipocomplemento():
+{
+    Token t1;
+}{
+      t1=<Pk> { return t1; }
+    | t1=<Nulo> { return t1; }
+    | t1=<Nnulo> { return t1; }
+    | t1=<Auto> { return t1; }
+    | t1=<Unico> { return t1; }
+}
 //**************************************************************************************** ARCHIVO TABLA
 
-void archivotabla():
+Nodo archivotabla(Nodo raiz):
 {}{
-   <Artablai> conttabla() <Artablaf> 
+   <Artablai> conttabla() <Artablaf> {return null;}
 }
 
 void conttabla():{}{
@@ -289,24 +419,39 @@ void tipo():
 
 //***************************************************************************************ARCHIVO OBJETO
 
-void archivoobj():
+Nodo archivoobj(Nodo raiz):
 {}
 {
-    <Arobji> obrows() <Arobjf>
+    <Arobji> raiz=obrows(raiz) <Arobjf> {return raiz;}
 }
 
-void obrows():
-{}
+
+//<Obji> objcont() <Objf> obrows()
+Nodo obrows(Nodo raiz):
 {
-    <Obji> objcont() <Objf> obrows()
-    | { return; }
+    Nodo nodo1;
+}
+{
+    <Obji> { Nodo tmp = new Nodo("obj");
+             tmp.setNumNodo(graxml.contador++);
+             tmp.setValor("0");
+             nodo1 = tmp; 
+           }
+    nodo1=objcont(nodo1) <Objf> { raiz.addHijo(nodo1); }
+    raiz=obrows(raiz) { return raiz; }
+
+    | { return raiz; }
 }
 
-void objcont():
-{}
+//<Nombrei> <Id> <Nombref> <Attri> nodo1=tbcont(null) <Attrf> objcont()
+Nodo objcont(Nodo hijo):
 {
-     <Nombrei> <Id> <Nombref> <Attri> tbcont() <Attrf> objcont()
-   | { return; }
+    Token t1;
+    Nodo nodo1;
+}
+{
+     <Nombrei> t1=<Id> { hijo.setNombre(t1.image); } <Nombref> 
+     <Attri> nodo1=tbcont(hijo) <Attrf> { return hijo; }
 }
 
 //*************************************************************************************** Archivo Usuarios
