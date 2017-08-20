@@ -24,8 +24,10 @@ public class principal2 extends javax.swing.JFrame {
     public static Nodo master;
     public static Nodo usuarios;
     public static Nodo paquete;
+    public static String usua;
     
     public principal2() {
+        principal2.usua = "admin";
         initComponents();
     }
 
@@ -144,11 +146,8 @@ public class principal2 extends javax.swing.JFrame {
         if(tep.equals("a") == false){
              System.out.println(tx_entrada.getText());
              principal2.paquete = CrearArbol.trypaquete(paquete, tep);
+             Acciones.accpaquete.tipopaquete(principal2.paquete, principal2.usuarios, principal2.master);
          }
-        
-        
-        
-  
     }//GEN-LAST:event_BotongenerarActionPerformed
 
     private void BtGraficarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtGraficarActionPerformed

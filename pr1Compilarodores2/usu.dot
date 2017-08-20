@@ -1,5 +1,5 @@
 digraph G {node[shape=box, style=filled, color=blanchedalmond]; edge[color=chocolate3];rankdir=UD 
 
-"1_Archivo"->"2_Usuario""2_Usuario"->"3_james""2_Usuario"->"4_uno""2_Usuario"->"5_Nopermiso""5_Nopermiso"->"6_tabla1""6_tabla1"->"7_obje1""6_tabla1"->"8_obje1""2_Usuario"->"9_Permiso""9_Permiso"->"10_tabla2""10_tabla2"->"11_Todos""1_Archivo"->"12_Usuario""12_Usuario"->"13_Miguel""12_Usuario"->"14_lopez""12_Usuario"->"15_Nopermiso""15_Nopermiso"->"16_tabla1""16_tabla1"->"17_obje1""16_tabla1"->"18_obje1""12_Usuario"->"19_Permiso""19_Permiso"->"20_tabla2""20_tabla2"->"21_Todos"
+"1_Archivo"->"2_james""2_james"->"3_Nopermiso""3_Nopermiso"->"4_tabla1""4_tabla1"->"5_obje1""4_tabla1"->"6_obje1""2_james"->"7_Permiso""7_Permiso"->"8_tabla2""8_tabla2"->"9_Todos""1_Archivo"->"10_Miguel""10_Miguel"->"11_Nopermiso""11_Nopermiso"->"12_tabla1""12_tabla1"->"13_obje1""12_tabla1"->"14_obje1""10_Miguel"->"15_Permiso""15_Permiso"->"16_tabla2""16_tabla2"->"17_Todos"
 
 }

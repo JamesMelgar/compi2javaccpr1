@@ -484,16 +484,12 @@ Nodo datousu(Nodo hijo):
     Token t1;
 }
 {
-      <Nombrei> t1=<Id> <Nombref> { Nodo tmp = new Nodo(t1.image);
-                                    tmp.setNumNodo(graxml.contador++);
-                                    tmp.setValor("0");
-                                    hijo.addHijo(tmp);
-                                  }  hijo=datousu(hijo) { return hijo; }
-    | <Contai> t1=<Id> <Contaf>{ Nodo tmp = new Nodo(t1.image);
-                                    tmp.setNumNodo(graxml.contador++);
-                                    hijo.addHijo(tmp);
-                                    tmp.setValor("0");
-                                }   hijo=datousu(hijo) { return hijo; }
+      <Nombrei> t1=<Id> <Nombref> { hijo.setNombre(t1.image); }
+      hijo=datousu(hijo) { return hijo; }
+
+    | <Contai> t1=<Id> <Contaf> { hijo.setValor(t1.image); }
+      hijo=datousu(hijo) { return hijo; }
+
     | <Noperi> { Nodo tmp = new Nodo("Nopermiso");
                  tmp.setNumNodo(graxml.contador++);
                  tmp.setValor("0");

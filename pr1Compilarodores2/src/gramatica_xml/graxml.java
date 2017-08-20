@@ -581,10 +581,7 @@ raiz.addHijo(nodo1);
       jj_consume_token(Nombrei);
       t1 = jj_consume_token(Id);
       jj_consume_token(Nombref);
-Nodo tmp = new Nodo(t1.image);
-                                    tmp.setNumNodo(graxml.contador++);
-                                    tmp.setValor("0");
-                                    hijo.addHijo(tmp);
+hijo.setNombre(t1.image);
       hijo = datousu(hijo);
 {if ("" != null) return hijo;}
       break;
@@ -593,10 +590,7 @@ Nodo tmp = new Nodo(t1.image);
       jj_consume_token(Contai);
       t1 = jj_consume_token(Id);
       jj_consume_token(Contaf);
-Nodo tmp = new Nodo(t1.image);
-                                    tmp.setNumNodo(graxml.contador++);
-                                    hijo.addHijo(tmp);
-                                    tmp.setValor("0");
+hijo.setValor(t1.image);
       hijo = datousu(hijo);
 {if ("" != null) return hijo;}
       break;
