@@ -12,7 +12,7 @@ public class graxml implements graxmlConstants {
                 System.out.println("analisis correcto");
         }
 
-//*********************************************************************************************Inicio
+//******************************************************************************************************Inicio
   final public 
 Nodo inicio(Nodo raiz) throws ParseException {
     raiz = interno(raiz);
@@ -35,6 +35,7 @@ Nodo inicio(Nodo raiz) throws ParseException {
       }
     case Artablai:{
       raiz = archivotabla(raiz);
+{if ("" != null) return raiz;}
       break;
       }
     case Arobji:{
@@ -138,6 +139,7 @@ Nodo registro(Nodo raiz) throws ParseException {
   final public 
 
 Nodo recontenido(Nodo raiz) throws ParseException {Nodo nodo1;
+    Nodo nodo2;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Procedurei:{
       jj_consume_token(Procedurei);
@@ -189,6 +191,7 @@ raiz.addHijo(nodo1);
 //<Nombrei> <Id> <Nombref> <Pathi> <Ruta> <Pathf> <Rowsi> tbcont() <Rowsf>
   final public 
 Nodo tabla(Nodo raiz) throws ParseException {Token t1;
+    Nodo nodo1;
     jj_consume_token(Nombrei);
     t1 = jj_consume_token(Id);
 raiz.setNombre(t1.image);
@@ -196,11 +199,21 @@ raiz.setNombre(t1.image);
     jj_consume_token(Pathi);
     t1 = jj_consume_token(Ruta);
 raiz.setValor(t1.image);
+                                  Nodo tmp1 = new Nodo("datos");
+                                  tmp1.setNumNodo(graxml.contador++);
+                                  tmp1.setValor(t1.image);
+                                  nodo1 = tmp1;
+                        nodo1 = pr1compilarodores2.CrearArbol.Analisisxml(nodo1, nodo1.getValor());
+                        raiz.addHijo(nodo1);
     jj_consume_token(Pathf);
     jj_consume_token(Rowsi);
-    raiz = tbcont(raiz);
+Nodo tmp = new Nodo("campos");
+                      tmp.setNumNodo(graxml.contador++);
+                      tmp.setValor("0");
+                      nodo1 = tmp;
+    nodo1 = tbcont(nodo1);
     jj_consume_token(Rowsf);
-{if ("" != null) return raiz;}
+raiz.addHijo(nodo1); {if ("" != null) return raiz;}
     throw new Error("Missing return statement in function");
   }
 
@@ -415,75 +428,128 @@ Nodo tmp = new Nodo(t1.image);
   final public 
 Nodo archivotabla(Nodo raiz) throws ParseException {
     jj_consume_token(Artablai);
-    conttabla();
+    raiz = conttabla(raiz);
     jj_consume_token(Artablaf);
-{if ("" != null) return null;}
+{if ("" != null) return raiz;}
     throw new Error("Missing return statement in function");
   }
 
-  final public void conttabla() throws ParseException {
+//<Rowi> contcolumna() <Rowf> conttabla()
+  final public Nodo conttabla(Nodo raiz) throws ParseException {Nodo nodo1;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Rowi:{
       jj_consume_token(Rowi);
-      contcolumna();
+Nodo tmp = new Nodo("Row");
+             tmp.setNumNodo(graxml.contador++);
+             tmp.setValor("");
+             nodo1 = tmp;
+      nodo1 = contcolumna(nodo1);
       jj_consume_token(Rowf);
-      conttabla();
+raiz.addHijo(nodo1);
+      raiz = conttabla(raiz);
+{if ("" != null) return raiz;}
       break;
       }
     default:
       jj_la1[6] = jj_gen;
-{if ("" != null) return;}
+{if ("" != null) return raiz;}
     }
+    throw new Error("Missing return statement in function");
   }
 
-  final public void contcolumna() throws ParseException {
+/*
+<Ai> <Id> <Af> tipo() <Ai> <D> <Id> <Af> contcolumna()
+| <Obji> <Id> contcolumna() <Objf> contcolumna()
+| {return;}
+*/
+  final public 
+Nodo contcolumna(Nodo hijo) throws ParseException {Nodo nodo1;
+    Token t1;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Ai:{
       jj_consume_token(Ai);
-      jj_consume_token(Id);
+      t1 = jj_consume_token(Id);
+Nodo tmp = new Nodo(t1.image);
+                   tmp.setNumNodo(graxml.contador++);
+                   tmp.setColumna(t1.beginColumn);
+                   tmp.setFila(t1.beginLine);
+                   nodo1 = tmp;
       jj_consume_token(Af);
-      tipo();
+      nodo1 = tipo(nodo1);
       jj_consume_token(Ai);
       jj_consume_token(D);
       jj_consume_token(Id);
       jj_consume_token(Af);
-      contcolumna();
+hijo.addHijo(nodo1);
+      hijo = contcolumna(hijo);
+{if ("" != null) return hijo;}
       break;
       }
     case Obji:{
       jj_consume_token(Obji);
-      jj_consume_token(Id);
-      contcolumna();
+      t1 = jj_consume_token(Id);
+Nodo tmp = new Nodo("obj");
+                      tmp.setNumNodo(graxml.contador++);
+                      tmp.setColumna(t1.beginColumn);
+                      tmp.setFila(t1.beginLine);
+                      tmp.setValor(t1.image);
+                      nodo1 = tmp;
+      nodo1 = contcolumna(nodo1);
       jj_consume_token(Objf);
-      contcolumna();
+hijo.addHijo(nodo1);
+      hijo = contcolumna(hijo);
+{if ("" != null) return hijo;}
       break;
       }
     default:
       jj_la1[7] = jj_gen;
-{if ("" != null) return;}
+{if ("" != null) return hijo;}
     }
+    throw new Error("Missing return statement in function");
   }
 
-  final public void tipo() throws ParseException {
+  final public Nodo tipo(Nodo nodo1) throws ParseException {Token t1;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Id:{
-      jj_consume_token(Id);
+      t1 = jj_consume_token(Id);
+nodo1.setTipo("id");
+               nodo1.setValor(t1.image);
+               {if ("" != null) return nodo1;}
+      break;
+      }
+    case Bool:{
+      t1 = jj_consume_token(Bool);
+nodo1.setTipo("bool");
+               nodo1.setValor(t1.image);
+               {if ("" != null) return nodo1;}
       break;
       }
     case Num:{
-      jj_consume_token(Num);
+      t1 = jj_consume_token(Num);
+nodo1.setTipo("num");
+               nodo1.setValor(t1.image);
+               {if ("" != null) return nodo1;}
       break;
       }
     case Texto:{
-      jj_consume_token(Texto);
+      t1 = jj_consume_token(Texto);
+nodo1.setTipo("texto");
+                 nodo1.setValor(t1.image);
+                 {if ("" != null) return nodo1;}
       break;
       }
     case Date:{
-      jj_consume_token(Date);
+      t1 = jj_consume_token(Date);
+nodo1.setTipo("date");
+                 nodo1.setValor(t1.image);
+                 {if ("" != null) return nodo1;}
       break;
       }
     case Datetime:{
-      jj_consume_token(Datetime);
+      t1 = jj_consume_token(Datetime);
+nodo1.setTipo("datetime");
+                     nodo1.setValor(t1.image);
+                     {if ("" != null) return nodo1;}
       break;
       }
     default:
@@ -491,6 +557,7 @@ Nodo archivotabla(Nodo raiz) throws ParseException {
       jj_consume_token(-1);
       throw new ParseException();
     }
+    throw new Error("Missing return statement in function");
   }
 
 //***************************************************************************************ARCHIVO OBJETO
@@ -750,7 +817,7 @@ Nodo tmp = new Nodo("Todos");
       jj_la1_1 = new int[] {0x150000,0x0,0x0,0x115,0x0,0x0,0x0,0x100,0x0,0x100,0x400000,0x15000000,0x0,0x40000000,0x0,0x40000000,};
    }
    private static void jj_la1_init_2() {
-      jj_la1_2 = new int[] {0x0,0x0,0x0,0x0,0xf6,0xf2,0x0,0x2000,0x11d00,0x0,0x0,0x0,0x0,0x0,0x0,0x1,};
+      jj_la1_2 = new int[] {0x0,0x0,0x0,0x0,0xf6,0xf2,0x0,0x4000,0x23d00,0x0,0x0,0x0,0x0,0x0,0x0,0x1,};
    }
 
   /** Constructor with InputStream. */
@@ -867,7 +934,7 @@ Nodo tmp = new Nodo("Todos");
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[81];
+    boolean[] la1tokens = new boolean[82];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -887,7 +954,7 @@ Nodo tmp = new Nodo("Todos");
         }
       }
     }
-    for (int i = 0; i < 81; i++) {
+    for (int i = 0; i < 82; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

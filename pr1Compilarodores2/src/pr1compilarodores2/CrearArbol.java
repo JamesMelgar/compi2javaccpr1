@@ -64,13 +64,13 @@ public class CrearArbol {
 	{
 			gramatica_xml.graxml analizador = new gramatica_xml.graxml(new FileInputStream(nomeArq)) ;
 			usuarios = analizador.inicio(usuarios); 
-                        System.out.println("Analizador: correcto.");
+                        System.out.println("Analizador usuario: correcto.");
                         return usuarios;
 	}
 	catch(gramatica_xml.ParseException e)
 	{
 			System.out.println(e.getMessage());
-			System.out.println("Analizador: Se han encontrado errores en el analisis.");
+			System.out.println("Analizador usuario: Se han encontrado errores en el analisis.");
                         return null;
        }
     }
@@ -90,7 +90,7 @@ public class CrearArbol {
 	{
 			gramatica_xml.graxml analizador = new gramatica_xml.graxml(new FileInputStream(nomeArq)) ;
 			master = analizador.inicio(master); 
-                        System.out.println("Analizador: correcto.");
+                        System.out.println("Analizador master: correcto.");
                         return master;
 	}
 	catch(gramatica_xml.ParseException e)

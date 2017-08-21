@@ -1,10 +1,23 @@
 
 package Acciones;
 
-/**
- *
- * @author James_PC
- */
+import pr1compilarodores2.Nodo;
+
+
 public class crearPaquete {
-    
+    public static void pa_login(Nodo paquete, boolean valor){
+        Nodo temp = paquete;
+        String cadena;
+        cadena = "[ \n \"validar\": ";
+        cadena = cadena + temp.getValor() + ", \n \"login\": [ \n";
+        temp = temp.getHijos().get(0);
+        cadena = cadena + "\"usuario\":" +"\"" + temp.getNombre() + "\" ,\n";
+        cadena = cadena + "\"login\":";
+        if(valor == true){
+            cadena = cadena + "true \n ] \n ]";
+        }else{
+           cadena = cadena + "false \n ] \n ]";
+        }
+        pr1compilarodores2.principal2.textopaquete = cadena;
+    }
 }

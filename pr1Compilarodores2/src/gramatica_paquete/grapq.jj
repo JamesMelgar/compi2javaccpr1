@@ -148,7 +148,7 @@ Nodo paquete(Nodo raiz):
     <Cof> {    raiz.addHijo(nodo1);
                return raiz; }
 
-    | <Paquete> <Pp> tipopaquete() { return raiz; }
+    | <Paquete> <Pp> raiz=tipopaquete(raiz) { return raiz; }
 }
 
 
@@ -167,13 +167,30 @@ Nodo login(Nodo hijo):
     <Comilla> { return hijo; }
 }
 
-void tipopaquete():
-{}
+//<Error> <Cm> error()
+//<Usql> <Cm> usql() 
+//<Reporte> <Cm> reporte()
+
+Nodo tipopaquete(Nodo raiz):
 {
-      <Fin>
-    | <Error> <Cm> error()
-    | <Usql> <Cm> usql() 
-    | <Reporte> <Cm> reporte()
+    Nodo nodo1;
+}
+{
+      <Fin> { Nodo tmp = new Nodo("fin");
+              tmp.setNumNodo(grapq.contador++);
+              nodo1 = tmp;
+              raiz.addHijo(nodo1); 
+              return raiz; }
+
+    | <Error> <Cm> error() { return raiz; }
+
+    | <Usql> { Nodo tmp = new Nodo("usql");
+               tmp.setNumNodo(grapq.contador++);
+               nodo1 = tmp; }
+      <Cm> nodo1=usql(nodo1) {  raiz.addHijo(nodo1);
+                                      return raiz; }
+
+    | <Reporte> <Cm> reporte() { return raiz; }
 }
 
 void error():
@@ -200,10 +217,12 @@ void gramatica():
     <Lexico> 
 }
 
-void usql():
-{}
+Nodo usql(Nodo hijo):
 {
-    <Instruccion> <Pp> <Sql> <Cm>
+    Token t1;
+}
+{
+    <Instruccion> <Pp> t1=<Sql> <Cm> { return hijo; }
 } 
 
 void reporte():

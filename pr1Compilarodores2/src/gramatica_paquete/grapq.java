@@ -55,7 +55,7 @@ raiz.addHijo(nodo1);
     case Paquete:{
       jj_consume_token(Paquete);
       jj_consume_token(Pp);
-      tipopaquete();
+      raiz = tipopaquete(raiz);
 {if ("" != null) return raiz;}
       break;
       }
@@ -91,28 +91,44 @@ hijo.addHijo(nodo1);
     throw new Error("Missing return statement in function");
   }
 
-  final public void tipopaquete() throws ParseException {
+//<Error> <Cm> error()
+//<Usql> <Cm> usql() 
+//<Reporte> <Cm> reporte()
+  final public 
+Nodo tipopaquete(Nodo raiz) throws ParseException {Nodo nodo1;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Fin:{
       jj_consume_token(Fin);
+Nodo tmp = new Nodo("fin");
+              tmp.setNumNodo(grapq.contador++);
+              nodo1 = tmp;
+              raiz.addHijo(nodo1);
+              {if ("" != null) return raiz;}
       break;
       }
     case Error:{
       jj_consume_token(Error);
       jj_consume_token(Cm);
       error();
+{if ("" != null) return raiz;}
       break;
       }
     case Usql:{
       jj_consume_token(Usql);
+Nodo tmp = new Nodo("usql");
+               tmp.setNumNodo(grapq.contador++);
+               nodo1 = tmp;
       jj_consume_token(Cm);
-      usql();
+      nodo1 = usql(nodo1);
+raiz.addHijo(nodo1);
+                                      {if ("" != null) return raiz;}
       break;
       }
     case Reporte:{
       jj_consume_token(Reporte);
       jj_consume_token(Cm);
       reporte();
+{if ("" != null) return raiz;}
       break;
       }
     default:
@@ -120,6 +136,7 @@ hijo.addHijo(nodo1);
       jj_consume_token(-1);
       throw new ParseException();
     }
+    throw new Error("Missing return statement in function");
   }
 
   final public void error() throws ParseException {
@@ -164,11 +181,13 @@ hijo.addHijo(nodo1);
     jj_consume_token(Lexico);
   }
 
-  final public void usql() throws ParseException {
+  final public Nodo usql(Nodo hijo) throws ParseException {Token t1;
     jj_consume_token(Instruccion);
     jj_consume_token(Pp);
-    jj_consume_token(Sql);
+    t1 = jj_consume_token(Sql);
     jj_consume_token(Cm);
+{if ("" != null) return hijo;}
+    throw new Error("Missing return statement in function");
   }
 
   final public void reporte() throws ParseException {

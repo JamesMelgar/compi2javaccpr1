@@ -147,19 +147,21 @@ public interface graxmlConstants {
   /** RegularExpression Id. */
   int Ruta = 73;
   /** RegularExpression Id. */
-  int Num = 74;
+  int Bool = 74;
   /** RegularExpression Id. */
-  int Date = 75;
+  int Num = 75;
   /** RegularExpression Id. */
-  int Datetime = 76;
+  int Date = 76;
   /** RegularExpression Id. */
-  int Ai = 77;
+  int Datetime = 77;
   /** RegularExpression Id. */
-  int Af = 78;
+  int Ai = 78;
   /** RegularExpression Id. */
-  int D = 79;
+  int Af = 79;
   /** RegularExpression Id. */
-  int Texto = 80;
+  int D = 80;
+  /** RegularExpression Id. */
+  int Texto = 81;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -240,6 +242,7 @@ public interface graxmlConstants {
     "\"<nnulo>\"",
     "<Id>",
     "<Ruta>",
+    "<Bool>",
     "<Num>",
     "<Date>",
     "<Datetime>",

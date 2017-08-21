@@ -25,6 +25,7 @@ public class principal2 extends javax.swing.JFrame {
     public static Nodo usuarios;
     public static Nodo paquete;
     public static String usua;
+    public static String textopaquete;
     
     public principal2() {
         principal2.usua = "admin";
@@ -147,6 +148,7 @@ public class principal2 extends javax.swing.JFrame {
              System.out.println(tx_entrada.getText());
              principal2.paquete = CrearArbol.trypaquete(paquete, tep);
              Acciones.accpaquete.tipopaquete(principal2.paquete, principal2.usuarios, principal2.master);
+             tx_salida.setText(principal2.textopaquete);
          }
     }//GEN-LAST:event_BotongenerarActionPerformed
 
