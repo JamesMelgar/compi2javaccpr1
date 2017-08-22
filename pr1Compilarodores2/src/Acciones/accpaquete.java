@@ -92,6 +92,7 @@ public class accpaquete {
              temp.addHijo(nodo2);
              pr1compilarodores2.principal2.usuarios.addHijo(temp);
              crearPaquete.pa_crear_usuario(hijo, true);
+             crearxml.Usuario();
         }else{
             crearPaquete.pa_crear_usuario(hijo, false);
         }

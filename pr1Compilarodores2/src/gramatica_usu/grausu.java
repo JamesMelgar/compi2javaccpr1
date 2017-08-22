@@ -27,53 +27,62 @@ Nodo inicio(Nodo raiz) throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Crear:{
       raiz = crear(raiz);
+      raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
       }
     case Usar:{
-      usar();
+      raiz = usar(raiz);
+      raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
       }
     case Alterar:{
       jj_consume_token(Alterar);
       alterar();
+      raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
       }
     case Eliminar:{
       jj_consume_token(Eliminar);
       eliminar();
+      raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
       }
     case Insertar:{
       jj_consume_token(Insertar);
       insertar();
+      raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
       }
     case BackupU:{
       jj_consume_token(BackupU);
       backupu();
+      raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
       }
     case BackupC:{
       jj_consume_token(BackupC);
       backupc();
+      raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
       }
     case RestaU:{
       jj_consume_token(RestaU);
       restau();
+      raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
       }
     case RestaC:{
       jj_consume_token(RestaC);
       restac();
+      raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
       }
@@ -81,6 +90,7 @@ Nodo inicio(Nodo raiz) throws ParseException {
       jj_consume_token(Actualizar);
       jj_consume_token(Tabla);
       actualizar();
+      raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
       }
@@ -89,6 +99,7 @@ Nodo inicio(Nodo raiz) throws ParseException {
       jj_consume_token(En);
       jj_consume_token(Tabla);
       borrar();
+      raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
       }
@@ -96,24 +107,28 @@ Nodo inicio(Nodo raiz) throws ParseException {
       jj_consume_token(Seleccionar);
       seleccionar();
       pt();
+      raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
       }
     case Contar:{
       jj_consume_token(Contar);
       contar();
+      raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
       }
     case Otorgar:{
       jj_consume_token(Otorgar);
       otorgar();
+      raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
       }
     case Denegar:{
       jj_consume_token(Denegar);
       denegar();
+      raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
       }
@@ -150,7 +165,8 @@ Nodo tipocrear(Nodo hijo) throws ParseException {Nodo nodo1;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case BaseD:{
       jj_consume_token(BaseD);
-      crearbase();
+hijo.setNombre("crear base");
+      hijo = crearbase(hijo);
 {if ("" != null) return hijo;}
       break;
       }
@@ -193,9 +209,18 @@ hijo.setNombre("crear usuario");
     throw new Error("Missing return statement in function");
   }
 
-  final public void crearbase() throws ParseException {
-    jj_consume_token(Id);
+  final public Nodo crearbase(Nodo hijo) throws ParseException {Nodo nodo1;
+    Token t1;
+    t1 = jj_consume_token(Id);
+Nodo tmp = new Nodo(t1.image);
+              tmp.setNumNodo(grausu.contador++);
+              tmp.setColumna(t1.beginColumn);
+              tmp.setFila(t1.beginLine);
+              nodo1 = tmp;
     pt();
+hijo.addHijo(nodo1);
+           {if ("" != null) return hijo;}
+    throw new Error("Missing return statement in function");
   }
 
   final public void creartabla() throws ParseException {
@@ -624,10 +649,19 @@ hijo.addHijo(nodo1);
 
 //**************************************************************************INSTRUCCION USAR
   final public 
-void usar() throws ParseException {
+Nodo usar(Nodo raiz) throws ParseException {Nodo nodo1;
+    Token t1;
     jj_consume_token(Usar);
-    jj_consume_token(Id);
+    t1 = jj_consume_token(Id);
+Nodo tmp = new Nodo("usar");
+                     tmp.setNumNodo(grausu.contador++);
+                     tmp.setValor(t1.image);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     nodo1 = tmp;
     pt();
+raiz.addHijo(nodo1); {if ("" != null) return raiz;}
+    throw new Error("Missing return statement in function");
   }
 
 //**************************************************************************RETORNO

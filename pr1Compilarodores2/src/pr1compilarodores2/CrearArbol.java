@@ -64,7 +64,6 @@ public class CrearArbol {
 	{
 			gramatica_xml.graxml analizador = new gramatica_xml.graxml(new FileInputStream(nomeArq)) ;
 			usuarios = analizador.inicio(usuarios); 
-                        System.out.println("Analizador usuario: correcto.");
                         return usuarios;
 	}
 	catch(gramatica_xml.ParseException e)
@@ -90,7 +89,6 @@ public class CrearArbol {
 	{
 			gramatica_xml.graxml analizador = new gramatica_xml.graxml(new FileInputStream(nomeArq)) ;
 			master = analizador.inicio(master); 
-                        System.out.println("Analizador master: correcto.");
                         return master;
 	}
 	catch(gramatica_xml.ParseException e)
@@ -142,7 +140,6 @@ public class CrearArbol {
 	{
 			gramatica_xml.graxml analizador = new gramatica_xml.graxml(new FileInputStream(nomeArq)) ;
 			hijo = analizador.inicio(hijo); 
-                        System.out.println("Analizador: correcto.");
                         return hijo;
 	}
 	catch(gramatica_xml.ParseException e)
@@ -168,7 +165,6 @@ public class CrearArbol {
 	{
 			gramatica_paquete.grapq analizador = new gramatica_paquete.grapq(new FileInputStream(nomeArq)) ;
 			paquete = analizador.inicio(paquete); 
-                        System.out.println("Analizador paquete: correcto.");
                         return paquete;
 	}
 	catch(gramatica_paquete.ParseException e)
@@ -207,13 +203,12 @@ public class CrearArbol {
 	{
 			gramatica_paquete.grapq analizador = new gramatica_paquete.grapq(new FileInputStream(nomeArq)) ;
 			pq = analizador.inicio(pq); 
-                        System.out.println("Analizador pq: correcto.");
                         return pq;
 	}
 	catch(gramatica_paquete.ParseException e)
 	{
 			System.out.println(e.getMessage());
-			System.out.println("Analizador: Se han encontrado errores en el analisis.");
+			System.out.println("Analizador pq: Se han encontrado errores en el analisis.");
                         return null;
        }
     }
@@ -245,7 +240,6 @@ public class CrearArbol {
 	{
 			gramatica_usu.grausu analizador = new gramatica_usu.grausu(new FileInputStream(nomeArq)) ;
 			hijo = analizador.inicio(hijo); 
-                        System.out.println("Analizador: correcto.");
                         return hijo;
 	}
 	catch(gramatica_usu.ParseException e)

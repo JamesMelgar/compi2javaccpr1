@@ -1,5 +1,5 @@
 digraph G {node[shape=box, style=filled, color=blanchedalmond]; edge[color=chocolate3];rankdir=UD 
 
-"8_paquete"->"9_usql""9_usql"->"5010_crear usuario""5010_crear usuario"->"5011_juan"
+"0_paquete"->"1_usql""1_usql"->"5000_crear base""5000_crear base"->"5001_bd1""1_usql"->"5002_usar"
 
 }

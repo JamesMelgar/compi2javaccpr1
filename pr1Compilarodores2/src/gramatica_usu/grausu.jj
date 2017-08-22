@@ -220,21 +220,36 @@ Nodo inicio(Nodo raiz):
 Nodo instrucciones(Nodo raiz):
 {}
 {
-      raiz=crear(raiz) { return raiz; }
-    | usar() { return raiz; }
-    | <Alterar>  alterar() { return raiz; }
-    | <Eliminar> eliminar() { return raiz; }
-    | <Insertar> insertar() { return raiz; }
-    | <BackupU>  backupu() { return raiz; }
-    | <BackupC>  backupc() { return raiz; }
-    | <RestaU>   restau() { return raiz; }
-    | <RestaC>   restac() { return raiz; }
-    | <Actualizar> <Tabla> actualizar() { return raiz; }
-    | <Borrar> <En> <Tabla> borrar() { return raiz; }
-    | <Seleccionar> seleccionar() pt() { return raiz; }
-    | <Contar> contar() { return raiz; }
-    | <Otorgar> otorgar() { return raiz; }
-    | <Denegar> denegar() {  return raiz; }
+      raiz=crear(raiz) raiz=instrucciones(raiz) { return raiz; }
+
+    | raiz=usar(raiz)  raiz=instrucciones(raiz){ return raiz; }
+
+    | <Alterar>  alterar()  raiz=instrucciones(raiz) { return raiz; }
+
+    | <Eliminar> eliminar() raiz=instrucciones(raiz) { return raiz; }
+
+    | <Insertar> insertar() raiz=instrucciones(raiz) { return raiz; }
+
+    | <BackupU>  backupu() raiz=instrucciones(raiz) { return raiz; }
+
+    | <BackupC>  backupc() raiz=instrucciones(raiz) { return raiz; }
+
+    | <RestaU>   restau() raiz=instrucciones(raiz) { return raiz; }
+
+    | <RestaC>   restac() raiz=instrucciones(raiz) { return raiz; }
+
+    | <Actualizar> <Tabla> actualizar() raiz=instrucciones(raiz) { return raiz; }
+
+    | <Borrar> <En> <Tabla> borrar() raiz=instrucciones(raiz) { return raiz; }
+
+    | <Seleccionar> seleccionar() pt() raiz=instrucciones(raiz) { return raiz; }
+
+    | <Contar> contar() raiz=instrucciones(raiz) { return raiz; }
+
+    | <Otorgar> otorgar() raiz=instrucciones(raiz) { return raiz; }
+
+    | <Denegar> denegar() raiz=instrucciones(raiz) {  return raiz; }
+
     | { return raiz; }
 }
 
@@ -266,7 +281,8 @@ Nodo tipocrear(Nodo hijo):
     Nodo nodo1;
 }
 {
-     <BaseD> crearbase() {return hijo; }
+     <BaseD> { hijo.setNombre("crear base"); } 
+     hijo=crearbase(hijo) {return hijo; }
 
     |<Tabla> creartabla() {return hijo; }
 
@@ -280,9 +296,17 @@ Nodo tipocrear(Nodo hijo):
      hijo=crearusuario(hijo) { return hijo; }
 }
 
-void crearbase():{
+Nodo crearbase(Nodo hijo):{
+    Nodo nodo1;
+    Token t1;
 }{
-    <Id> pt()
+    t1=<Id> { Nodo tmp = new Nodo(t1.image);
+              tmp.setNumNodo(grausu.contador++);
+              tmp.setColumna(t1.beginColumn);
+              tmp.setFila(t1.beginLine);
+              nodo1 = tmp; } 
+    pt() { hijo.addHijo(nodo1); 
+           return hijo; }
 }
 
 void creartabla():
@@ -455,10 +479,19 @@ Nodo crearusuario(Nodo hijo):
 
 //**************************************************************************INSTRUCCION USAR
 
-void usar():
-{}
+Nodo usar(Nodo raiz):
 {
-    <Usar> <Id> pt()
+    Nodo nodo1;
+    Token t1;
+}
+{
+    <Usar> t1=<Id> { Nodo tmp = new Nodo("usar");
+                     tmp.setNumNodo(grausu.contador++);
+                     tmp.setValor(t1.image);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     nodo1 = tmp; }
+    pt() { raiz.addHijo(nodo1); return raiz; }
 }
 //**************************************************************************RETORNO
 
