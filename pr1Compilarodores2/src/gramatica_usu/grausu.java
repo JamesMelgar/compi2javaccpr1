@@ -39,7 +39,7 @@ Nodo inicio(Nodo raiz) throws ParseException {
       }
     case Alterar:{
       jj_consume_token(Alterar);
-      alterar();
+      raiz = alterar(raiz);
       raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
@@ -172,25 +172,29 @@ hijo.setNombre("crear base");
       }
     case Tabla:{
       jj_consume_token(Tabla);
-      creartabla();
+hijo.setNombre("crear tabla");
+      hijo = creartabla(hijo);
 {if ("" != null) return hijo;}
       break;
       }
     case Objeto:{
       jj_consume_token(Objeto);
-      crearobjeto();
+hijo.setNombre("crear Objeto");
+      hijo = crearobjeto(hijo);
 {if ("" != null) return hijo;}
       break;
       }
     case Procedimiento:{
       jj_consume_token(Procedimiento);
-      crearproce();
+hijo.setNombre("crear proce");
+      hijo = crearproce(hijo);
 {if ("" != null) return hijo;}
       break;
       }
     case Funcion:{
       jj_consume_token(Funcion);
-      crearfuncion();
+hijo.setNombre("crear funcion");
+      hijo = crearproce(hijo);
 {if ("" != null) return hijo;}
       break;
       }
@@ -223,23 +227,40 @@ hijo.addHijo(nodo1);
     throw new Error("Missing return statement in function");
   }
 
-  final public void creartabla() throws ParseException {
-    jj_consume_token(Id);
+  final public Nodo creartabla(Nodo hijo) throws ParseException {Token t1;
+    t1 = jj_consume_token(Id);
+hijo.setValor(t1.image);
+              hijo.setColumna(t1.beginColumn);
+              hijo.setFila(t1.beginLine);
     jj_consume_token(Pai);
-    creaparametros();
+    hijo = creaparametros(hijo);
     jj_consume_token(Paf);
     pt();
+{if ("" != null) return hijo;}
+    throw new Error("Missing return statement in function");
   }
 
-  final public void crearobjeto() throws ParseException {
-    jj_consume_token(Id);
+//t1=<Id> <Pai> creaparametros() <Paf> pt()
+  final public Nodo crearobjeto(Nodo hijo) throws ParseException {Token t1;
+    t1 = jj_consume_token(Id);
+hijo.setValor(t1.image);
+              hijo.setColumna(t1.beginColumn);
+              hijo.setFila(t1.beginLine);
     jj_consume_token(Pai);
-    creaparametros();
+    hijo = creaparametros(hijo);
     jj_consume_token(Paf);
     pt();
+{if ("" != null) return hijo;}
+    throw new Error("Missing return statement in function");
   }
 
-  final public void creaparametros() throws ParseException {
+/*
+tipodato() <Id> complemento()
+| { return; }
+*/
+  final public 
+Nodo creaparametros(Nodo hijo) throws ParseException {Token t1;
+  Nodo nodo1;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Text:
     case Integer:
@@ -248,104 +269,225 @@ hijo.addHijo(nodo1);
     case TDate:
     case TDateT:
     case Id:{
-      tipodato();
-      jj_consume_token(Id);
-      complemento();
+      nodo1 = tipodato();
+      t1 = jj_consume_token(Id);
+nodo1.setNombre(t1.image);
+                nodo1.setColumna(t1.beginColumn);
+                nodo1.setFila(t1.beginLine);
+      nodo1 = complemento(nodo1);
+hijo.addHijo(nodo1);
+      hijo = segparatro(hijo);
+{if ("" != null) return hijo;}
       break;
       }
     default:
       jj_la1[2] = jj_gen;
-{if ("" != null) return;}
+{if ("" != null) return hijo;}
     }
+    throw new Error("Missing return statement in function");
   }
 
-  final public void complemento() throws ParseException {
+/*
+
+*/
+  final public 
+Nodo segparatro(Nodo hijo) throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case Nulo:{
-      jj_consume_token(Nulo);
-      complemento();
-      break;
-      }
-    case NoNulo:{
-      jj_consume_token(NoNulo);
-      complemento();
-      break;
-      }
-    case AutoI:{
-      jj_consume_token(AutoI);
-      complemento();
-      break;
-      }
-    case LlaveP:{
-      jj_consume_token(LlaveP);
-      complemento();
-      break;
-      }
-    case LlaveF:{
-      jj_consume_token(LlaveF);
-      jj_consume_token(Id);
-      break;
-      }
     case Cm:{
       jj_consume_token(Cm);
-      creaparametros();
+      hijo = creaparametros(hijo);
+      hijo = segparatro(hijo);
+{if ("" != null) return hijo;}
       break;
       }
     default:
       jj_la1[3] = jj_gen;
-{if ("" != null) return;}
+{if ("" != null) return hijo;}
     }
+    throw new Error("Missing return statement in function");
   }
 
-  final public void tipodato() throws ParseException {
+  final public Nodo complemento(Nodo primo) throws ParseException {Nodo nodo1;
+    Token t1;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case Text:{
-      jj_consume_token(Text);
+    case Nulo:{
+      t1 = jj_consume_token(Nulo);
+Nodo tmp = new Nodo(t1.image);
+                 tmp.setNumNodo(grausu.contador++);
+                 tmp.setColumna(t1.beginColumn);
+                 tmp.setFila(t1.beginLine);
+                 nodo1 = tmp;
+                 primo.addHijo(nodo1);
+      primo = complemento(primo);
+{if ("" != null) return primo;}
       break;
       }
-    case Integer:{
-      jj_consume_token(Integer);
+    case NoNulo:{
+      t1 = jj_consume_token(NoNulo);
+Nodo tmp = new Nodo(t1.image);
+                 tmp.setNumNodo(grausu.contador++);
+                 tmp.setColumna(t1.beginColumn);
+                 tmp.setFila(t1.beginLine);
+                 nodo1 = tmp;
+                 primo.addHijo(nodo1);
+      primo = complemento(primo);
+{if ("" != null) return primo;}
       break;
       }
-    case Double:{
-      jj_consume_token(Double);
+    case Unico:{
+      t1 = jj_consume_token(Unico);
+Nodo tmp = new Nodo(t1.image);
+                 tmp.setNumNodo(grausu.contador++);
+                 tmp.setColumna(t1.beginColumn);
+                 tmp.setFila(t1.beginLine);
+                 nodo1 = tmp;
+                 primo.addHijo(nodo1);
+      primo = complemento(primo);
+{if ("" != null) return primo;}
       break;
       }
-    case Bool:{
-      jj_consume_token(Bool);
+    case AutoI:{
+      t1 = jj_consume_token(AutoI);
+Nodo tmp = new Nodo(t1.image);
+                 tmp.setNumNodo(grausu.contador++);
+                 tmp.setColumna(t1.beginColumn);
+                 tmp.setFila(t1.beginLine);
+                 nodo1 = tmp;
+                 primo.addHijo(nodo1);
+      primo = complemento(primo);
+{if ("" != null) return primo;}
       break;
       }
-    case TDate:{
-      jj_consume_token(TDate);
+    case LlaveP:{
+      t1 = jj_consume_token(LlaveP);
+Nodo tmp = new Nodo(t1.image);
+                 tmp.setNumNodo(grausu.contador++);
+                 tmp.setColumna(t1.beginColumn);
+                 tmp.setFila(t1.beginLine);
+                 nodo1 = tmp;
+                 primo.addHijo(nodo1);
+      primo = complemento(primo);
+{if ("" != null) return primo;}
       break;
       }
-    case TDateT:{
-      jj_consume_token(TDateT);
-      break;
-      }
-    case Id:{
-      jj_consume_token(Id);
+    case LlaveF:{
+      t1 = jj_consume_token(LlaveF);
+Nodo tmp = new Nodo(t1.image);
+                 tmp.setNumNodo(grausu.contador++);
+                 tmp.setColumna(t1.beginColumn);
+                 tmp.setFila(t1.beginLine);
+                 nodo1 = tmp;
+      t1 = jj_consume_token(Id);
+nodo1.setValor(t1.image);
+      t1 = jj_consume_token(Id);
+nodo1.setTipo(t1.image);
+                 primo.addHijo(nodo1);
+      primo = complemento(primo);
+{if ("" != null) return primo;}
       break;
       }
     default:
       jj_la1[4] = jj_gen;
+{if ("" != null) return primo;}
+    }
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Nodo tipodato() throws ParseException {Token t1;
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case Text:{
+      t1 = jj_consume_token(Text);
+Nodo tmp = new Nodo(t1.image);
+                  tmp.setNumNodo(grausu.contador++);
+                  tmp.setTipo("text");
+                  {if ("" != null) return tmp;}
+      break;
+      }
+    case Integer:{
+      t1 = jj_consume_token(Integer);
+Nodo tmp = new Nodo(t1.image);
+                      tmp.setNumNodo(grausu.contador++);
+                      tmp.setTipo("integer");
+                      {if ("" != null) return tmp;}
+      break;
+      }
+    case Double:{
+      t1 = jj_consume_token(Double);
+Nodo tmp = new Nodo(t1.image);
+                      tmp.setNumNodo(grausu.contador++);
+                      tmp.setTipo("double");
+                      {if ("" != null) return tmp;}
+      break;
+      }
+    case Bool:{
+      t1 = jj_consume_token(Bool);
+Nodo tmp = new Nodo(t1.image);
+                      tmp.setNumNodo(grausu.contador++);
+                      tmp.setTipo("bool");
+                      {if ("" != null) return tmp;}
+      break;
+      }
+    case TDate:{
+      t1 = jj_consume_token(TDate);
+Nodo tmp = new Nodo(t1.image);
+                      tmp.setNumNodo(grausu.contador++);
+                      tmp.setTipo("tdate");
+                      {if ("" != null) return tmp;}
+      break;
+      }
+    case TDateT:{
+      t1 = jj_consume_token(TDateT);
+Nodo tmp = new Nodo(t1.image);
+                    tmp.setNumNodo(grausu.contador++);
+                    tmp.setTipo("tdatet");
+                    {if ("" != null) return tmp;}
+      break;
+      }
+    case Id:{
+      t1 = jj_consume_token(Id);
+Nodo tmp = new Nodo(t1.image);
+                tmp.setNumNodo(grausu.contador++);
+                tmp.setTipo(t1.image);
+                {if ("" != null) return tmp;}
+      break;
+      }
+    default:
+      jj_la1[5] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
+    throw new Error("Missing return statement in function");
   }
 
 //*****************************************************************Crear Procedimiento
-  final public void crearproce() throws ParseException {
-    jj_consume_token(Id);
+
+//<Id> <Pai> paraproce() <Paf> <Lli> proceconte() llf() 
+  final public Nodo crearproce(Nodo hijo) throws ParseException {Token t1;
+    Nodo nodo1;
+    t1 = jj_consume_token(Id);
+hijo.setValor(t1.image);
+             hijo.setColumna(t1.beginColumn);
+             hijo.setFila(t1.beginLine);
     jj_consume_token(Pai);
-    paraproce();
+Nodo tmp = new Nodo("parametros");
+              tmp.setNumNodo(grausu.contador++);
+              nodo1 = tmp;
+    nodo1 = paraproce(nodo1);
+hijo.addHijo(nodo1);
     jj_consume_token(Paf);
+Nodo tmp1 = new Nodo("sentencias");
+             tmp1.setNumNodo(grausu.contador++);
+             nodo1 = tmp1;
     jj_consume_token(Lli);
-    proceconte();
+    nodo1 = proceconte(nodo1);
+hijo.addHijo(nodo1);
     llf();
+{if ("" != null) return hijo;}
+    throw new Error("Missing return statement in function");
   }
 
-  final public void paraproce() throws ParseException {
+  final public Nodo paraproce(Nodo primo) throws ParseException {Nodo nodo1;
+   Token t1;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Text:
     case Integer:
@@ -354,79 +496,92 @@ hijo.addHijo(nodo1);
     case TDate:
     case TDateT:
     case Id:{
-      tipodato();
-      jj_consume_token(Aid);
-      cmproce();
-      break;
-      }
-    default:
-      jj_la1[5] = jj_gen;
-{if ("" != null) return;}
-    }
-  }
-
-  final public void cmproce() throws ParseException {
-    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case Cm:{
-      jj_consume_token(Cm);
-      paraproce();
+      nodo1 = tipodato();
+      t1 = jj_consume_token(Aid);
+nodo1.setNombre(t1.image);
+                                  nodo1.setColumna(t1.beginColumn);
+                                  nodo1.setFila(t1.beginLine);
+                                  primo.addHijo(nodo1);
+      primo = cmproce(primo);
+{if ("" != null) return primo;}
       break;
       }
     default:
       jj_la1[6] = jj_gen;
-{if ("" != null) return;}
+{if ("" != null) return primo;}
     }
+    throw new Error("Missing return statement in function");
   }
 
-  final public void proceconte() throws ParseException {
+  final public Nodo cmproce(Nodo primo) throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case Cm:{
+      jj_consume_token(Cm);
+      primo = paraproce(primo);
+{if ("" != null) return primo;}
+      break;
+      }
+    default:
+      jj_la1[7] = jj_gen;
+{if ("" != null) return primo;}
+    }
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Nodo proceconte(Nodo padre) throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Alterar:{
       jj_consume_token(Alterar);
-      alterar();
-      proceconte();
-      break;
-      }
-    case Eliminar:{
+      padre = alterar(padre);
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       jj_consume_token(Eliminar);
       eliminar();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Insertar:{
       jj_consume_token(Insertar);
       insertar();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case BackupU:{
       jj_consume_token(BackupU);
       backupu();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case BackupC:{
       jj_consume_token(BackupC);
       backupc();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case RestaU:{
       jj_consume_token(RestaU);
       restau();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case RestaC:{
       jj_consume_token(RestaC);
       restac();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Actualizar:{
       jj_consume_token(Actualizar);
       jj_consume_token(Tabla);
       actualizar();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Borrar:{
@@ -434,101 +589,117 @@ hijo.addHijo(nodo1);
       jj_consume_token(En);
       jj_consume_token(Tabla);
       borrar();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Seleccionar:{
       jj_consume_token(Seleccionar);
       seleccionar();
       pt();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Otorgar:{
       jj_consume_token(Otorgar);
       otorgar();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Denegar:{
       jj_consume_token(Denegar);
       denegar();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Aidp:
     case Aid:{
       llamadafuncion();
       pt();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Id:{
       llamadametodo();
       pt();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Declarar:{
       jj_consume_token(Declarar);
       declarar();
       pt();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Retorno:{
       jj_consume_token(Retorno);
       retorno();
       pt();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Si:{
       jj_consume_token(Si);
       si();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Selec:{
       jj_consume_token(Selec);
       selecciona();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Para:{
       jj_consume_token(Para);
       para();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Mientras:{
       jj_consume_token(Mientras);
       mientras();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Imprimir:{
       jj_consume_token(Imprimir);
       imprimir();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Detener:{
       jj_consume_token(Detener);
       detener();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     case Contar:{
       jj_consume_token(Contar);
       contar();
-      proceconte();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
       break;
       }
     default:
-      jj_la1[7] = jj_gen;
-{if ("" != null) return;}
+      jj_la1[8] = jj_gen;
+{if ("" != null) return padre;}
     }
+    throw new Error("Missing return statement in function");
   }
 
   final public void llamadafuncion() throws ParseException {
@@ -546,7 +717,7 @@ hijo.addHijo(nodo1);
       break;
       }
     default:
-      jj_la1[8] = jj_gen;
+      jj_la1[9] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -575,7 +746,7 @@ hijo.addHijo(nodo1);
       break;
       }
     default:
-      jj_la1[9] = jj_gen;
+      jj_la1[10] = jj_gen;
 {if ("" != null) return;}
     }
   }
@@ -589,18 +760,9 @@ hijo.addHijo(nodo1);
       break;
       }
     default:
-      jj_la1[10] = jj_gen;
+      jj_la1[11] = jj_gen;
 {if ("" != null) return;}
     }
-  }
-
-  final public void crearfuncion() throws ParseException {
-    jj_consume_token(Id);
-    jj_consume_token(Pai);
-    paraproce();
-    jj_consume_token(Paf);
-    jj_consume_token(Lli);
-    llf();
   }
 
   final public void pt() throws ParseException {
@@ -671,19 +833,43 @@ void retorno() throws ParseException {
   }
 
 //****************************************************************************INSTRUCCION ALTERAR
+/*
+<Tabla> Nodo <Id> tablaalt()
+|<Objeto> <Id> objalt()
+|<Usuario> <Id> usualt()
+*/
   final public 
-void alterar() throws ParseException {
+Nodo alterar(Nodo raiz) throws ParseException {Nodo nodo1;
+    Token t1;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Tabla:{
       jj_consume_token(Tabla);
-      jj_consume_token(Id);
-      tablaalt();
+Nodo tmp = new Nodo("alterar tabla");
+               tmp.setNumNodo(grausu.contador++);
+               tmp.setValor("");
+               nodo1 = tmp;
+      t1 = jj_consume_token(Id);
+nodo1.setValor(t1.image);
+              nodo1.setColumna(t1.beginColumn);
+              nodo1.setFila(t1.beginLine);
+      nodo1 = tablaalt(nodo1);
+raiz.addHijo(nodo1);
+          {if ("" != null) return raiz;}
       break;
       }
     case Objeto:{
       jj_consume_token(Objeto);
-      jj_consume_token(Id);
-      objalt();
+Nodo tmp = new Nodo("alterar objeto");
+                 tmp.setNumNodo(grausu.contador++);
+                 tmp.setValor("");
+                 nodo1 = tmp;
+      t1 = jj_consume_token(Id);
+nodo1.setValor(t1.image);
+              nodo1.setColumna(t1.beginColumn);
+              nodo1.setFila(t1.beginLine);
+      nodo1 = objalt(nodo1);
+raiz.addHijo(nodo1);
+                 {if ("" != null) return raiz;}
       break;
       }
     case Usuario:{
@@ -693,142 +879,104 @@ void alterar() throws ParseException {
       break;
       }
     default:
-      jj_la1[11] = jj_gen;
-      jj_consume_token(-1);
-      throw new ParseException();
-    }
-  }
-
-  final public void tablaalt() throws ParseException {
-    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case Agregar:{
-      jj_consume_token(Agregar);
-      jj_consume_token(Pai);
-      tipodato();
-      jj_consume_token(Id);
-      compoalt();
-      setablaalt();
-      jj_consume_token(Paf);
-      pt();
-      break;
-      }
-    case Quitar:{
-      jj_consume_token(Quitar);
-      jj_consume_token(Id);
-      quitarseg();
-      pt();
-      break;
-      }
-    default:
       jj_la1[12] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
+    throw new Error("Missing return statement in function");
   }
 
-  final public void quitarseg() throws ParseException {
-    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case Cm:{
-      jj_consume_token(Cm);
-      jj_consume_token(Id);
-      quitarseg();
-      break;
-      }
-    default:
-      jj_la1[13] = jj_gen;
-{if ("" != null) return;}
-    }
-  }
-
-  final public void setablaalt() throws ParseException {
-    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case Cm:{
-      jj_consume_token(Cm);
-      tipodato();
-      jj_consume_token(Id);
-      compoalt();
-      setablaalt();
-      break;
-      }
-    default:
-      jj_la1[14] = jj_gen;
-{if ("" != null) return;}
-    }
-  }
-
-  final public void compoalt() throws ParseException {
-    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case Nulo:{
-      jj_consume_token(Nulo);
-      compoalt();
-      break;
-      }
-    case NoNulo:{
-      jj_consume_token(NoNulo);
-      compoalt();
-      break;
-      }
-    case AutoI:{
-      jj_consume_token(AutoI);
-      compoalt();
-      break;
-      }
-    case LlaveP:{
-      jj_consume_token(LlaveP);
-      compoalt();
-      break;
-      }
-    case LlaveF:{
-      jj_consume_token(LlaveF);
-      jj_consume_token(Id);
-      break;
-      }
-    default:
-      jj_la1[15] = jj_gen;
-{if ("" != null) return;}
-    }
-  }
-
-  final public void objalt() throws ParseException {
+//<Pai> tipodato() <Id> compoalt() setablaalt() <Paf> pt()
+  final public Nodo tablaalt(Nodo hijo) throws ParseException {Nodo nodo1;
+    Token t1;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Agregar:{
       jj_consume_token(Agregar);
+hijo.setNombre("alterar_t_agr");
       jj_consume_token(Pai);
-      tipodato();
-      jj_consume_token(Id);
-      segobjalt();
+      hijo = creaparametros(hijo);
       jj_consume_token(Paf);
       pt();
+{if ("" != null) return hijo;}
       break;
       }
     case Quitar:{
       jj_consume_token(Quitar);
-      jj_consume_token(Id);
-      quitarseg();
+hijo.setNombre("alterar_t_quit");
+      t1 = jj_consume_token(Id);
+Nodo tmp = new Nodo(t1.image);
+                tmp.setNumNodo(grausu.contador++);
+                tmp.setColumna(t1.beginColumn);
+                tmp.setFila(t1.beginLine);
+                nodo1 = tmp; hijo.addHijo(nodo1);
+      hijo = quitarseg(hijo);
       pt();
+{if ("" != null) return hijo;}
       break;
       }
     default:
-      jj_la1[16] = jj_gen;
+      jj_la1[13] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
+    throw new Error("Missing return statement in function");
   }
 
-  final public void segobjalt() throws ParseException {
+  final public Nodo quitarseg(Nodo hijo) throws ParseException {Token t1;
+    Nodo nodo1;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Cm:{
       jj_consume_token(Cm);
-      tipodato();
-      jj_consume_token(Id);
-      compoalt();
-      segobjalt();
+      t1 = jj_consume_token(Id);
+Nodo tmp = new Nodo(t1.image);
+                    tmp.setNumNodo(grausu.contador++);
+                    tmp.setColumna(t1.beginColumn);
+                    tmp.setFila(t1.beginLine);
+                    nodo1 = tmp; hijo.addHijo(nodo1);
+      hijo = quitarseg(hijo);
+{if ("" != null) return hijo;}
       break;
       }
     default:
-      jj_la1[17] = jj_gen;
-{if ("" != null) return;}
+      jj_la1[14] = jj_gen;
+{if ("" != null) return hijo;}
     }
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Nodo objalt(Nodo hijo) throws ParseException {Nodo nodo1;
+    Token t1;
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case Agregar:{
+      jj_consume_token(Agregar);
+hijo.setNombre("alterar_ob_agr");
+      jj_consume_token(Pai);
+      hijo = creaparametros(hijo);
+      jj_consume_token(Paf);
+      pt();
+{if ("" != null) return hijo;}
+      break;
+      }
+    case Quitar:{
+      jj_consume_token(Quitar);
+hijo.setNombre("alterar_ob_quit");
+      t1 = jj_consume_token(Id);
+Nodo tmp = new Nodo(t1.image);
+                tmp.setNumNodo(grausu.contador++);
+                tmp.setColumna(t1.beginColumn);
+                tmp.setFila(t1.beginLine);
+                nodo1 = tmp; hijo.addHijo(nodo1);
+      hijo = quitarseg(hijo);
+      pt();
+{if ("" != null) return hijo;}
+      break;
+      }
+    default:
+      jj_la1[15] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    throw new Error("Missing return statement in function");
   }
 
   final public void usualt() throws ParseException {
@@ -868,7 +1016,7 @@ void eliminar() throws ParseException {
       break;
       }
     default:
-      jj_la1[18] = jj_gen;
+      jj_la1[16] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -897,7 +1045,7 @@ void insertar() throws ParseException {
       break;
       }
     default:
-      jj_la1[19] = jj_gen;
+      jj_la1[17] = jj_gen;
 {if ("" != null) return;}
     }
   }
@@ -945,7 +1093,7 @@ void insertar() throws ParseException {
       break;
       }
     default:
-      jj_la1[20] = jj_gen;
+      jj_la1[18] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -962,7 +1110,7 @@ void insertar() throws ParseException {
       break;
       }
     default:
-      jj_la1[21] = jj_gen;
+      jj_la1[19] = jj_gen;
 {if ("" != null) return;}
     }
   }
@@ -1013,7 +1161,7 @@ void actualizar() throws ParseException {
       break;
       }
     default:
-      jj_la1[22] = jj_gen;
+      jj_la1[20] = jj_gen;
 {if ("" != null) return;}
     }
   }
@@ -1061,7 +1209,7 @@ void actualizar() throws ParseException {
       break;
       }
     default:
-      jj_la1[23] = jj_gen;
+      jj_la1[21] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -1077,7 +1225,7 @@ void actualizar() throws ParseException {
       break;
       }
     default:
-      jj_la1[24] = jj_gen;
+      jj_la1[22] = jj_gen;
 {if ("" != null) return;}
     }
   }
@@ -1091,7 +1239,7 @@ void actualizar() throws ParseException {
       break;
       }
     default:
-      jj_la1[25] = jj_gen;
+      jj_la1[23] = jj_gen;
 {if ("" != null) return;}
     }
   }
@@ -1104,7 +1252,7 @@ void actualizar() throws ParseException {
       break;
       }
     default:
-      jj_la1[26] = jj_gen;
+      jj_la1[24] = jj_gen;
 {if ("" != null) return;}
     }
   }
@@ -1141,7 +1289,7 @@ void seleccionar() throws ParseException {
       break;
       }
     default:
-      jj_la1[27] = jj_gen;
+      jj_la1[25] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -1156,7 +1304,7 @@ void seleccionar() throws ParseException {
       break;
       }
     default:
-      jj_la1[28] = jj_gen;
+      jj_la1[26] = jj_gen;
 {if ("" != null) return;}
     }
   }
@@ -1172,7 +1320,7 @@ void seleccionar() throws ParseException {
       break;
       }
     default:
-      jj_la1[29] = jj_gen;
+      jj_la1[27] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -1187,7 +1335,7 @@ void seleccionar() throws ParseException {
       break;
       }
     default:
-      jj_la1[30] = jj_gen;
+      jj_la1[28] = jj_gen;
 {if ("" != null) return;}
     }
   }
@@ -1203,7 +1351,7 @@ void seleccionar() throws ParseException {
       break;
       }
     default:
-      jj_la1[31] = jj_gen;
+      jj_la1[29] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -1238,7 +1386,7 @@ void s0() throws ParseException {
       break;
       }
     default:
-      jj_la1[32] = jj_gen;
+      jj_la1[30] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -1254,7 +1402,7 @@ void s0() throws ParseException {
         break;
         }
       default:
-        jj_la1[33] = jj_gen;
+        jj_la1[31] = jj_gen;
         break label_1;
       }
       jj_consume_token(And);
@@ -1272,7 +1420,7 @@ void s0() throws ParseException {
         break;
         }
       default:
-        jj_la1[34] = jj_gen;
+        jj_la1[32] = jj_gen;
         break label_2;
       }
       jj_consume_token(Or);
@@ -1295,7 +1443,7 @@ void s0() throws ParseException {
         break;
         }
       default:
-        jj_la1[35] = jj_gen;
+        jj_la1[33] = jj_gen;
         break label_3;
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -1324,7 +1472,7 @@ void s0() throws ParseException {
         break;
         }
       default:
-        jj_la1[36] = jj_gen;
+        jj_la1[34] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -1343,7 +1491,7 @@ void s0() throws ParseException {
         break;
         }
       default:
-        jj_la1[37] = jj_gen;
+        jj_la1[35] = jj_gen;
         break label_4;
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -1356,7 +1504,7 @@ void s0() throws ParseException {
         break;
         }
       default:
-        jj_la1[38] = jj_gen;
+        jj_la1[36] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -1375,7 +1523,7 @@ void s0() throws ParseException {
         break;
         }
       default:
-        jj_la1[39] = jj_gen;
+        jj_la1[37] = jj_gen;
         break label_5;
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -1388,7 +1536,7 @@ void s0() throws ParseException {
         break;
         }
       default:
-        jj_la1[40] = jj_gen;
+        jj_la1[38] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -1406,7 +1554,7 @@ void s0() throws ParseException {
         break;
         }
       default:
-        jj_la1[41] = jj_gen;
+        jj_la1[39] = jj_gen;
         break label_6;
       }
       jj_consume_token(Pote);
@@ -1440,7 +1588,7 @@ void s0() throws ParseException {
       break;
       }
     default:
-      jj_la1[42] = jj_gen;
+      jj_la1[40] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -1512,7 +1660,7 @@ void s0() throws ParseException {
       break;
       }
     default:
-      jj_la1[43] = jj_gen;
+      jj_la1[41] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -1528,7 +1676,7 @@ void s0() throws ParseException {
       break;
       }
     default:
-      jj_la1[44] = jj_gen;
+      jj_la1[42] = jj_gen;
 {if ("" != null) return;}
     }
   }
@@ -1556,7 +1704,7 @@ void s0() throws ParseException {
       break;
       }
     default:
-      jj_la1[45] = jj_gen;
+      jj_la1[43] = jj_gen;
 {if ("" != null) return;}
     }
   }
@@ -1570,7 +1718,7 @@ void s0() throws ParseException {
       break;
       }
     default:
-      jj_la1[46] = jj_gen;
+      jj_la1[44] = jj_gen;
 {if ("" != null) return;}
     }
   }
@@ -1604,7 +1752,7 @@ void otorgar() throws ParseException {
       break;
       }
     default:
-      jj_la1[47] = jj_gen;
+      jj_la1[45] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -1612,12 +1760,12 @@ void otorgar() throws ParseException {
 
 //**********************************************************************************Funcion SI()
   final public 
-void si() throws ParseException {
+void si() throws ParseException {Nodo nodo1;
     jj_consume_token(Pai);
     s0();
     jj_consume_token(Paf);
     jj_consume_token(Lli);
-    proceconte();
+    proceconte(null);
     llf();
     sino();
   }
@@ -1627,12 +1775,12 @@ void si() throws ParseException {
     case Sino:{
       jj_consume_token(Sino);
       jj_consume_token(Lli);
-      proceconte();
+      proceconte(null);
       llf();
       break;
       }
     default:
-      jj_la1[48] = jj_gen;
+      jj_la1[46] = jj_gen;
 {if ("" != null) return;}
     }
   }
@@ -1652,7 +1800,7 @@ void selecciona() throws ParseException {
     jj_consume_token(Caso);
     puntual();
     jj_consume_token(Pp);
-    proceconte();
+    proceconte(null);
     caso2();
   }
 
@@ -1671,7 +1819,7 @@ void selecciona() throws ParseException {
       break;
       }
     default:
-      jj_la1[49] = jj_gen;
+      jj_la1[47] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -1683,19 +1831,19 @@ void selecciona() throws ParseException {
       jj_consume_token(Caso);
       puntual();
       jj_consume_token(Pp);
-      proceconte();
+      proceconte(null);
       caso2();
       break;
       }
     case Defecto:{
       jj_consume_token(Defecto);
       jj_consume_token(Pp);
-      proceconte();
+      proceconte(null);
       caso2();
       break;
       }
     default:
-      jj_la1[50] = jj_gen;
+      jj_la1[48] = jj_gen;
 {if ("" != null) return;}
     }
   }
@@ -1707,7 +1855,7 @@ void para() throws ParseException {
     pinterno();
     jj_consume_token(Paf);
     jj_consume_token(Lli);
-    proceconte();
+    proceconte(null);
     llf();
   }
 
@@ -1735,7 +1883,7 @@ void para() throws ParseException {
       break;
       }
     default:
-      jj_la1[51] = jj_gen;
+      jj_la1[49] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -1754,7 +1902,7 @@ void mientras() throws ParseException {
     s0();
     jj_consume_token(Paf);
     jj_consume_token(Lli);
-    proceconte();
+    proceconte(null);
     llf();
   }
 
@@ -1788,7 +1936,7 @@ void contar() throws ParseException {
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[52];
+  final private int[] jj_la1 = new int[50];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static private int[] jj_la1_2;
@@ -1800,16 +1948,16 @@ void contar() throws ParseException {
       jj_la1_init_3();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x7bff000,0x0,0x0,0x0,0x0,0x0,0x0,0x1fffc000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x80000000,0x0,0x60000000,0x0,};
+      jj_la1_0 = new int[] {0x7bff000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x1fff4000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x80000000,0x0,0x60000000,0x0,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x40,0x3e80,0xf8000000,0x0,0xf8000000,0xf8000000,0x0,0x20004f,0x0,0x0,0x0,0x3200,0x30000,0x0,0x0,0x0,0x30000,0x0,0x3280,0x0,0x0,0x100000,0x0,0x0,0x100000,0x0,0x400000,0x0,0x4000000,0x0,0x0,0x1800000,0x30,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x30,0x30,0x0,0x30,0x0,0x0,0x0,0x0,0x0,0x0,};
+      jj_la1_1 = new int[] {0x40,0x3e80,0xf8000000,0x0,0x0,0xf8000000,0xf8000000,0x0,0x20004f,0x0,0x0,0x0,0x3200,0x30000,0x0,0x30000,0x3280,0x0,0x0,0x100000,0x0,0x0,0x100000,0x0,0x400000,0x0,0x4000000,0x0,0x0,0x1800000,0x30,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x30,0x30,0x0,0x30,0x0,0x0,0x0,0x0,0x0,0x0,};
    }
    private static void jj_la1_init_2() {
-      jj_la1_2 = new int[] {0x0,0x0,0x81,0x3e,0x81,0x81,0x0,0xc80,0xc00,0x0,0x0,0x0,0x0,0x0,0x0,0x3e,0x0,0x0,0x0,0x0,0x1f0d80,0x0,0x0,0x1f0d80,0x0,0x0,0x0,0x1000080,0x0,0x180,0x0,0x0,0x5f1f80,0x0,0x0,0xfc000000,0xfc000000,0x600000,0x600000,0x1800000,0x1800000,0x2000000,0x5f1f80,0x1f1f80,0x0,0x5f1f80,0x0,0x180,0x0,0x30000,0x0,0x600000,};
+      jj_la1_2 = new int[] {0x0,0x0,0x81,0x0,0x7e,0x81,0x81,0x0,0xc80,0xc00,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x1f0d80,0x0,0x0,0x1f0d80,0x0,0x0,0x0,0x1000080,0x0,0x180,0x0,0x0,0x5f1f80,0x0,0x0,0xfc000000,0xfc000000,0x600000,0x600000,0x1800000,0x1800000,0x2000000,0x5f1f80,0x1f1f80,0x0,0x5f1f80,0x0,0x180,0x0,0x30000,0x0,0x600000,};
    }
    private static void jj_la1_init_3() {
-      jj_la1_3 = new int[] {0x0,0x0,0x0,0x80,0x0,0x0,0x80,0x0,0x0,0x400,0x80,0x0,0x0,0x80,0x80,0x0,0x0,0x80,0x0,0x80,0x8000,0x0,0x80,0x8000,0x0,0x80,0x0,0x0,0x0,0x0,0x80,0x0,0x8014,0x1,0x2,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x8010,0x8010,0x10,0x8014,0x80,0x0,0x0,0x8000,0x0,0x0,};
+      jj_la1_3 = new int[] {0x0,0x0,0x0,0x80,0x0,0x0,0x0,0x80,0x0,0x0,0x400,0x80,0x0,0x0,0x80,0x0,0x0,0x80,0x8000,0x0,0x80,0x8000,0x0,0x80,0x0,0x0,0x0,0x0,0x80,0x0,0x8014,0x1,0x2,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x8010,0x8010,0x10,0x8014,0x80,0x0,0x0,0x8000,0x0,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -1823,7 +1971,7 @@ void contar() throws ParseException {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 52; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 50; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -1837,7 +1985,7 @@ void contar() throws ParseException {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 52; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 50; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -1847,7 +1995,7 @@ void contar() throws ParseException {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 52; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 50; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -1857,7 +2005,7 @@ void contar() throws ParseException {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 52; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 50; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -1866,7 +2014,7 @@ void contar() throws ParseException {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 52; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 50; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -1875,7 +2023,7 @@ void contar() throws ParseException {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 52; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 50; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -1931,7 +2079,7 @@ void contar() throws ParseException {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 52; i++) {
+    for (int i = 0; i < 50; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {

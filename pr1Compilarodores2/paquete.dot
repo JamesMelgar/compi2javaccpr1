@@ -1,5 +1,5 @@
 digraph G {node[shape=box, style=filled, color=blanchedalmond]; edge[color=chocolate3];rankdir=UD 
 
-"0_paquete"->"1_usql""1_usql"->"5000_crear base""5000_crear base"->"5001_bd1""1_usql"->"5002_usar"
+"2_paquete"->"3_usql""3_usql"->"5006_crear proce""5006_crear proce"->"5007_parametros""5007_parametros"->"5008_@salario""5007_parametros"->"5009_@comision""5007_parametros"->"5010_@codigo""5006_crear proce"->"5011_sentencias""5011_sentencias"->"5012_alterar_t_agr""5012_alterar_t_agr"->"5013_edad2""5013_edad2"->"5014_no nulo""5012_alterar_t_agr"->"5015_direccion""5015_direccion"->"5016_unico""5011_sentencias"->"5017_alterar_t_quit""5017_alterar_t_quit"->"5018_carrito""5017_alterar_t_quit"->"5019_edad""5017_alterar_t_quit"->"5020_nombre"
 
 }
