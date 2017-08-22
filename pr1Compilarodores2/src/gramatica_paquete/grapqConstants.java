@@ -87,9 +87,9 @@ public interface grapqConstants {
   /** RegularExpression Id. */
   int And = 44;
   /** RegularExpression Id. */
-  int Sql = 45;
+  int Texto = 45;
   /** RegularExpression Id. */
-  int Texto = 46;
+  int Sql = 46;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -141,8 +141,8 @@ public interface grapqConstants {
     "\"\\\'\"",
     "\"\\\"\"",
     "\"&&\"",
-    "<Sql>",
     "<Texto>",
+    "<Sql>",
   };
 
 }

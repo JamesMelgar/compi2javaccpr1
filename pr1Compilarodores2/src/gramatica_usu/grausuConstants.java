@@ -214,6 +214,8 @@ public interface grausuConstants {
   int punto = 110;
   /** RegularExpression Id. */
   int Texto = 111;
+  /** RegularExpression Id. */
+  int Comilla = 112;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -336,6 +338,7 @@ public interface grausuConstants {
     "\">>\"",
     "\".\"",
     "<Texto>",
+    "\"\\\"\"",
   };
 
 }

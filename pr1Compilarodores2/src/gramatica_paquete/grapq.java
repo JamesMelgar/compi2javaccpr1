@@ -182,9 +182,12 @@ raiz.addHijo(nodo1);
   }
 
   final public Nodo usql(Nodo hijo) throws ParseException {Token t1;
+    Nodo nodo1;
     jj_consume_token(Instruccion);
     jj_consume_token(Pp);
     t1 = jj_consume_token(Sql);
+nodo1 = hijo;
+                      hijo = pr1compilarodores2.CrearArbol.Analisiusuql(nodo1, t1.image);
     jj_consume_token(Cm);
 {if ("" != null) return hijo;}
     throw new Error("Missing return statement in function");

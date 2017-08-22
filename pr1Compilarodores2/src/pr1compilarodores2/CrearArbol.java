@@ -179,7 +179,7 @@ public class CrearArbol {
        }
     }
     
-       public static Nodo trypaquete(Nodo pq,String texto){
+    public static Nodo trypaquete(Nodo pq,String texto){
         try 
        {
            pq = archivopaquete(pq,texto);
@@ -217,4 +217,44 @@ public class CrearArbol {
                         return null;
        }
     }
+    
+    public static Nodo Analisiusuql(Nodo hijo, String texto){
+        try 
+       {
+           hijo = archivouql(hijo,texto);
+           return hijo;
+       } catch (IOException ex)
+       {
+            Logger.getLogger(principal2.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+       }
+    }
+     
+      public static Nodo archivouql(Nodo hijo, String texto) throws IOException
+    {
+        EnderecoTemporario =  System.getProperty("java.io.tmpdir")+"temp.txt";
+        File arquivo = new File(EnderecoTemporario);  
+        FileWriter fw = new FileWriter(arquivo);  
+        BufferedWriter bw = new BufferedWriter(fw);      
+        bw.write(texto);  
+        bw.flush();  
+        bw.close(); 
+                 
+        String nomeArq = new String (EnderecoTemporario);
+        try
+	{
+			gramatica_usu.grausu analizador = new gramatica_usu.grausu(new FileInputStream(nomeArq)) ;
+			hijo = analizador.inicio(hijo); 
+                        System.out.println("Analizador: correcto.");
+                        return hijo;
+	}
+	catch(gramatica_usu.ParseException e)
+	{
+			System.out.println(e.getMessage());
+			System.out.println("Analizador: Se han encontrado errores en el analisis.");
+                        return null;
+       }
+    }
+    
+       
 }

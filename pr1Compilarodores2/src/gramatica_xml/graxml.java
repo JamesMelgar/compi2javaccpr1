@@ -463,6 +463,8 @@ raiz.addHijo(nodo1);
 | {return;}
 */
   final public 
+
+
 Nodo contcolumna(Nodo hijo) throws ParseException {Nodo nodo1;
     Token t1;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -615,7 +617,6 @@ Nodo tmp = new Nodo("Archivo");
                 tmp.setNumNodo(graxml.contador++);
                 raiz = tmp;
     raiz = usucon(raiz);
-    jj_consume_token(Arusuf);
 {if ("" != null) return raiz;}
     throw new Error("Missing return statement in function");
   }

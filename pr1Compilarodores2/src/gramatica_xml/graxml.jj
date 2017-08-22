@@ -429,6 +429,8 @@ Nodo conttabla(Nodo raiz):
 | {return;}
 */
 
+
+
 Nodo contcolumna(Nodo hijo):
 {
     Nodo nodo1;
@@ -528,7 +530,7 @@ Nodo arusu(Nodo raiz):
     <Arusui> {  Nodo tmp = new Nodo("Archivo");
                 tmp.setNumNodo(graxml.contador++);
                 raiz = tmp; }
-    raiz=usucon(raiz) <Arusuf> { return raiz; }
+    raiz=usucon(raiz) { return raiz; }
 }
 
 Nodo usucon(Nodo raiz):
