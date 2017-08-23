@@ -98,7 +98,7 @@ TOKEN :
       < BaseD: "base_datos" >
     | < NombreT: "nombre_tabla" >
     | < Objeto: "Objeto" >
-    | < Procedimiento: "Procedimiento" >
+    | < Procedimiento: "procedimiento" >
     | < Funcion: "funcion">
     | < Tabla: "tabla">
     | < Usuario: "usuario">
@@ -150,8 +150,8 @@ TOKEN :
      |<Bo: (("0"|"1"))>
      |<Num: ((["0"-"9"])+)>
      |<Dou: ((["0"-"9"])+("."(["0"-"9"])+))>
-     |<Date: (("'")((("0")?["1"-"9"])|(["1"-"3"]["0"-"9"]))("-")((("0")?["1"-"9"])|(["1"]["0"-"2"]))("-")["1"-"9"]["0"-"9"]["0"-"9"]["0"-"9"]("'"))>
-     |<Datetime: (("'")((("0")?["1"-"9"])|(["1"-"3"]["0"-"9"]))("-")((("0")?["1"-"9"])|(["1"]["0"-"2"]))("-")["1"-"9"]["0"-"9"]["0"-"9"]["0"-"9"]" "["0"-"9"]["0"-"9"]":"["0"-"9"]["0"-"9"]":"["0"-"9"]["0"-"9"]("'"))> 
+     |<Date: (("\'")((("0")?["1"-"9"])|(["1"-"3"]["0"-"9"]))("-")((("0")?["1"-"9"])|(["1"]["0"-"2"]))("-")["1"-"9"]["0"-"9"]["0"-"9"]["0"-"9"]("\'"))>
+     |<Datetime: (("\'")((("0")?["1"-"9"])|(["1"-"3"]["0"-"9"]))("-")((("0")?["1"-"9"])|(["1"]["0"-"2"]))("-")["1"-"9"]["0"-"9"]["0"-"9"]["0"-"9"]" "["0"-"9"]["0"-"9"]":"["0"-"9"]["0"-"9"]":"["0"-"9"]["0"-"9"]("\'"))> 
 }
 
 TOKEN:
@@ -186,6 +186,7 @@ TOKEN :
     | <Cii : "<<">
     | <Cif : ">>">
     | <punto: ".">
+    | <Ucom: "\'">
 }
 
 TOKEN :
@@ -221,27 +222,16 @@ Nodo instrucciones(Nodo raiz):
 {}
 {
       raiz=crear(raiz) raiz=instrucciones(raiz) { return raiz; }
-
     | raiz=usar(raiz)  raiz=instrucciones(raiz){ return raiz; }
-
     | <Alterar>  raiz=alterar(raiz)  raiz=instrucciones(raiz) { return raiz; }
-
-    | <Eliminar> eliminar() raiz=instrucciones(raiz) { return raiz; }
-
-    | <Insertar> insertar() raiz=instrucciones(raiz) { return raiz; }
-
+    | <Eliminar> raiz=eliminar(raiz) raiz=instrucciones(raiz) { return raiz; }
+    | <Insertar> raiz=insertar(raiz) raiz=instrucciones(raiz) { return raiz; }
     | <BackupU>  backupu() raiz=instrucciones(raiz) { return raiz; }
-
     | <BackupC>  backupc() raiz=instrucciones(raiz) { return raiz; }
-
     | <RestaU>   restau() raiz=instrucciones(raiz) { return raiz; }
-
     | <RestaC>   restac() raiz=instrucciones(raiz) { return raiz; }
-
     | <Actualizar> <Tabla> actualizar() raiz=instrucciones(raiz) { return raiz; }
-
     | <Borrar> <En> <Tabla> borrar() raiz=instrucciones(raiz) { return raiz; }
-
     | <Seleccionar> seleccionar() pt() raiz=instrucciones(raiz) { return raiz; }
 
     | <Contar> contar() raiz=instrucciones(raiz) { return raiz; }
@@ -518,8 +508,8 @@ Nodo proceconte(Nodo padre):
 }
 {
      <Alterar>  padre=alterar(padre) padre=proceconte(padre) { return padre; }
-     <Eliminar> eliminar() padre=proceconte(padre) { return padre; }
-    | <Insertar> insertar() padre=proceconte(padre) { return padre; }
+     <Eliminar> padre=eliminar(padre) padre=proceconte(padre) { return padre; }
+    | <Insertar> padre=insertar(padre) padre=proceconte(padre) { return padre; }
     | <BackupU>  backupu() padre=proceconte(padre) { return padre; }
     | <BackupC>  backupc() padre=proceconte(padre) { return padre; }
     | <RestaU>   restau() padre=proceconte(padre) { return padre; }
@@ -553,7 +543,7 @@ void llamadafuncion():
 void llamadametodo():
 {}
 {
-   <Id> <Pai> tipo() listavalores() <Paf>
+   <Id> <Pai> s0() listaceros() <Paf>
 }
 
 void declarar():
@@ -677,8 +667,16 @@ Nodo alterar(Nodo raiz):
     } nodo1=objalt(nodo1) { raiz.addHijo(nodo1);
                  return raiz; }
 
-    |<Usuario> <Id> usualt()
+    |<Usuario> { Nodo tmp = new Nodo("alterar usuario");
+                 tmp.setNumNodo(grausu.contador++);
+                 nodo1 = tmp; 
+    } t1=<Id> { nodo1.setValor(t1.image);
+                nodo1.setColumna(t1.beginColumn);  
+                nodo1.setFila(t1.beginLine);
+    } nodo1=usualt(nodo1) {  raiz.addHijo(nodo1); return raiz; }
 }
+
+
 //<Pai> tipodato() <Id> compoalt() setablaalt() <Paf> pt()
 Nodo tablaalt(Nodo hijo):
 { 
@@ -733,36 +731,140 @@ Nodo objalt(Nodo hijo):
       } hijo=quitarseg(hijo) pt() { return hijo; }
 }
 
-void usualt():
-{}{
-    <Cambiar> <Pass> <Igual> <Texto> pt()
+Nodo usualt(Nodo hijo):
+{
+    Token t1;
+}{
+    <Cambiar> <Pass> <Igual> t1=<Texto> { hijo.setTipo(t1.image); } pt() { return hijo; }
 }
 
 //*****************************************************************************Instruccion Eliminar
 
-void eliminar():
-{}
+Nodo eliminar(Nodo raiz):
 {
-      <Tabla> <Id> pt()
-    | <BaseD> <Id> pt()
-    | <Objeto> <Id> pt()
-    | <Usuario> <Id> pt()
+    Nodo nodo1;
+    Token t1;
+}
+{
+      <Tabla> t1=<Id> { Nodo tmp = new Nodo("Eliminar tabla");
+                        tmp.setNumNodo(grausu.contador++);
+                        tmp.setValor(t1.image);
+                        tmp.setColumna(t1.beginColumn);
+                        tmp.setFila(t1.beginLine);
+                        nodo1 = tmp; 
+                        raiz.addHijo(nodo1);
+    } pt() { return raiz; }
+
+    | <BaseD> t1=<Id> { Nodo tmp = new Nodo("eliminar db");
+                        tmp.setNumNodo(grausu.contador++);
+                        tmp.setValor(t1.image);
+                        tmp.setColumna(t1.beginColumn);
+                        tmp.setFila(t1.beginLine);
+                        nodo1 = tmp; 
+                        raiz.addHijo(nodo1);
+    } pt() { return raiz; }
+
+    | <Objeto> t1=<Id> { Nodo tmp = new Nodo("eliminar objeto");
+                        tmp.setNumNodo(grausu.contador++);
+                        tmp.setValor(t1.image);
+                        tmp.setColumna(t1.beginColumn);
+                        tmp.setFila(t1.beginLine);
+                        nodo1 = tmp; 
+                        raiz.addHijo(nodo1);
+    } pt() { return raiz; }
+
+    | <Usuario> t1=<Id> { Nodo tmp = new Nodo("eliminar usu");
+                        tmp.setNumNodo(grausu.contador++);
+                        tmp.setValor(t1.image);
+                        tmp.setColumna(t1.beginColumn);
+                        tmp.setFila(t1.beginLine);
+                        nodo1 = tmp; 
+                        raiz.addHijo(nodo1);
+    } pt() { return raiz; }
+
+    | <Procedimiento> t1=<Id> { Nodo tmp = new Nodo("eliminar proce");
+                        tmp.setNumNodo(grausu.contador++);
+                        tmp.setValor(t1.image);
+                        tmp.setColumna(t1.beginColumn);
+                        tmp.setFila(t1.beginLine);
+                        nodo1 = tmp; 
+                        raiz.addHijo(nodo1);
+    } pt() { return raiz; }
+
+    | <Funcion> t1=<Id> { Nodo tmp = new Nodo("eliminar fun");
+                        tmp.setNumNodo(grausu.contador++);
+                        tmp.setValor(t1.image);
+                        tmp.setColumna(t1.beginColumn);
+                        tmp.setFila(t1.beginLine);
+                        nodo1 = tmp; 
+                        raiz.addHijo(nodo1);
+    } pt() { return raiz; }
+
 }
 
 //*******************************************************************************Instruccion insertar
 
-void insertar():
-{}
+//<En> <Tabla> <Id> <Pai> tipoinsetar()
+Nodo insertar(Nodo raiz):
 {
-    <En> <Tabla> <Id> <Pai> tipo() listavalores() <Paf> especial() pt()
+    Token t1;
+    Nodo nodo1;
+}
+{
+    <En> <Tabla> t1=<Id> { Nodo tmp = new Nodo("insertar");
+                          tmp.setNumNodo(grausu.contador++);
+                          tmp.setColumna(t1.beginColumn);
+                          tmp.setFila(t1.beginLine);
+                          tmp.setValor(t1.image);
+                          nodo1 = tmp;
+    } <Pai> nodo1=tipoinsetar(nodo1) {  raiz.addHijo(nodo1);
+                             return raiz; }
+}
+/* LOOKAHEAD(2) <Id> listaid() <Paf> <Valores> <Pai> s0() listaceros() <Paf> pt() 
+| LOOKAHEAD(2) s0() listaceros() <Paf>  pt() */
+
+Nodo tipoinsetar(Nodo hijo):
+{
+    Nodo nodo1;
+    Nodo n2;
+    Token t1;
+}
+{
+      LOOKAHEAD(2) t1=<Id>  { hijo.setNombre("insertar valores");
+        Nodo tmp = new Nodo("campos"); tmp.setNumNodo(grausu.contador++);
+        Nodo tmp2 = new Nodo(t1.image); tmp2.setNumNodo(grausu.contador++);
+        tmp2.setColumna(t1.beginColumn); tmp2.setFila(t1.beginLine);
+        nodo1 = tmp;
+        nodo1.addHijo(tmp2);
+    }  nodo1=listaid(nodo1) <Paf> { hijo.addHijo(nodo1); }
+      <Valores> <Pai> { Nodo tmp3 = new Nodo("Valores"); 
+                        tmp3.setNumNodo(grausu.contador++);
+                        nodo1 = tmp3;
+      } n2=s0() { nodo1.addHijo(n2); } <Paf> pt() { hijo.addHijo(nodo1); return hijo; }
+    
+    | LOOKAHEAD(2) s0() listaceros() <Paf>  pt() { return hijo; }
+}
+//
+Nodo listaid(Nodo primo):
+{
+    Token t1;
+}
+{
+       <Cm> t1=<Id> { Nodo tmp2 = new Nodo(t1.image); 
+                      tmp2.setNumNodo(grausu.contador++);
+                      tmp2.setColumna(t1.beginColumn); 
+                      tmp2.setFila(t1.beginLine);
+                       primo.addHijo(tmp2); } primo=listaid(primo) {return primo; }
+    | { return primo; }
 }
 
-void listavalores():
-{ }
+void listaceros():
+{}
 {
-       <Cm> tipo() listavalores()
-    | { return;}
+       <Cm> s0() listaceros()
+    | { return; }
 }
+
 
 void tipo():
 {}
@@ -779,12 +881,6 @@ void tipo():
     |<Datetime>
 }
 
-void especial():
-{}
-{
-    <Valores> <Pai> tipo() listavalores() <Paf>
-    | {return; }
-}
 //***********************************************************************BACKUP y Restaurar
 
 void backupu():
@@ -903,73 +999,130 @@ void tipoorden():{
 }
 //************************************************************************ operaciones
 
-void s0():
-{}{
-     <Not> s1()
-    | s1()
-}
 
-void s1():
-{}{
-   s2()(( <And> ) s2())*
-}
 
-void s2():
-{}{
-   s3()(( <Or> ) s3())*
-}
 
-void s3():
-{}{
-    s4()(( <Iguales> | <Dife> | <Mayorq> | <Menorq> | <Mayori> | <Menori> ) s4())*
-}
-
-void s4():
-{}{
-    s5()(( <Suma> | <Resta> ) s5())*
-}
-
-void s5():
-{}{
-    s6()(( <Divi> | <Mult> ) s6())*
-}
-
-void s6():
-{}{
-    s7() (( <Pote> ) s7())*
-}
-
-void s7():
-{}{
-     <Resta> s8()
-    | s8()
-}
-
-void s8():
-{}{
-      <Num>
-    | <Bo>
-    | <Dou>
-    | <Texto>
-    | <Id> fun()
-    | <Idp>
-    | <Tid>
-    | <Aid>
-    | <Aidp>
-    | <Taid>
-    | <Fecha>
-    | <FechaH>
-    | <Datetime>
-    | <Date>
-    | <Pai> s0() <Paf>
-}
-
-void fun():
-{}
+Nodo s0():
 {
-    <Pai> funpara() s9() <Paf>
-    |{return;}
+    Nodo nodo1;
+    Nodo nodo2;
+}{
+    <Not> {  Nodo tmp = new Nodo("not");
+              tmp.setNumNodo(grausu.contador++);
+              nodo2 = tmp;
+    } nodo1=s1() { nodo2.addHijo(nodo1); return nodo2; }
+
+    | nodo1=s1() { return nodo1; }
 }
+
+//s2()(( <And> ) s2())*
+Nodo s1():
+{
+    Nodo n1;
+    Nodo n2;
+    Nodo n3;
+}{
+   n1=s2()(( <And> { Nodo tmp = new Nodo("and");
+                     tmp.setNumNodo(grausu.contador++);
+                     n3 = tmp;
+    } ) n2=s2()  { n3.addHijo(n1); n3.addHijo(n2); n1=n3; } )* { return n1; }
+}
+
+Nodo s2():
+{
+    Nodo n1;
+    Nodo n2;
+    Nodo n3;
+}{
+   n1=s3()(( <Or> { Nodo tmp = new Nodo("or");
+                     tmp.setNumNodo(grausu.contador++);
+                     n3 = tmp;
+  } ) n2=s3()  { n3.addHijo(n1); n3.addHijo(n2); n1=n3; } )* { return n1; }
+}
+
+Nodo s3():
+{
+    Nodo n1;
+    Nodo n2;
+    Nodo n3;
+}{
+    n1=s4()(( <Iguales> { Nodo tmp = new Nodo("==");
+          tmp.setNumNodo(grausu.contador++); n3 = tmp;
+    } | <Dife> { Nodo tmp = new Nodo("!=");
+          tmp.setNumNodo(grausu.contador++); n3 = tmp;
+    } | <Mayorq> { Nodo tmp = new Nodo(">");
+          tmp.setNumNodo(grausu.contador++); n3 = tmp;
+    } | <Menorq> { Nodo tmp = new Nodo("<");
+          tmp.setNumNodo(grausu.contador++); n3 = tmp;
+    } | <Mayori> { Nodo tmp = new Nodo(">=");
+          tmp.setNumNodo(grausu.contador++); n3 = tmp;
+    } | <Menori> { Nodo tmp = new Nodo("<=");
+          tmp.setNumNodo(grausu.contador++); n3 = tmp;
+    } ) 
+    n2=s4() { n3.addHijo(n1); n3.addHijo(n2); n1=n3; } )* { return n1; }
+}
+
+//s5()(( <Suma> | <Resta> ) s5())*
+Nodo s4():
+{
+    Nodo n1;
+    Nodo n2;
+    Nodo n3;
+}{
+    n1=s5() (( <Suma> { Nodo tmp = new Nodo("mas");
+                      tmp.setNumNodo(grausu.contador++);
+                      n3 = tmp;
+    } | <Resta>  { Nodo tmp = new Nodo("menos");
+                   tmp.setNumNodo(grausu.contador++); 
+                   n3 = tmp;
+    } ) n2=s5() { n3.addHijo(n1); n3.addHijo(n2); n1=n3; } )* { return n1; } 
+}
+//s6()(( <Divi> | <Mult> ) s6())*
+Nodo s5():
+{
+    Nodo n1;
+    Nodo n2;
+    Nodo n3;
+}{
+    n1=s6() (( <Divi> { Nodo tmp = new Nodo("divi");
+                      tmp.setNumNodo(grausu.contador++);
+                      n3 = tmp;
+    } | <Mult> { Nodo tmp = new Nodo("mult");
+                   tmp.setNumNodo(grausu.contador++); 
+                   n3 = tmp;
+    } ) n2=s6() { n3.addHijo(n1); n3.addHijo(n2); n1=n3; } )* { return n1; }   
+}
+
+//s7() (( <Pote> ) s7())*
+Nodo s6():
+{
+    Nodo n1;
+    Nodo n2;
+    Nodo n3;
+}{
+     n1=s8()(( <Pote> { Nodo tmp = new Nodo("pote");
+                     tmp.setNumNodo(grausu.contador++);
+                     n3 = tmp;
+  } ) n2=s8()  { n3.addHijo(n1); n3.addHijo(n2); n1=n3; } )* { return n1; }
+}
+
+Nodo s8():
+{
+    Nodo nodo1;
+    Nodo nodo2;
+    Token t1;
+}{
+      t1=<Num> { Nodo tmp = new Nodo(t1.image);
+                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("num");
+                 tmp.setColumna(t1.beginColumn); tmp.setFila(t1.beginLine);
+                 return tmp; }
+     | <Resta> {  Nodo tmp = new Nodo("union");
+              tmp.setNumNodo(grausu.contador++);
+              nodo2 = tmp;
+      } nodo1=s8() { nodo2.addHijo(nodo1); return nodo2; }
+    | <Pai> nodo1=s0() <Paf> { return nodo1;; }
+}
+
 
 void funpara():{
 }{

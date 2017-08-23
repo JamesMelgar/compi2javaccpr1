@@ -213,9 +213,11 @@ public interface grausuConstants {
   /** RegularExpression Id. */
   int punto = 110;
   /** RegularExpression Id. */
-  int Texto = 111;
+  int Ucom = 111;
   /** RegularExpression Id. */
-  int Comilla = 112;
+  int Texto = 112;
+  /** RegularExpression Id. */
+  int Comilla = 113;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -268,7 +270,7 @@ public interface grausuConstants {
     "\"base_datos\"",
     "\"nombre_tabla\"",
     "\"Objeto\"",
-    "\"Procedimiento\"",
+    "\"procedimiento\"",
     "\"funcion\"",
     "\"tabla\"",
     "\"usuario\"",
@@ -337,6 +339,7 @@ public interface grausuConstants {
     "\"<<\"",
     "\">>\"",
     "\".\"",
+    "\"\\\'\"",
     "<Texto>",
     "\"\\\"\"",
   };

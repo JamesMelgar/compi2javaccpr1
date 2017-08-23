@@ -53,7 +53,7 @@ public class principal2 extends javax.swing.JFrame {
 
         tx_entrada.setColumns(20);
         tx_entrada.setRows(5);
-        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %Crear usuario juan colocar password = \"nuevo\";%,\n]");
+        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\n\n%,\n]");
         jScrollPane1.setViewportView(tx_entrada);
 
         jLabel1.setText("Entrada");
@@ -186,9 +186,14 @@ public class principal2 extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String cadena = "123456"; 
+        cadena = cadena.substring(1, cadena.length()-1);
+        if( true == !false){
+            System.out.println(cadena);
+        }
+        
         // Para borar el ultimo digito haces esto 
-        cadena = cadena.substring(1, cadena.length()-1); 
-        System.out.println(cadena);
+         
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

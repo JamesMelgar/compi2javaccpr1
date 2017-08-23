@@ -121,6 +121,7 @@ public class accpaquete {
            Nodo nodo1 = new Nodo(cadena);
            nodo1.setValor(valor);
            nodo1.setNumNodo(gramatica_usu.grausu.contador++);
+           System.out.println("Acciones.accpaquete.crearnodo()");
            return nodo1;
      }
 }

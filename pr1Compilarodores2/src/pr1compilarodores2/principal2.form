@@ -105,7 +105,7 @@
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="[&#xa;&quot;validar&quot;: 1500,&#xa;&quot;paquete&quot;: &quot;usql&quot;,&#xa;&quot;Instruccion&quot;: %Crear usuario juan colocar password = &quot;nuevo&quot;;%,&#xa;]"/>
+            <Property name="text" type="java.lang.String" value="[&#xa;&quot;validar&quot;: 1500,&#xa;&quot;paquete&quot;: &quot;usql&quot;,&#xa;&quot;Instruccion&quot;: %&#xa;&#xa;%,&#xa;]"/>
           </Properties>
         </Component>
       </SubComponents>
