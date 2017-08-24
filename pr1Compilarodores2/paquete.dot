@@ -1,5 +1,5 @@
 digraph G {node[shape=box, style=filled, color=blanchedalmond]; edge[color=chocolate3];rankdir=UD 
 
-"4_paquete"->"5_usql""5_usql"->"5032_crear funcion""5032_crear funcion"->"5033_parametros""5033_parametros"->"5034_@salario""5033_parametros"->"5035_@comision""5033_parametros"->"5036_@codigo""5032_crear funcion"->"5037_sentencias""5037_sentencias"->"5038_declarar""5038_declarar"->"5039_variables""5039_variables"->"5041_@uno""5039_variables"->"5042_@dos""5039_variables"->"5043_@tres""5038_declarar"->"5040_sentencias""5040_sentencias"->"5045_12""5037_sentencias"->"5046_llamada""5046_llamada"->"5047_mundo""5037_sentencias"->"5051_retorno""5051_retorno"->"5049_mas""5049_mas"->"5048_@uno""5049_mas"->"5050_@dos"
+"0_paquete"->"1_usql""1_usql"->"5000_seleccionar""5000_seleccionar"->"5001_listaid""5001_listaid"->"5003_nombre""5001_listaid"->"5004_fh_nac""5000_seleccionar"->"5002_listatabla""5002_listatabla"->"5005_estudiante""5000_seleccionar"->"5006_donde""5006_donde"->"5008_<""5008_<"->"5007_id""5008_<"->"5009_10""5000_seleccionar"->"5010_ordenar""5010_ordenar"->"5011_fh_nac"
 
 }

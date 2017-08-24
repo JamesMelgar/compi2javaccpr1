@@ -229,17 +229,19 @@ Nodo instrucciones(Nodo raiz):
     | <Alterar>  raiz=alterar(raiz)  raiz=instrucciones(raiz) { return raiz; }
     | <Eliminar> raiz=eliminar(raiz) raiz=instrucciones(raiz) { return raiz; }
     | <Insertar> raiz=insertar(raiz) raiz=instrucciones(raiz) { return raiz; }
+    | <Otorgar> raiz=otorgar(raiz) raiz=instrucciones(raiz) { return raiz; }
+    | <Denegar> raiz=denegar(raiz) raiz=instrucciones(raiz) {  return raiz; }
+    | <Actualizar> <Tabla> raiz=actualizar(raiz) raiz=instrucciones(raiz) { return raiz; }
+    | <Borrar> <En> <Tabla> raiz=borrar(raiz) raiz=instrucciones(raiz) { return raiz; }       
+    | <Seleccionar> raiz=seleccionar(raiz) pt() raiz=instrucciones(raiz) { return raiz; }
 
     | <BackupU>  backupu() raiz=instrucciones(raiz) { return raiz; }
     | <BackupC>  backupc() raiz=instrucciones(raiz) { return raiz; }
     | <RestaU>   restau() raiz=instrucciones(raiz) { return raiz; }
     | <RestaC>   restac() raiz=instrucciones(raiz) { return raiz; }
-    | <Actualizar> <Tabla> actualizar() raiz=instrucciones(raiz) { return raiz; }
-    | <Borrar> <En> <Tabla> borrar() raiz=instrucciones(raiz) { return raiz; }
-    | <Seleccionar> seleccionar() pt() raiz=instrucciones(raiz) { return raiz; }
+
     | <Contar> contar() raiz=instrucciones(raiz) { return raiz; }
-    | <Otorgar> otorgar() raiz=instrucciones(raiz) { return raiz; }
-    | <Denegar> denegar() raiz=instrucciones(raiz) {  return raiz; }
+    
 
     | t1=<Id> <Pai> { Nodo tmp = new Nodo("llamada");
                       tmp.setNumNodo(grausu.contador++);
@@ -523,18 +525,19 @@ Nodo proceconte(Nodo padre):
     |<Insertar> padre=insertar(padre) padre=proceconte(padre) { return padre; }
     | padre=asignar(padre) pt() padre=proceconte(padre) { return padre; }
     | <Declarar> padre=declarar(padre) pt() padre=proceconte(padre) { return padre; }
+    | <Otorgar> padre=otorgar(padre) padre=proceconte(padre) { return padre; }
+    | <Denegar> padre=denegar(padre) padre=proceconte(padre) { return padre; }
+    | <Actualizar> <Tabla> padre=actualizar(padre) padre=proceconte(padre) { return padre; }
+    | <Retorno> padre=retorno(padre) pt() padre=proceconte(padre) { return padre; }
+    | <Borrar> <En> <Tabla> padre=borrar(padre) padre=proceconte(padre) { return padre; }
 
     | <BackupU>  backupu() padre=proceconte(padre) { return padre; }
     | <BackupC>  backupc() padre=proceconte(padre) { return padre; }
     | <RestaU>   restau() padre=proceconte(padre) { return padre; }
-    | <RestaC>   restac() padre=proceconte(padre) { return padre; }
-    | <Actualizar> <Tabla> actualizar() padre=proceconte(padre) { return padre; }
-    | <Borrar> <En> <Tabla> borrar() padre=proceconte(padre) { return padre; }
-    | <Seleccionar> seleccionar() pt() padre=proceconte(padre) { return padre; }
-    | <Otorgar> otorgar() padre=proceconte(padre) { return padre; }
-    | <Denegar> denegar() padre=proceconte(padre) { return padre; }
+    | <RestaC>   restac() padre=proceconte(padre) { return padre; }    
+    | <Seleccionar> padre=seleccionar(padre) pt() padre=proceconte(padre) { return padre; }
     
-    | <Retorno> padre=retorno(padre) pt() padre=proceconte(padre) { return padre; }
+
     | <Si> si() padre=proceconte(padre) { return padre; }
     | <Selec> selecciona() padre=proceconte(padre) { return padre; }
     | <Para> para() padre=proceconte(padre) { return padre; }
@@ -994,93 +997,190 @@ void restac():
 
 //************************************************************************** Instruccion ACTUALIZAR
 
-void actualizar():
-{}
+//<Id> <Pai> tipoac() listavaloresac() <Paf> especialac() where() pt() 
+Nodo actualizar(Nodo padre):
 {
-    <Id> <Pai> tipoac() listavaloresac() <Paf> especialac() where() pt() 
+    Token t1;
+    Nodo nodo1;
+    Nodo nodo2;
+    Nodo nodo3;
+    Nodo n2;
+}
+{
+    t1=<Id>  { Nodo tmp = new Nodo("actualizar");
+               tmp.setNumNodo(grausu.contador++);
+               tmp.setValor(t1.image);
+               tmp.setColumna(t1.beginColumn);
+               tmp.setFila(t1.beginLine); 
+               Nodo tmp2 = new Nodo("campos");
+               tmp2.setNumNodo(grausu.contador++);
+               Nodo tmp5 = new Nodo("valores");
+               tmp5.setNumNodo(grausu.contador++);
+               nodo1 = tmp;
+               nodo2 = tmp2;
+               nodo3 = tmp5;
+     } <Pai> t1=<Id>  { Nodo tmp4 = new Nodo(t1.image);
+                        tmp4.setNumNodo(grausu.contador++);
+                        tmp4.setColumna(t1.beginColumn);
+                        tmp4.setFila(t1.beginLine);
+                        nodo2.addHijo(tmp4);
+    }  nodo2=listaid(nodo2) { nodo1.addHijo(nodo2); } 
+    <Paf> <Valores> <Pai> n2=s0() { nodo3.addHijo(n2); } 
+    nodo3=listaceros(nodo3) { nodo1.addHijo(nodo3); } <Paf> nodo1=where(nodo1) 
+    pt() { padre.addHijo(nodo1); 
+           return padre; }
 }
 
-void listavaloresac():
-{ }
+//<Donde>  n2=s0() 
+Nodo where(Nodo hijo):
 {
-       <Cm> tipoac() listavaloresac()
-    | { return;}
+    Nodo n2;
 }
-
-void tipoac():
-{}
 {
-      <Id>
-    | <Idp>
-    | <Aidp>
-    | <Aid>
-    |<Bo>
-    |<Num>
-    |<Dou>
-    |<Texto>
-    |<Date>
-    |<Datetime>
-}
-
-void especialac():
-{}
-{
-    <Valores> <Pai> s0() <Paf>
-    | {return; }
-} 
-
-void livalores():
-{}{
-     <Cm> s0()  livalores()
-    | {return; }
-}
-
-void where():
-{ }
-{
-     <Donde> s0()
-    | {return; }
+     <Donde>  n2=s0() { Nodo tmp = new Nodo("condiciones");
+                        tmp.setNumNodo(grausu.contador++);
+                        hijo.setNombre("actualizar cond");
+                        tmp.addHijo(n2);
+                        hijo.addHijo(tmp); 
+                        return hijo;
+                      }
+    | {return hijo; }
 }
 
 //************************************************************************ INSTRUCCION BORRAR
 
-void borrar():
-{}
+Nodo borrar(Nodo raiz):
 {
-    <Id> where() pt()
+    Token t1;
+    Nodo nodo1;
 }
+{
+    t1=<Id>  { Nodo tmp = new Nodo("borrar");
+               tmp.setNumNodo(grausu.contador++);
+               tmp.setValor(t1.image);
+               tmp.setColumna(t1.beginColumn);
+               tmp.setFila(t1.beginLine);
+               nodo1 = tmp; 
+    } nodo1=borrarwhere(nodo1) pt() { raiz.addHijo(nodo1); return raiz; }
+}
+
+Nodo borrarwhere(Nodo hijo):
+{
+    Nodo n2;
+}
+{
+     <Donde>  n2=s0() { hijo.setNombre("borrar cond");
+                        hijo.addHijo(n2); 
+                        return hijo;
+                      }
+    | { return hijo; }
+}
+
 //************************************************************************ INSTRUCCION SELECCIONAR
 
-void seleccionar():
-{}
+//    <Id> listids() <De> <Id> listids() where(null) orden() 
+// | <Mult> <De> <Id> listids() where(null) orden() 
+Nodo seleccionar(Nodo raiz):
 {
-       <Id> listids() <De> <Id> listids() where() orden() 
-    | <Mult> <De> <Id> listids() where() orden() 
+   Nodo nodo1;
+   Nodo nodo2;
+   Nodo nodo3;
+   Nodo nodo4;
+   Nodo n2;
+   Token t1;
+}
+{
+       t1=<Id> { Nodo tmp1 = new Nodo("seleccionar");
+                 tmp1.setNumNodo(grausu.contador++);
+                 Nodo tmp2 = new Nodo("listaid");
+                 tmp2.setNumNodo(grausu.contador++);
+                 Nodo tmp3 = new Nodo("listatabla");
+                 tmp3.setNumNodo(grausu.contador++);
+                 nodo1 = tmp1; 
+                 nodo2 = tmp2;
+                 nodo3 = tmp3;
+                 Nodo tmp4 = new Nodo(t1.image);
+                 tmp4.setNumNodo(grausu.contador++);
+                 tmp4.setColumna(t1.beginColumn);
+                 tmp4.setFila(t1.beginLine);
+                 nodo2.addHijo(tmp4);
+     } nodo2=listaid(nodo2) <De> { nodo1.addHijo(nodo2); 
+     } t1=<Id> {  Nodo tmp5 = new Nodo(t1.image);
+                  tmp5.setNumNodo(grausu.contador++);
+                  tmp5.setColumna(t1.beginColumn);
+                  tmp5.setFila(t1.beginLine);
+                  nodo3.addHijo(tmp5);
+    } nodo3=listaid(nodo3) { nodo1.addHijo(nodo3); 
+    } nodo1=selecwhere(nodo1) nodo1=orden(nodo1) { raiz.addHijo(nodo1); return raiz; } 
+
+    | <Mult> { Nodo tmp1 = new Nodo("seleccionar");
+                 tmp1.setNumNodo(grausu.contador++);
+                 Nodo tmp2 = new Nodo("*");
+                 tmp2.setNumNodo(grausu.contador++);
+                 Nodo tmp3 = new Nodo("listatabla");
+                 tmp3.setNumNodo(grausu.contador++);
+                 nodo1 = tmp1; 
+                 nodo2 = tmp2;
+                 nodo3 = tmp3;
+     } nodo2=listaid(nodo2) <De> { nodo1.addHijo(nodo2); 
+     } t1=<Id> {  Nodo tmp5 = new Nodo(t1.image);
+                  tmp5.setNumNodo(grausu.contador++);
+                  tmp5.setColumna(t1.beginColumn);
+                  tmp5.setFila(t1.beginLine);
+                  nodo3.addHijo(tmp5);
+    } nodo3=listaid(nodo3) { nodo1.addHijo(nodo3); 
+    } nodo1=selecwhere(nodo1) nodo1=orden(nodo1) { raiz.addHijo(nodo1); return raiz; } 
 }
 
-
-void orden():{
+Nodo selecwhere(Nodo primo):
+{
+    Token t1;
+    Nodo n2;
+    Nodo nodo1;
 }{
-      <OrdenP> idorden() tipoorden() 
-    | {return;}
+    <Donde> { Nodo tmp = new Nodo("donde");
+              tmp.setNumNodo(grausu.contador++);
+              nodo1 = tmp; 
+    } n2=s0() { nodo1.addHijo(n2); primo.addHijo(nodo1); return primo; }
+ 
+    | {return primo;}
 }
 
-void idorden():
-{}{
-       <Id>
-    | <Idp>
-}
 
-void listids():{
-}{    
-     <Cm> <Id> listids()
-    |{return;}
-}
-
-void tipoorden():{
+Nodo orden(Nodo primo):
+{   Token t1;
+    Nodo n2;
+    Nodo nodo1;
 }{
-      <Asc>
-    | <Desc>
+      <OrdenP> { Nodo tmp = new Nodo("ordenar");
+                tmp.setNumNodo(grausu.contador++);
+                nodo1 = tmp; 
+                Nodo tmp2 = new Nodo("");
+                tmp2.setNumNodo(grausu.contador++);
+                n2 = tmp2; 
+      }  n2=idorden(n2) { nodo1.addHijo(n2);} nodo1=tipoorden(nodo1) { 
+         primo.addHijo(nodo1); return primo; }
+}
+
+Nodo idorden(Nodo n2):
+{
+    Token t1;
+}{
+       t1=<Id>  { n2.setNombre(t1.image); n2.setValor("id");
+                  n2.setColumna(t1.beginColumn);
+                  n2.setFila(t1.beginLine); return n2; } 
+    |  t1=<Idp>  { n2.setNombre(t1.image); n2.setValor("idp");
+                   n2.setColumna(t1.beginColumn);
+                   n2.setFila(t1.beginLine); return n2; } 
+    |  t1=<Tid> { n2.setNombre(t1.image); n2.setValor("tid");
+                  n2.setColumna(t1.beginColumn);
+                  n2.setFila(t1.beginLine); return n2; }
+}
+
+Nodo tipoorden(Nodo n1):{
+}{
+      <Asc>  { n1.setValor("asc"); return n1; }
+    | <Desc> { n1.setValor("desc"); return n1; }
 }
 //************************************************************************ operaciones
 
@@ -1260,15 +1360,27 @@ Nodo s8():
 
     | <Pai> nodo1=s0() <Paf> { return nodo1; }
 
-    | t1=<Id> <Pai> { Nodo tmp = new Nodo("llamada");
-                      tmp.setNumNodo(grausu.contador++);
-                      tmp.setValor(t1.image);
-                      tmp.setColumna(t1.beginColumn);
-                      tmp.setFila(t1.beginLine);
-                      nodo1 = tmp;
-     } nodo1=funpara(nodo1) nodo1=s9(nodo1) <Paf> { return nodo1; }
+    | t1=<Id> { Nodo tmp = new Nodo("id");
+                tmp.setNumNodo(grausu.contador++);
+                tmp.setValor(t1.image);
+                tmp.setColumna(t1.beginColumn);
+                tmp.setFila(t1.beginLine);
+                nodo1 = tmp;
+    } nodo1=esfuncion(nodo1) { return nodo1; }
 }
 
+Nodo esfuncion(Nodo hijo):
+{
+    Nodo nodo1;
+    Nodo nodo2;
+    String cadena;
+    Token t1;
+}{
+      <Pai> { hijo.setNombre("llamada");
+     } hijo=funpara(hijo) nodo1=s9(hijo) <Paf>
+
+    | { return hijo; }
+}
 
 Nodo funpara(Nodo hijo):{
     Nodo nodo1;
@@ -1288,23 +1400,52 @@ Nodo s9(Nodo hijo):
 
 //*************************************************************************************OTORGAR y DENEGAR
 
-void otorgar():
-{}
+Nodo otorgar(Nodo raiz):
 {
-    <Id> <Cm> objetopermiso() pt()
+    Nodo nodo1;
+    Token t1;
+}
+{
+    t1=<Id>  { Nodo tmp = new Nodo("otorgar");
+                     tmp.setNumNodo(grausu.contador++);
+                     tmp.setValor(t1.image);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     nodo1 = tmp; 
+    } <Cm> nodo1=objetopermiso(nodo1) pt() { raiz.addHijo(nodo1); return raiz;}
+}
+//<Id> <Cm> objetopermiso() pt()
+Nodo denegar(Nodo hijo):
+{    Nodo nodo1;
+     Token t1; }
+{
+    t1=<Id>  { Nodo tmp = new Nodo("denegar");
+                     tmp.setNumNodo(grausu.contador++);
+                     tmp.setValor(t1.image);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     nodo1 = tmp; 
+    } <Cm> nodo1=objetopermiso(nodo1) pt() { hijo.addHijo(nodo1); return hijo;}
 }
 
-void denegar():
-{}
+//<Id> <punto> <Mult>
+Nodo objetopermiso(Nodo hijo):
 {
-    <Id> <Cm> objetopermiso() pt()
+    String cadena;
+    Token t1;
 }
-
-void objetopermiso():
-{}
 {
-     <Idp>
-    |<Id> <punto> <Mult>
+     t1=<Idp> { 
+     cadena = hijo.getNombre()+" idp";
+      hijo.setNombre(cadena);  
+      hijo.setTipo(t1.image); 
+      return hijo; }
+
+    | t1=<Id> <punto> <Mult> { 
+      cadena = hijo.getNombre()+" todos"; 
+      hijo.setNombre(cadena);
+      hijo.setTipo(t1.image); 
+      return hijo; }
 }
 
 //**********************************************************************************Funcion SI()
@@ -1402,5 +1543,5 @@ void imprimir():
 void contar():
 {}
 {
-    <Pai> <Cii> <Seleccionar> seleccionar() <Cif> <Paf> pt()
+    <Pai> <Cii> <Seleccionar> seleccionar(null) <Cif> <Paf> pt()
 }
