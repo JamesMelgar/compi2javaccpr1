@@ -37,13 +37,13 @@ public interface grausuConstants {
   /** RegularExpression Id. */
   int Declarar = 22;
   /** RegularExpression Id. */
-  int BackupU = 23;
+  int Backup = 23;
   /** RegularExpression Id. */
-  int BackupC = 24;
+  int Usqldump = 24;
   /** RegularExpression Id. */
-  int RestaU = 25;
+  int Completo = 25;
   /** RegularExpression Id. */
-  int RestaC = 26;
+  int Restaurar = 26;
   /** RegularExpression Id. */
   int Si = 27;
   /** RegularExpression Id. */
@@ -251,10 +251,10 @@ public interface grausuConstants {
     "\"otorgar permisos\"",
     "\"denegar permisos\"",
     "\"declarar\"",
-    "\"backup usqldump\"",
-    "\"backup completo\"",
-    "\"Restaurar usqldump\"",
-    "\"Restaurar completo\"",
+    "\"backup\"",
+    "\"usqldump\"",
+    "\"completo\"",
+    "\"Restaurar\"",
     "\"si\"",
     "\"selecciona\"",
     "\"caso\"",

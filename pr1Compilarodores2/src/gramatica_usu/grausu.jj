@@ -70,10 +70,11 @@ TOKEN :
     | < Otorgar: "otorgar permisos" >
     | < Denegar: "denegar permisos" >
     | < Declarar: "declarar">
-    | < BackupU : "backup usqldump">
-    | < BackupC : "backup completo">
-    | < RestaU : "Restaurar usqldump">
-    | < RestaC : "Restaurar completo">
+    | < Backup : "backup">
+    | < Usqldump : "usqldump">
+    | < Completo : "completo">
+    | < Restaurar : "Restaurar">
+
 }
 
 TOKEN :
@@ -234,15 +235,8 @@ Nodo instrucciones(Nodo raiz):
     | <Actualizar> <Tabla> raiz=actualizar(raiz) raiz=instrucciones(raiz) { return raiz; }
     | <Borrar> <En> <Tabla> raiz=borrar(raiz) raiz=instrucciones(raiz) { return raiz; }       
     | <Seleccionar> raiz=seleccionar(raiz) pt() raiz=instrucciones(raiz) { return raiz; }
-
-    | <BackupU>  backupu() raiz=instrucciones(raiz) { return raiz; }
-    | <BackupC>  backupc() raiz=instrucciones(raiz) { return raiz; }
-    | <RestaU>   restau() raiz=instrucciones(raiz) { return raiz; }
-    | <RestaC>   restac() raiz=instrucciones(raiz) { return raiz; }
-
-    | <Contar> contar() raiz=instrucciones(raiz) { return raiz; }
+    | <Contar> nodo1=contar() { raiz.addHijo(nodo1); } pt() raiz=instrucciones(raiz) { return raiz; }
     
-
     | t1=<Id> <Pai> { Nodo tmp = new Nodo("llamada");
                       tmp.setNumNodo(grausu.contador++);
                       tmp.setValor(t1.image);
@@ -530,21 +524,19 @@ Nodo proceconte(Nodo padre):
     | <Actualizar> <Tabla> padre=actualizar(padre) padre=proceconte(padre) { return padre; }
     | <Retorno> padre=retorno(padre) pt() padre=proceconte(padre) { return padre; }
     | <Borrar> <En> <Tabla> padre=borrar(padre) padre=proceconte(padre) { return padre; }
-
-    | <BackupU>  backupu() padre=proceconte(padre) { return padre; }
-    | <BackupC>  backupc() padre=proceconte(padre) { return padre; }
-    | <RestaU>   restau() padre=proceconte(padre) { return padre; }
-    | <RestaC>   restac() padre=proceconte(padre) { return padre; }    
     | <Seleccionar> padre=seleccionar(padre) pt() padre=proceconte(padre) { return padre; }
-    
+    | <Contar> nodo1=contar() { padre.addHijo(nodo1); } pt() padre=proceconte(padre) { return padre; }
+    | <Backup>  padre=backup(padre) padre=proceconte(padre) { return padre; }
+    | <Restaurar>   padre=restaurar(padre) padre=proceconte(padre) { return padre; }  
 
-    | <Si> si() padre=proceconte(padre) { return padre; }
+    | <Si> padre=si(padre) padre=proceconte(padre) { return padre; }
+    | <Mientras> padre=mientras(padre) padre=proceconte(padre) { return padre; }
+
     | <Selec> selecciona() padre=proceconte(padre) { return padre; }
     | <Para> para() padre=proceconte(padre) { return padre; }
-    | <Mientras> mientras() padre=proceconte(padre) { return padre; }
     | <Imprimir> imprimir() padre=proceconte(padre) { return padre; }
     | <Detener> detener() padre=proceconte(padre) { return padre; }
-    | <Contar> contar() padre=proceconte(padre) { return padre; }
+    
     
     | t1=<Id> <Pai> { Nodo tmp = new Nodo("llamada");
                       tmp.setNumNodo(grausu.contador++);
@@ -969,31 +961,57 @@ void tipo():
     |<Datetime>
 }
 
-//***********************************************************************BACKUP y Restaurar
+//***************************************************************************************************BACKUP y Restaurar
 
-void backupu():
-{}
+Nodo backup(Nodo padre):
 {
-    <Id> <Id> pt()
+    Token t1;
+    Nodo nodo1;
+}
+{
+     <Usqldump> { Nodo tmp = new Nodo("backup usql");
+                  tmp.setNumNodo(grausu.contador++); 
+                  nodo1 = tmp;
+    } t1=<Id> { nodo1.setValor(t1.image);
+                nodo1.setColumna(t1.beginColumn);
+                nodo1.setFila(t1.beginLine); 
+    } t1=<Id> pt(){ nodo1.setTipo(t1.image); 
+    padre.addHijo(nodo1); return padre;}
+
+    |<Completo> { Nodo tmp = new Nodo("backup completo");
+                  tmp.setNumNodo(grausu.contador++); 
+                  nodo1 = tmp;
+    } t1=<Id> { nodo1.setValor(t1.image);
+                nodo1.setColumna(t1.beginColumn);
+                nodo1.setFila(t1.beginLine); 
+    } t1=<Id> pt() { nodo1.setTipo(t1.image); 
+    padre.addHijo(nodo1); return padre;}
 }
 
-void backupc():
-{}
+Nodo restaurar(Nodo padre):
 {
-    <Id> <Id> pt()
+    Nodo nodo1;
+    Token t1;
+}
+{
+    <Usqldump> { Nodo tmp = new Nodo("restaurar usql");
+                  tmp.setNumNodo(grausu.contador++); 
+                  nodo1 = tmp;
+    } t1=<Id> { nodo1.setValor(t1.image);
+                nodo1.setColumna(t1.beginColumn);
+                nodo1.setFila(t1.beginLine); 
+    } pt() { padre.addHijo(nodo1); return padre;}
+
+    |<Completo> { Nodo tmp = new Nodo("restaurar completo");
+                  tmp.setNumNodo(grausu.contador++); 
+                  nodo1 = tmp;
+    } t1=<Id> { nodo1.setValor(t1.image);
+                nodo1.setColumna(t1.beginColumn);
+                nodo1.setFila(t1.beginLine); 
+    }  pt() { padre.addHijo(nodo1); return padre;}
 }
 
-void restau():
-{}
-{
-     <RutaU> pt()
-}
 
-void restac():
-{}
-{
-    <RutaZ> pt()
-}
 
 //************************************************************************** Instruccion ACTUALIZAR
 
@@ -1360,6 +1378,8 @@ Nodo s8():
 
     | <Pai> nodo1=s0() <Paf> { return nodo1; }
 
+    | <Contar> nodo1=contar() { return nodo1; }
+
     | t1=<Id> { Nodo tmp = new Nodo("id");
                 tmp.setNumNodo(grausu.contador++);
                 tmp.setValor(t1.image);
@@ -1367,6 +1387,8 @@ Nodo s8():
                 tmp.setFila(t1.beginLine);
                 nodo1 = tmp;
     } nodo1=esfuncion(nodo1) { return nodo1; }
+
+    
 }
 
 Nodo esfuncion(Nodo hijo):
@@ -1377,7 +1399,7 @@ Nodo esfuncion(Nodo hijo):
     Token t1;
 }{
       <Pai> { hijo.setNombre("llamada");
-     } hijo=funpara(hijo) nodo1=s9(hijo) <Paf>
+     } hijo=funpara(hijo) nodo1=s9(hijo) <Paf> { return hijo; }
 
     | { return hijo; }
 }
@@ -1450,19 +1472,38 @@ Nodo objetopermiso(Nodo hijo):
 
 //**********************************************************************************Funcion SI()
 
-void si():
+//<Pai> s0() <Paf> <Lli> proceconte(null) llf() sino()
+Nodo si(Nodo padre):
+{
+    Nodo nodo1;
+    Nodo nodo2;
+    Nodo n2;
+    Token t1;
+}
+{
+    <Pai> n2=s0() <Paf> { Nodo tmp = new Nodo("fun_si");
+                          tmp.setNumNodo(grausu.contador++);
+                          nodo1 = tmp;
+                          nodo1.addHijo(n2);
+                          Nodo tmp2 = new Nodo("instrucciones");
+                          tmp2.setNumNodo(grausu.contador++);
+                          nodo2 = tmp2;
+                        }
+   <Lli> nodo2=proceconte(nodo2) { nodo1.addHijo(nodo2); 
+   }llf() nodo1=sino(nodo1) { padre.addHijo(nodo1); return padre; }
+}
+
+
+Nodo sino(Nodo hijo):
 {
     Nodo nodo1;
 }
 {
-    <Pai> s0() <Paf> <Lli> proceconte(null) llf() sino()
-}
-
-void sino():
-{}
-{
-      <Sino> <Lli>  proceconte(null) llf()
-    | { return; }
+      <Sino> { Nodo tmp = new Nodo("fun_sino");
+               tmp.setNumNodo(grausu.contador++);
+               nodo1 = tmp;
+      } <Lli>  nodo1=proceconte(nodo1) llf() { hijo.addHijo(nodo1); return hijo; }
+    | { return hijo; }
 }
 
 //*******************************************************************SELECCIONA
@@ -1522,12 +1563,25 @@ void detener():
     pt()
 }
 
-//*******************************************************************************Mientras
+//**************************************************************************************************Mientras
 
-void mientras():
-{}
+Nodo mientras(Nodo padre):
 {
-    <Pai> s0() <Paf> <Lli> proceconte(null) llf()
+    Nodo nodo1;
+    Nodo n2;
+    Nodo nodo2;
+    Token t1;
+}
+{
+    <Pai> n2=s0() { Nodo tmp = new Nodo("mientras");
+                    tmp.setNumNodo(grausu.contador++);
+                    Nodo tmp2 = new Nodo("instruciones");
+                    tmp2.setNumNodo(grausu.contador++);
+                    nodo1 = tmp;
+                    nodo2 = tmp2;
+                    nodo1.addHijo(n2);
+    } <Paf> <Lli> nodo2=proceconte(nodo2) { nodo1.addHijo(nodo2); 
+    } llf() { padre.addHijo(nodo1); return padre;  }
 }
 
 //*******************************************************************************Imprimir
@@ -1540,8 +1594,15 @@ void imprimir():
 
 //******************************************************************************CONTAR
 
-void contar():
-{}
+Nodo contar():
 {
-    <Pai> <Cii> <Seleccionar> seleccionar(null) <Cif> <Paf> pt()
+    Nodo nodo1;
+    Nodo nodo2;
+    Token t1;
+}
+{
+    <Pai> <Cii> { Nodo tmp = new Nodo("contar");
+                  tmp.setNumNodo(grausu.contador++);
+                  nodo1 = tmp; 
+    } <Seleccionar> nodo1=seleccionar(nodo1) <Cif> <Paf> { return nodo1; }
 }
