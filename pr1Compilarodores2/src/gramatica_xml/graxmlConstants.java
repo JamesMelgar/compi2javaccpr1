@@ -129,39 +129,51 @@ public interface graxmlConstants {
   /** RegularExpression Id. */
   int Todos = 64;
   /** RegularExpression Id. */
-  int Pk = 65;
+  int Funi = 65;
   /** RegularExpression Id. */
-  int Fki = 66;
+  int Funf = 66;
   /** RegularExpression Id. */
-  int Fkf = 67;
+  int Retornoi = 67;
   /** RegularExpression Id. */
-  int Nulo = 68;
+  int Retornof = 68;
   /** RegularExpression Id. */
-  int Auto = 69;
+  int Arc = 69;
   /** RegularExpression Id. */
-  int Unico = 70;
+  int Pk = 70;
   /** RegularExpression Id. */
-  int Nnulo = 71;
+  int Fki = 71;
   /** RegularExpression Id. */
-  int Id = 72;
+  int Fkf = 72;
   /** RegularExpression Id. */
-  int Ruta = 73;
+  int Nulo = 73;
   /** RegularExpression Id. */
-  int Bool = 74;
+  int Auto = 74;
   /** RegularExpression Id. */
-  int Num = 75;
+  int Unico = 75;
   /** RegularExpression Id. */
-  int Date = 76;
+  int Nnulo = 76;
   /** RegularExpression Id. */
-  int Datetime = 77;
+  int Id = 77;
   /** RegularExpression Id. */
-  int Ai = 78;
+  int Ruta = 78;
   /** RegularExpression Id. */
-  int Af = 79;
+  int Bool = 79;
   /** RegularExpression Id. */
-  int D = 80;
+  int Num = 80;
   /** RegularExpression Id. */
-  int Texto = 81;
+  int Date = 81;
+  /** RegularExpression Id. */
+  int Datetime = 82;
+  /** RegularExpression Id. */
+  int Ai = 83;
+  /** RegularExpression Id. */
+  int Af = 84;
+  /** RegularExpression Id. */
+  int D = 85;
+  /** RegularExpression Id. */
+  int Texto = 86;
+  /** RegularExpression Id. */
+  int Sql = 87;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -233,6 +245,11 @@ public interface graxmlConstants {
     "\"<Obusu>\"",
     "\"</Obusu>\"",
     "\"<todos>\"",
+    "\"<Fun>\"",
+    "\"</Fun>\"",
+    "\"<retorno>\"",
+    "\"</retorno>\"",
+    "\"<archivo_procedimiento>\"",
     "\"<pk>\"",
     "\"<fk>\"",
     "\"</fk>\"",
@@ -250,6 +267,7 @@ public interface graxmlConstants {
     "\">\"",
     "\"/\"",
     "<Texto>",
+    "<Sql>",
   };
 
 }

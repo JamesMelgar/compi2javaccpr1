@@ -48,6 +48,11 @@ Nodo inicio(Nodo raiz) throws ParseException {
 {if ("" != null) return raiz;}
       break;
       }
+    case Arc:{
+      raiz = funproce(raiz);
+{if ("" != null) return raiz;}
+      break;
+      }
     default:
       jj_la1[0] = jj_gen;
       jj_consume_token(-1);
@@ -148,6 +153,7 @@ Nodo tmp = new Nodo("Procedure");
                      tmp.setValor("0");
                      nodo1 = tmp;
       nodo1 = Maruta(nodo1);
+nodo1 = pr1compilarodores2.CrearArbol.Analisisxml(nodo1, nodo1.getValor());
       jj_consume_token(Proceduref);
 raiz.addHijo(nodo1);
       raiz = recontenido(raiz);
@@ -793,6 +799,124 @@ Nodo tmp = new Nodo("Todos");
     throw new Error("Missing return statement in function");
   }
 
+//***********************************************************************************Ar Archivo_Procedimiento
+  final public 
+Nodo funproce(Nodo raiz) throws ParseException {
+    jj_consume_token(Arc);
+    raiz = archivoproce(raiz);
+{if ("" != null) return raiz;}
+    throw new Error("Missing return statement in function");
+  }
+
+// <Proci>  procearchivo() parametros() <Procf> archivoproce()
+// | <Funi>   funarchivo()  parametros() <funf> archivoproce()
+  final public Nodo archivoproce(Nodo raiz) throws ParseException {Nodo nodo1;
+    Nodo nodo2;
+    Nodo nodo3;
+    Token t1;
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case Proci:{
+      jj_consume_token(Proci);
+      nodo1 = procearchivo();
+Nodo tmp2 = new Nodo("paramatros");
+                                         tmp2.setNumNodo(graxml.contador++);
+                                         Nodo tmp3 = new Nodo("sentencias");
+                                         tmp3.setNumNodo(graxml.contador++);
+                                         nodo2=tmp2;
+                                         nodo3=tmp3;
+      nodo2 = parametros(nodo2);
+      nodo3 = sentencias(nodo3);
+nodo1.addHijo(nodo2);
+            nodo1.addHijo(nodo3);
+            raiz.addHijo(nodo1);
+      jj_consume_token(Procf);
+      raiz = archivoproce(raiz);
+{if ("" != null) return raiz;}
+      break;
+      }
+    case Funi:{
+      jj_consume_token(Funi);
+      nodo1 = funarchivo();
+Nodo tmp2 = new Nodo("paramatros");
+                                         tmp2.setNumNodo(graxml.contador++);
+                                         Nodo tmp3 = new Nodo("sentencias");
+                                         tmp3.setNumNodo(graxml.contador++);
+                                         nodo2=tmp2;
+                                         nodo3=tmp3;
+      nodo2 = parametros(nodo2);
+      nodo3 = sentencias(nodo3);
+nodo1.addHijo(nodo2);
+            nodo1.addHijo(nodo3);
+            raiz.addHijo(nodo1);
+      jj_consume_token(Funf);
+      raiz = archivoproce(raiz);
+{if ("" != null) return raiz;}
+      break;
+      }
+    default:
+      jj_la1[16] = jj_gen;
+{if ("" != null) return raiz;}
+    }
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Nodo funarchivo() throws ParseException {Token t1;
+    Nodo nodo1;
+    jj_consume_token(Nombrei);
+    t1 = jj_consume_token(Id);
+Nodo tmp = new Nodo(t1.image);
+                         tmp.setNumNodo(graxml.contador++);
+                         tmp.setTipo("fun");
+                         tmp.setColumna(t1.beginColumn);
+                         tmp.setFila(t1.beginLine);
+                         nodo1 = tmp;
+    jj_consume_token(Nombref);
+    jj_consume_token(Retornoi);
+    t1 = jj_consume_token(Id);
+nodo1.setValor(t1.image);
+    jj_consume_token(Retornof);
+{if ("" != null) return nodo1;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Nodo procearchivo() throws ParseException {Nodo nodo1;
+    Token t1;
+    jj_consume_token(Nombrei);
+    t1 = jj_consume_token(Id);
+Nodo tmp = new Nodo(t1.image);
+                         tmp.setNumNodo(graxml.contador++);
+                         tmp.setTipo("proce");
+                         tmp.setColumna(t1.beginColumn);
+                         tmp.setFila(t1.beginLine);
+                         nodo1 = tmp;
+    jj_consume_token(Nombref);
+{if ("" != null) return nodo1;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Nodo parametros(Nodo primo) throws ParseException {
+    jj_consume_token(Paramsi);
+    primo = tbcont(primo);
+    jj_consume_token(Paramsf);
+{if ("" != null) return primo;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Nodo sentencias(Nodo hijo) throws ParseException {Token t1;
+    Nodo nodo1;
+    jj_consume_token(Srci);
+    t1 = jj_consume_token(Sql);
+nodo1 = hijo;
+                      Nodo tmp = new Nodo(t1.image);
+                     tmp.setNumNodo(graxml.contador++);
+                     hijo = pr1compilarodores2.CrearArbol.Analisiusuql(nodo1, t1.image);
+                     //hijo.addHijo(tmp);
+
+    jj_consume_token(Srcf);
+{if ("" != null) return hijo;}
+    throw new Error("Missing return statement in function");
+  }
+
   /** Generated Token Manager. */
   public graxmlTokenManager token_source;
   SimpleCharStream jj_input_stream;
@@ -802,7 +926,7 @@ Nodo tmp = new Nodo("Todos");
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[16];
+  final private int[] jj_la1 = new int[17];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static private int[] jj_la1_2;
@@ -812,13 +936,13 @@ Nodo tmp = new Nodo("Todos");
       jj_la1_init_2();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x4100,0x40,0x1500000,0x54000000,0x0,0x0,0x40000,0x0,0x0,0x0,0x0,0x400,0x40,0x0,0x40,0x0,};
+      jj_la1_0 = new int[] {0x4100,0x40,0x1500000,0x54000000,0x0,0x0,0x40000,0x0,0x0,0x0,0x0,0x400,0x40,0x0,0x40,0x0,0x0,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x150000,0x0,0x0,0x115,0x0,0x0,0x0,0x100,0x0,0x100,0x400000,0x15000000,0x0,0x40000000,0x0,0x40000000,};
+      jj_la1_1 = new int[] {0x150000,0x0,0x0,0x115,0x0,0x0,0x0,0x100,0x0,0x100,0x400000,0x15000000,0x0,0x40000000,0x0,0x40000000,0x4000,};
    }
    private static void jj_la1_init_2() {
-      jj_la1_2 = new int[] {0x0,0x0,0x0,0x0,0xf6,0xf2,0x0,0x4000,0x23d00,0x0,0x0,0x0,0x0,0x0,0x0,0x1,};
+      jj_la1_2 = new int[] {0x20,0x0,0x0,0x0,0x1ec0,0x1e40,0x0,0x80000,0x47a000,0x0,0x0,0x0,0x0,0x0,0x0,0x1,0x2,};
    }
 
   /** Constructor with InputStream. */
@@ -832,7 +956,7 @@ Nodo tmp = new Nodo("Todos");
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 16; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -846,7 +970,7 @@ Nodo tmp = new Nodo("Todos");
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 16; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -856,7 +980,7 @@ Nodo tmp = new Nodo("Todos");
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 16; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -866,7 +990,7 @@ Nodo tmp = new Nodo("Todos");
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 16; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -875,7 +999,7 @@ Nodo tmp = new Nodo("Todos");
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 16; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -884,7 +1008,7 @@ Nodo tmp = new Nodo("Todos");
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 16; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -935,12 +1059,12 @@ Nodo tmp = new Nodo("Todos");
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[82];
+    boolean[] la1tokens = new boolean[88];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 17; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -955,7 +1079,7 @@ Nodo tmp = new Nodo("Todos");
         }
       }
     }
-    for (int i = 0; i < 82; i++) {
+    for (int i = 0; i < 88; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

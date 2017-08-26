@@ -91,7 +91,13 @@ TOKEN :
     | < Obusui:"<Obusu>">
     | < Obusuf:"</Obusu>">
     | < Todos:"<todos>">
-}
+    | < Funi: "<Fun>">
+    | < Funf: "</Fun>">
+    | < Retornoi: "<retorno>">
+    | < Retornof: "</retorno>">
+
+    | < Arc: "<archivo_procedimiento>">
+} 
 
 TOKEN :
 {
@@ -137,6 +143,22 @@ TOKEN :
   >
 }
 
+TOKEN :
+{
+     < Sql:
+      "%"
+      (   (~["%","\\"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","%"]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )*
+      "%"
+  >
+}
+
 //******************************************************************************************************Inicio
 
 Nodo inicio(Nodo raiz) :
@@ -155,6 +177,7 @@ Nodo interno(Nodo raiz):
    |raiz=archivotabla(raiz) { return raiz; }
    |raiz=archivoobj(raiz) { return raiz; }
    |raiz=arusu(raiz) {return raiz;}
+   |raiz=funproce(raiz) {return raiz;}
 }
 
 //******************************************************************************************ARCHIVO MAESTRO
@@ -237,7 +260,8 @@ Nodo recontenido(Nodo raiz):
                      tmp.setValor("0");
                      nodo1 = tmp; 
                     }
-     nodo1=Maruta(nodo1) <Proceduref> { raiz.addHijo(nodo1); }
+     nodo1=Maruta(nodo1) { nodo1 = pr1compilarodores2.CrearArbol.Analisisxml(nodo1, nodo1.getValor()); }
+     <Proceduref> { raiz.addHijo(nodo1); }
      raiz=recontenido(raiz) { return raiz; }
 
     | <Objecti> { Nodo tmp = new Nodo("Objeto");
@@ -640,3 +664,102 @@ Nodo conper(Nodo hijo3 ):
     | {return hijo3;}
 }
 
+//***********************************************************************************Ar Archivo_Procedimiento
+
+Nodo funproce(Nodo raiz):
+{ }
+{
+  <Arc> raiz=archivoproce(raiz) { return raiz; }
+}
+
+
+// <Proci>  procearchivo() parametros() <Procf> archivoproce()
+// | <Funi>   funarchivo()  parametros() <funf> archivoproce()
+Nodo archivoproce(Nodo raiz):
+{
+    Nodo nodo1;
+    Nodo nodo2;
+    Nodo nodo3;
+    Token t1;
+}{
+      <Proci>  nodo1=procearchivo() {Nodo tmp2 = new Nodo("paramatros");
+                                         tmp2.setNumNodo(graxml.contador++);
+                                         Nodo tmp3 = new Nodo("sentencias");
+                                         tmp3.setNumNodo(graxml.contador++);
+                                         nodo2=tmp2;
+                                         nodo3=tmp3;
+    } nodo2=parametros(nodo2) nodo3=sentencias(nodo3) { 
+            nodo1.addHijo(nodo2); 
+            nodo1.addHijo(nodo3);
+            raiz.addHijo(nodo1);
+    } <Procf> raiz=archivoproce(raiz) {return raiz;} 
+
+    | <Funi> nodo1=funarchivo() {Nodo tmp2 = new Nodo("paramatros");
+                                         tmp2.setNumNodo(graxml.contador++);
+                                         Nodo tmp3 = new Nodo("sentencias");
+                                         tmp3.setNumNodo(graxml.contador++);
+                                         nodo2=tmp2;
+                                         nodo3=tmp3;
+    } nodo2=parametros(nodo2) nodo3=sentencias(nodo3) { 
+            nodo1.addHijo(nodo2); 
+            nodo1.addHijo(nodo3);
+            raiz.addHijo(nodo1);
+    } <Funf> raiz=archivoproce(raiz) {return raiz;} 
+
+    | { return raiz; }
+}
+
+Nodo funarchivo():
+{
+    Token t1;
+    Nodo nodo1;
+}
+{
+    <Nombrei> t1=<Id> {  Nodo tmp = new Nodo(t1.image);
+                         tmp.setNumNodo(graxml.contador++);
+                         tmp.setTipo("fun");
+                         tmp.setColumna(t1.beginColumn);
+                         tmp.setFila(t1.beginLine);
+                         nodo1 = tmp;
+    } <Nombref> <Retornoi> t1=<Id> { nodo1.setValor(t1.image);
+    } <Retornof> { return nodo1; }
+}
+
+Nodo procearchivo():
+{
+    Nodo nodo1;
+    Token t1;
+}
+{
+     <Nombrei> t1=<Id> {  Nodo tmp = new Nodo(t1.image);
+                         tmp.setNumNodo(graxml.contador++);
+                         tmp.setTipo("proce");
+                         tmp.setColumna(t1.beginColumn);
+                         tmp.setFila(t1.beginLine);
+                         nodo1 = tmp;
+    } <Nombref> { return nodo1; }
+}
+
+Nodo parametros(Nodo primo):
+{ }
+{
+    <Paramsi> primo=tbcont(primo) <Paramsf> { return primo; }
+}
+
+Nodo sentencias(Nodo hijo):
+{
+    Token t1;
+    Nodo nodo1;
+}
+{
+    <Srci> t1=<Sql> { nodo1 = hijo;
+                      Nodo tmp = new Nodo(t1.image);
+                     tmp.setNumNodo(graxml.contador++);
+                     hijo = pr1compilarodores2.CrearArbol.Analisiusuql(nodo1, t1.image); 
+                     //hijo.addHijo(tmp);
+    } <Srcf> { return hijo; }
+}
+
+//{ nodo1 = hijo;
+//                     hijo = pr1compilarodores2.CrearArbol.Analisiusuql(nodo1, t1.image); 
+//   }

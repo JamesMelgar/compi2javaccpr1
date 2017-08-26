@@ -13,7 +13,7 @@ import java.util.*;
 
 public class grausu
 {
-    public static int contador=5000;
+    public static int contador=20000;
     public static void main( String[] args )throws ParseException
     {
             System.out.println("analisis correcto");        
@@ -236,6 +236,7 @@ Nodo instrucciones(Nodo raiz):
     | <Borrar> <En> <Tabla> raiz=borrar(raiz) raiz=instrucciones(raiz) { return raiz; }       
     | <Seleccionar> raiz=seleccionar(raiz) pt() raiz=instrucciones(raiz) { return raiz; }
     | <Contar> nodo1=contar() { raiz.addHijo(nodo1); } pt() raiz=instrucciones(raiz) { return raiz; }
+    | <Imprimir> raiz=imprimir(raiz) raiz=instrucciones(raiz) { return raiz; }
     
     | t1=<Id> <Pai> { Nodo tmp = new Nodo("llamada");
                       tmp.setNumNodo(grausu.contador++);
@@ -290,7 +291,7 @@ Nodo tipocrear(Nodo hijo):
      hijo=crearproce(hijo) {return hijo; }
 
     |<Funcion> { hijo.setNombre("crear funcion"); }
-     hijo=crearproce(hijo) {return hijo; }
+     hijo=crearfuncion(hijo) {return hijo; }
 
 
     |<Usuario> { hijo.setNombre("crear usuario"); } 
@@ -466,6 +467,27 @@ Nodo tipodato():
                 return tmp; }
 }
 //*****************************************************************Crear Procedimiento
+//nodo1=tipodato() { hijo.setTipo(nodo1.getTipo()); 
+Nodo crearfuncion(Nodo hijo):
+{
+    Token t1;
+    Nodo n2;
+    Nodo nodo1;
+}{
+   t1=<Id> { hijo.setValor(t1.image);
+             hijo.setColumna(t1.beginColumn);  
+             hijo.setFila(t1.beginLine);
+    } <Pai> { Nodo tmp = new Nodo("parametros");
+              tmp.setNumNodo(grausu.contador++);
+              nodo1 = tmp;
+    } nodo1=paraproce(nodo1) { hijo.addHijo(nodo1); 
+    } <Paf> n2=tipodato() { Nodo tmp1 = new Nodo("sentencias");
+                            tmp1.setNumNodo(grausu.contador++);
+                             nodo1 = tmp1;
+                             hijo.setTipo(n2.getTipo()); 
+    }<Lli> nodo1=proceconte(nodo1) { hijo.addHijo(nodo1); 
+    } llf() { return hijo; } 
+}
 
 //<Id> <Pai> paraproce() <Paf> <Lli> proceconte() llf() 
 Nodo crearproce(Nodo hijo):
@@ -515,7 +537,7 @@ Nodo proceconte(Nodo padre):
 }
 {
      <Alterar>  padre=alterar(padre) padre=proceconte(padre) { return padre; }
-     <Eliminar> padre=eliminar(padre) padre=proceconte(padre) { return padre; }
+    |<Eliminar> padre=eliminar(padre) padre=proceconte(padre) { return padre; }
     |<Insertar> padre=insertar(padre) padre=proceconte(padre) { return padre; }
     | padre=asignar(padre) pt() padre=proceconte(padre) { return padre; }
     | <Declarar> padre=declarar(padre) pt() padre=proceconte(padre) { return padre; }
@@ -527,15 +549,17 @@ Nodo proceconte(Nodo padre):
     | <Seleccionar> padre=seleccionar(padre) pt() padre=proceconte(padre) { return padre; }
     | <Contar> nodo1=contar() { padre.addHijo(nodo1); } pt() padre=proceconte(padre) { return padre; }
     | <Backup>  padre=backup(padre) padre=proceconte(padre) { return padre; }
-    | <Restaurar>   padre=restaurar(padre) padre=proceconte(padre) { return padre; }  
+    | <Restaurar>   padre=restaurar(padre) padre=proceconte(padre) { return padre; }
+    | padre=crear(padre) padre=proceconte(padre) { return padre; }
+    | padre=usar(padre)  padre=proceconte(padre) { return padre; }  
 
     | <Si> padre=si(padre) padre=proceconte(padre) { return padre; }
     | <Mientras> padre=mientras(padre) padre=proceconte(padre) { return padre; }
+    | <Detener> padre=detener(padre) padre=proceconte(padre) { return padre; }
+    | <Selec> padre=selecciona(padre) padre=proceconte(padre) { return padre; }
+    | <Imprimir> padre=imprimir(padre) padre=proceconte(padre) { return padre; }
 
-    | <Selec> selecciona() padre=proceconte(padre) { return padre; }
-    | <Para> para() padre=proceconte(padre) { return padre; }
-    | <Imprimir> imprimir() padre=proceconte(padre) { return padre; }
-    | <Detener> detener() padre=proceconte(padre) { return padre; }
+    | <Para> padre=para(padre) padre=proceconte(padre) { return padre; }
     
     
     | t1=<Id> <Pai> { Nodo tmp = new Nodo("llamada");
@@ -1178,6 +1202,7 @@ Nodo orden(Nodo primo):
                 n2 = tmp2; 
       }  n2=idorden(n2) { nodo1.addHijo(n2);} nodo1=tipoorden(nodo1) { 
          primo.addHijo(nodo1); return primo; }
+     | { return primo; }
 }
 
 Nodo idorden(Nodo n2):
@@ -1506,61 +1531,142 @@ Nodo sino(Nodo hijo):
     | { return hijo; }
 }
 
-//*******************************************************************SELECCIONA
+//**************************************************************************SELECCIONA
 
-void selecciona():
-{}
+Nodo selecciona(Nodo padre):
 {
-    <Pai> s0() <Paf> <Lli> caso() llf()
+    Nodo nodo1;
+    Nodo nodo2;
+    Nodo n2;
+    Token t1;
+}
+{
+    <Pai> n2=s0()  { Nodo tmp = new Nodo("switch");
+                     tmp.setNumNodo(grausu.contador++);
+                     nodo1 = tmp; 
+                     nodo1.addHijo(n2);
+     } <Paf> <Lli> { Nodo tmp2 = new Nodo("casos");
+                     tmp2.setNumNodo(grausu.contador++);
+                     nodo2 = tmp2; 
+     } nodo2=caso(nodo2) llf() { nodo1.addHijo(nodo2); padre.addHijo(nodo1);
+      return padre; }
 }
 
-void caso():
-{}
+Nodo caso(Nodo hijo):
 {
-    <Caso> puntual() <Pp> proceconte(null) caso2()
+    Nodo nodo1;
+    Token t1;
+    Nodo n2;
+}
+{
+    <Caso> n2=puntual() <Pp> n2=proceconte(n2) { 
+    hijo.addHijo(n2); } hijo=caso2(hijo) {return hijo; }
 }
 
-void puntual():
-{}
+Nodo puntual():
 {
-      <Texto>
-    | <Bo>
-    | <Num>
+    Nodo nodo1;
+    Token t1;
+}
+{
+      t1=<Texto>  { Nodo tmp = new Nodo("caso");
+                    tmp.setNumNodo(grausu.contador++);
+                    tmp.setValor(t1.image);
+                    tmp.setTipo("texto");
+                    tmp.setColumna(t1.beginColumn);
+                    tmp.setFila(t1.beginLine);
+                    return tmp; }
+
+    | t1=<Bo> { Nodo tmp = new Nodo("caso");
+                    tmp.setNumNodo(grausu.contador++);
+                    tmp.setValor(t1.image);
+                    tmp.setTipo("bool");
+                    tmp.setColumna(t1.beginColumn);
+                    tmp.setFila(t1.beginLine);
+                    return tmp; }
+
+    | t1=<Num> { Nodo tmp = new Nodo("caso");
+                 tmp.setNumNodo(grausu.contador++);
+                 tmp.setValor(t1.image);
+                 tmp.setTipo("num");
+                 tmp.setColumna(t1.beginColumn);
+                 tmp.setFila(t1.beginLine);
+                 return tmp; }
 }
 
-void caso2():
-{}
+Nodo caso2(Nodo hijo):
 {
-      <Caso> puntual() <Pp> proceconte(null) caso2()
-    | <Defecto> <Pp> proceconte(null) caso2()
-    | {return;}
+    Nodo nodo1;
+    Token t1;
+    Nodo n2;
+}
+{
+      <Caso> n2=puntual() <Pp> n2=proceconte(n2) 
+    { hijo.addHijo(n2); } hijo=caso2(hijo) {return hijo; }
+
+    | <Defecto> <Pp> { Nodo tmp = new Nodo("defecto");
+                 tmp.setNumNodo(grausu.contador++); 
+                 n2=tmp;
+    } n2=proceconte(n2) { hijo.addHijo(n2); 
+    } hijo=caso2(hijo) {return hijo; }
+
+    | {return hijo;}
 }
 
 //*****************************************************************************Instruccion Para
 
-void para():
-{}
+Nodo para(Nodo padre):
 {
-    <Pai> pinterno() <Paf> <Lli> proceconte(null) llf()
+    Token t1;
+    Nodo nodo1;
+    Nodo n2;
 }
-
-void pinterno():
-{}{
-     <Declarar> <Aid> <Igual> s0() pt() s0() pt() incremento() 
-}
-
-void incremento():
-{}{
-      <Suma> <Suma>
-    | <Resta> <Resta>
-}
-
-//*******************************************************************************Detener()
-
-void detener():
-{}
 {
-    pt()
+    <Pai> { Nodo tmp = new Nodo("ciclo para");
+            tmp.setNumNodo(grausu.contador++);
+            nodo1=tmp;
+    } nodo1=pinterno(nodo1) <Paf> <Lli> { Nodo tmp2 = new Nodo("sentencias");
+                                          tmp2.setNumNodo(grausu.contador++);
+                                          n2=tmp2;
+    } n2=proceconte(n2) llf() { nodo1.addHijo(n2); return nodo1; }
+}
+
+Nodo pinterno(Nodo hijo):
+{
+     Token t1;
+     Nodo nodo1;
+     Nodo n2;
+}{
+     <Declarar> t1=<Aid> <Integer>{ Nodo tmp = new Nodo(t1.image);
+                           tmp.setNumNodo(grausu.contador++);
+                           tmp.setValor("integer");
+                           tmp.setColumna(t1.beginColumn);
+                           tmp.setFila(t1.beginLine);
+                           nodo1 = tmp; 
+        } <Igual> n2=s0() { nodo1.addHijo(n2);
+        } pt() n2=s0() { hijo.addHijo(nodo1); hijo.addHijo(n2);
+        } pt() n2=incremento() { hijo.addHijo(n2); return hijo; }
+}
+
+Nodo incremento():
+{ }{
+      <Suma> <Suma> { Nodo tmp = new Nodo("incremento");
+                      tmp.setNumNodo(grausu.contador++);
+                      return tmp; }
+    | <Resta> <Resta> { Nodo tmp = new Nodo("decremento");
+                        tmp.setNumNodo(grausu.contador++); 
+                        return tmp;}
+}
+
+//****************************************************************************************************Detener()
+
+Nodo detener(Nodo padre):
+{ }
+{
+    pt()  { Nodo tmp = new Nodo("detener");
+            tmp.setNumNodo(grausu.contador++);
+            padre.addHijo(tmp);
+            return padre; }
 }
 
 //**************************************************************************************************Mientras
@@ -1584,12 +1690,19 @@ Nodo mientras(Nodo padre):
     } llf() { padre.addHijo(nodo1); return padre;  }
 }
 
-//*******************************************************************************Imprimir
+//************************************************************************************************Imprimir
 
-void imprimir():
-{}
+Nodo imprimir(Nodo padre):
 {
-    <Pai> s0() <Paf> pt()
+    Nodo n2;
+    Nodo nodo1;
+}
+{
+    <Pai> n2=s0() { Nodo tmp = new Nodo("imprimir");
+                    tmp.setNumNodo(grausu.contador++);
+                    nodo1 = tmp;
+                    nodo1.addHijo(n2);
+    } <Paf> pt() { padre.addHijo(nodo1); return padre; }
 }
 
 //******************************************************************************CONTAR
