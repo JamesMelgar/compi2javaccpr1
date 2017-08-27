@@ -61,17 +61,24 @@ public class accpaquete {
         return false;
     }
     
-    public static boolean tipousql(Nodo paquete, Nodo usuario, Nodo master, Nodo hijo){
+    public static void tipousql(Nodo paquete, Nodo usuario, Nodo master, Nodo hijo){
         Nodo temp;
-        boolean valor;
         for(Nodo arbol : hijo.getHijos()){  
+            temp = arbol;
             if(arbol.getNombre().equalsIgnoreCase("crear usuario") == true){
-                temp = arbol;
                 crearusuario(usuario, temp);
-                return true;
+            }else if(arbol.getNombre().equalsIgnoreCase("usar") == true){
+                sentencia_usar(master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("otorgar idp") == true){
+                 sentencia_permitir_objeto(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("otorgar todos") == true){
+                sentencia_permiso_todos(usuario,master,temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("denegar todos") == true){
+                sentencia_denegar_todos(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("denegar idp") == true){
+               sentencia_denegar_objeto(usuario, master, temp);
             }
         }
-        return true;
     }
     
     public static void crearusuario(Nodo usuario, Nodo hijo){
@@ -82,7 +89,7 @@ public class accpaquete {
         Nodo nodo2;
         
         temp = hijo.getHijos().get(0);
-        valor = existeusuario(usuario, temp);
+        valor = existeusuario(usuario, temp.getNombre());
         if(valor == false){
              cadena = temp.getValor().substring(1, temp.getValor().length()-1);
              temp.setValor(cadena);
@@ -99,18 +106,17 @@ public class accpaquete {
         
     }
     
-    public static boolean existeusuario(Nodo usuarios,Nodo tipo){
+    public static boolean existeusuario(Nodo usuarios,String texto){
         String tempUsuario;
         Nodo temp;
         temp = usuarios;
-        System.out.println("prueba"+tipo.getNombre());
-        if(tipo.getNombre().equalsIgnoreCase("admin")==true){
+        if(texto.equalsIgnoreCase("admin")==true){
             return true;
         }
         for(Nodo hijos : temp.getHijos()){  
             tempUsuario = hijos.getNombre();
 
-            if(tipo.getNombre().equalsIgnoreCase(tempUsuario) == true){
+            if(texto.equalsIgnoreCase(tempUsuario) == true){
                     return true;   
                 }
         }
@@ -124,4 +130,310 @@ public class accpaquete {
            System.out.println("Acciones.accpaquete.crearnodo()");
            return nodo1;
      }
+    
+    public static boolean buscar_bd (Nodo master,String texto){
+        Nodo tmp;
+        tmp = master;
+        for(Nodo arbol : tmp.getHijos()){ 
+            if(arbol.getNombre().equalsIgnoreCase(texto) == true){
+                return true;
+            }
+        } 
+        return false;
+    }
+    
+    public static Nodo nodo_buscar_bd(Nodo master,String texto){
+        for(Nodo arbol : master.getHijos()){ 
+            if(arbol.getNombre().equalsIgnoreCase(texto) == true){
+                return arbol;
+            }
+        } 
+        return null;
+    }
+    
+    public static Nodo nodo_existeusuario(Nodo usuarios,String texto){
+        String tempUsuario;
+        if(texto.equalsIgnoreCase("admin")==true){
+            return null;
+        }
+        for(Nodo hijos : usuarios.getHijos()){  
+            tempUsuario = hijos.getNombre();
+            if(texto.equalsIgnoreCase(tempUsuario) == true){
+                    return hijos;   
+                }
+        }
+        return null;
+    }
+    
+    public static void sentencia_usar(Nodo master, Nodo usar){
+        boolean valor;
+        valor=buscar_bd(master, usar.getValor());
+        if(valor == true){
+            pr1compilarodores2.principal2.db=usar.getValor();
+        }else{
+            System.out.println("No");
+        }
+    }
+    
+    public static void sentencia_permiso_todos(Nodo usuarios,Nodo master , Nodo permiso){
+        int contador=0;
+        if(pr1compilarodores2.principal2.usua.equalsIgnoreCase("admin") == true ){
+            Nodo persona = nodo_existeusuario(usuarios, permiso.getValor());
+            Nodo db = nodo_buscar_bd(master, permiso.getTipo());
+            if (persona != null && db != null){
+                 //verificar si en la base de datos exite una base de datos con ese nombre
+                 Nodo nodo1 = persona.getHijos().get(0);
+                 String texto = Integer.toString(nodo1.getHijos().size());
+                 for(Nodo hijo : nodo1.getHijos()){
+                     //eliminar nodo si exite el nodo
+                     if(hijo.getNombre().equalsIgnoreCase(permiso.getTipo())){
+                         nodo1.getHijos().remove(contador);
+                         break;
+                     }
+                     ++contador; 
+                 }
+                 contador=0;
+                 //verificar si exite nodo en permiso
+                 Nodo nodo2 = persona.getHijos().get(1);
+                 for(Nodo hijo : nodo2.getHijos()){
+                     //eliminar nodo si exite el nodo
+                     if(hijo.getNombre().equalsIgnoreCase(permiso.getTipo())){
+                         nodo2.getHijos().remove(contador);
+                         break;
+                     }
+                     ++contador; 
+                 } 
+                 Nodo tmp1 = new Nodo(permiso.getTipo());
+                 tmp1.setNumNodo(++gramatica_xml.graxml.contador);
+                 Nodo tmp = new Nodo("Todos");
+                 tmp.setNumNodo(++gramatica_xml.graxml.contador);
+                 tmp1.addHijo(tmp);
+                 nodo2.addHijo(tmp1);
+                 crearxml.Usuario();
+            }
+        }
+    }
+    
+     public static void sentencia_denegar_todos(Nodo usuarios,Nodo master , Nodo permiso){
+        int contador=0;
+        if(pr1compilarodores2.principal2.usua.equalsIgnoreCase("admin") == true ){
+            Nodo persona = nodo_existeusuario(usuarios, permiso.getValor());
+            Nodo db = nodo_buscar_bd(master, permiso.getTipo());
+            if (persona != null && db != null){
+                 //verificar si en la base de datos exite una base de datos con ese nombre
+                 Nodo nodo1 = persona.getHijos().get(0);
+                 String texto = Integer.toString(nodo1.getHijos().size());
+                 for(Nodo hijo : nodo1.getHijos()){
+                     //eliminar nodo si exite el nodo
+                     if(hijo.getNombre().equalsIgnoreCase(permiso.getTipo())){
+                         nodo1.getHijos().remove(contador);
+                         break;
+                     }
+                     ++contador; 
+                 }
+                 contador=0;
+                 //verificar si exite nodo en permiso
+                 Nodo nodo2 = persona.getHijos().get(1);
+                 for(Nodo hijo : nodo2.getHijos()){
+                     //eliminar nodo si exite el nodo
+                     if(hijo.getNombre().equalsIgnoreCase(permiso.getTipo())){
+                         nodo2.getHijos().remove(contador);
+                         break;
+                     }
+                     ++contador; 
+                 } 
+                 crearxml.Usuario();
+            }
+        }
+    }
+     
+    public static String[] cortarCadenaPorPuntos(String cadena) {
+        return cadena.split("\\.");
+    }
+    
+    public static boolean tiene_permiso(Nodo usuario,Nodo master,String baseD,String usu,String permiso){
+        Nodo persona, db;
+        Nodo nodo1, nodo2, nodo3;
+        persona=nodo_existeusuario(usuario, usu); 
+        db=nodo_buscar_bd(master, baseD);
+        
+        if(persona != null && db != null){
+            //verificando en noper
+             nodo1 = persona.getHijos().get(0);
+             for(Nodo hijos : db.getHijos()){ 
+                 if(hijos.getNombre().equalsIgnoreCase(baseD)){
+                     for(Nodo primos : hijos.getHijos()){
+                         if(primos.getNombre().equalsIgnoreCase(permiso)){
+                             return false;
+                         }
+                     } 
+                 }
+             }
+            //verificando en permisos
+             nodo1 = persona.getHijos().get(1);
+             for(Nodo hijos : db.getHijos()){ 
+                 if(hijos.getNombre().equalsIgnoreCase(baseD)){
+                     for(Nodo primos : hijos.getHijos()){
+                         if(primos.getNombre().equalsIgnoreCase(permiso)){
+                             return true;
+                         }if(primos.getNombre().equalsIgnoreCase("todos")){
+                             return true;
+                         }
+                     } 
+                 }
+             }
+        } 
+        return false;
+    }
+    
+    public static boolean exite_objusql(Nodo master,String base, String objeto){
+        Nodo db;
+        db = nodo_buscar_bd(master, base);
+        if(db != null){
+            for(Nodo hijos : db.getHijos()){
+                if(hijos.getNombre().equalsIgnoreCase("procedure")){
+                    for(Nodo primo : hijos.getHijos()){
+                        if(primo.getNombre().equalsIgnoreCase(objeto)){
+                            return true;
+                        }
+                    }
+                }else if(hijos.getNombre().equalsIgnoreCase("objeto")){
+                    for(Nodo primo : hijos.getHijos()){
+                        if(primo.getNombre().equalsIgnoreCase(objeto)){
+                            return true;
+                        }
+                    }
+                }else{
+                    if(hijos.getNombre().equalsIgnoreCase(objeto)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    public static void sentencia_permitir_objeto(Nodo usuarios,Nodo master , Nodo permiso){
+        int contador=0;
+        int con=0;
+        boolean valor;
+        int prueba=0;
+        if(pr1compilarodores2.principal2.usua.equalsIgnoreCase("admin") == true ){
+            Nodo persona = nodo_existeusuario(usuarios, permiso.getValor());
+            String cadena[] = cortarCadenaPorPuntos(permiso.getTipo());
+            Nodo db = nodo_buscar_bd(master, cadena[0]);
+            valor = exite_objusql(master, cadena[0], cadena[1]);       
+            if (persona != null && db != null && valor==true){
+                 Nodo nodo1 = persona.getHijos().get(0);
+                 for(Nodo hijo : nodo1.getHijos()){
+                     //eliminar nodo si exite el nodo
+                     if(hijo.getNombre().equalsIgnoreCase(cadena[0])){
+                        for(Nodo primo : hijo.getHijos() ){
+                            if(primo.getNombre().equalsIgnoreCase(cadena[1])){
+                                  hijo.getHijos().remove(con);
+                                  break;
+                            }
+                            ++con;
+                        }
+                        break;
+                     }
+                     ++contador; 
+                 }
+               contador=0; con=0;
+                 //verificar si exite nodo en permiso
+                 Nodo nodo2 = persona.getHijos().get(1);
+                 for(Nodo hijo : nodo2.getHijos()){
+                     if(hijo.getNombre().equalsIgnoreCase(cadena[0])){
+                         int numero=0;
+                         for(Nodo primo : hijo.getHijos()){
+                             if(primo.getNombre().equalsIgnoreCase("todos")){
+                                prueba = 1; numero=1;
+                             }else if(primo.getNombre().equalsIgnoreCase(cadena[1])){
+                                 numero=1; prueba=1;
+                             }
+                             ++con;
+                         }if(numero == 0){
+                             Nodo tmp = new Nodo(cadena[1]); //objeto
+                             tmp.setNumNodo(++gramatica_xml.graxml.contador);
+                             hijo.addHijo(tmp);
+                             prueba = 1;
+                         }
+                         break;
+                     }
+                     ++contador; 
+                } 
+                 if(prueba == 0){ 
+                      Nodo tmp = new Nodo(cadena[0]); //tabla
+                      tmp.setNumNodo(++gramatica_xml.graxml.contador);
+                      Nodo tmp1 = new Nodo(cadena[1]); //objeto
+                      tmp1.setNumNodo(++gramatica_xml.graxml.contador);
+                      tmp.addHijo(tmp1);
+                      nodo2.addHijo(tmp);
+                 } 
+                crearxml.Usuario();
+            }
+        }
+    }
+    
+    public static void sentencia_denegar_objeto(Nodo usuarios,Nodo master , Nodo permiso){
+        int contador=0;
+        int con=0;
+        boolean valor;
+        int prueba=0;
+        if(pr1compilarodores2.principal2.usua.equalsIgnoreCase("admin") == true ){
+            System.out.println("usuario s "+permiso.getValor());
+            Nodo persona = nodo_existeusuario(usuarios, permiso.getValor());
+            String cadena[] = cortarCadenaPorPuntos(permiso.getTipo());
+            Nodo db = nodo_buscar_bd(master, cadena[0]);
+            valor = exite_objusql(master, cadena[0], cadena[1]);       
+            if (persona != null && db != null && valor==true){
+                Nodo nodo2 = persona.getHijos().get(1); //per
+                 for(Nodo hijo : nodo2.getHijos()){
+                     if(hijo.getNombre().equalsIgnoreCase(cadena[0])){
+                         for(Nodo primo : hijo.getHijos()){
+                             if(primo.getNombre().equalsIgnoreCase("todos")){
+                                prueba = 1;
+                             }else if(primo.getNombre().equalsIgnoreCase(cadena[1])){
+                                 hijo.getHijos().remove(con);
+                             }
+                             ++con;
+                         }
+                         break;
+                     }
+                } 
+                if(prueba == 1){  
+                 Nodo nodo1 = persona.getHijos().get(0);
+                 int numero = 0;
+                 for(Nodo hijo : nodo1.getHijos()){
+                     if(hijo.getNombre().equalsIgnoreCase(cadena[0])){
+                        for(Nodo primo : hijo.getHijos() ){
+                            if(primo.getNombre().equalsIgnoreCase(cadena[1])){
+                                  numero = 1;
+                                  break;
+                            }
+                            ++con;
+                        }
+                        if(numero==0){
+                            Nodo tmp = new Nodo(cadena[1]); //objeto
+                            tmp.setNumNodo(++gramatica_xml.graxml.contador);
+                            hijo.addHijo(tmp);
+                            numero = 1;
+                        }
+                        break;
+                     }
+                 }
+                 if(numero==0){
+                      Nodo tmp = new Nodo(cadena[0]); //tabla
+                      tmp.setNumNodo(++gramatica_xml.graxml.contador);
+                      Nodo tmp1 = new Nodo(cadena[1]); //objeto
+                      tmp1.setNumNodo(++gramatica_xml.graxml.contador);
+                      tmp.addHijo(tmp1);
+                      nodo1.addHijo(tmp);
+                 }
+                } 
+                crearxml.Usuario();
+            }
+        }
+    }
+     
 }

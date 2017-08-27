@@ -25,6 +25,7 @@ public class principal2 extends javax.swing.JFrame {
     public static Nodo usuarios;
     public static Nodo paquete;
     public static String usua;
+    public static String db;
     public static String textopaquete;
     
     public principal2() {
@@ -185,10 +186,15 @@ public class principal2 extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String cadena = "123456"; 
+        String cadena = "123456";
+        String prueba1 = "hola";
+        String prueba2 = "ho2La";
         cadena = cadena.substring(1, cadena.length()-1);
         if( true == !false){
             System.out.println(cadena);
+        }
+        if (prueba1.equalsIgnoreCase(prueba2)){
+             System.out.println("Son iguales");
         }
         
         // Para borar el ultimo digito haces esto 

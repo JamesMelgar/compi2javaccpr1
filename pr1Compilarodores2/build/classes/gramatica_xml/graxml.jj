@@ -589,6 +589,7 @@ Nodo datousu(Nodo hijo):
                 } 
      nodo1=noper(nodo1) <Noperf> { hijo.addHijo(nodo1);}
      hijo=datousu(hijo) { return hijo; }
+
     | <Permisoi> { Nodo tmp = new Nodo("Permiso");
                    tmp.setNumNodo(graxml.contador++);
                    tmp.setValor("0");
@@ -610,8 +611,8 @@ Nodo noper(Nodo hijo2):
                     tmp.setValor("0");
                     nodo1 = tmp;
                     }
-    <Dbf> nodo1=connoper(nodo1)  {  hijo2.addHijo(nodo1);
-                                    return hijo2; }
+    <Dbf> nodo1=connoper(nodo1)  {  hijo2.addHijo(nodo1); }
+    hijo2=noper(hijo2) { return hijo2; }
     | { return hijo2; }
 }
 
@@ -639,8 +640,8 @@ Nodo per(Nodo hijo2):
                      tmp.setValor("0");
                      nodo1 = tmp;
                   }
-    <Dbf> nodo1=conper(nodo1) {  hijo2.addHijo(nodo1);
-                                return hijo2; }
+    <Dbf> nodo1=conper(nodo1) {  hijo2.addHijo(nodo1); }
+          hijo2=per(hijo2) { return hijo2; }
     | {return hijo2;}
 }
 
@@ -654,7 +655,7 @@ Nodo conper(Nodo hijo3 ):
                        tmp.setValor("0");
                        hijo3.addHijo(tmp);
                       } 
-      <Obusuf> hijo3=per(hijo3) { return hijo3; }
+      <Obusuf> hijo3=conper(hijo3) { return hijo3; }
     | <Todos> {  Nodo tmp = new Nodo("Todos");
                  tmp.setNumNodo(graxml.contador++);
                  tmp.setValor("0");

@@ -715,7 +715,8 @@ Nodo tmp = new Nodo(t1.image);
       jj_consume_token(Dbf);
       nodo1 = connoper(nodo1);
 hijo2.addHijo(nodo1);
-                                    {if ("" != null) return hijo2;}
+      hijo2 = noper(hijo2);
+{if ("" != null) return hijo2;}
       break;
       }
     default:
@@ -759,7 +760,8 @@ Nodo tmp = new Nodo(t1.image);
       jj_consume_token(Dbf);
       nodo1 = conper(nodo1);
 hijo2.addHijo(nodo1);
-                                {if ("" != null) return hijo2;}
+      hijo2 = per(hijo2);
+{if ("" != null) return hijo2;}
       break;
       }
     default:
@@ -779,7 +781,7 @@ Nodo tmp = new Nodo(t1.image);
                        tmp.setValor("0");
                        hijo3.addHijo(tmp);
       jj_consume_token(Obusuf);
-      hijo3 = per(hijo3);
+      hijo3 = conper(hijo3);
 {if ("" != null) return hijo3;}
       break;
       }
