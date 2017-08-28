@@ -450,19 +450,34 @@ public class accpaquete {
             System.out.println("ruta "+cadena);
             Crearmaster.crearcarpeta(cadena);
             Nodo nodo1=crearnodo(arbol.getNombre(), texto);
-            newruta = ruta + "\\" +"proce.usac"; 
-            texto=remplazar(newruta);
+            newruta = cadena + "\\\\" +"proce.usac"; 
+            texto=newruta;
             Nodo proc=crearnodo("procedure", texto);
-            newruta = ruta + "\\" +"obj.usac"; 
-            texto=remplazar(newruta);
+            newruta = cadena + "\\\\" +"obj.usac"; 
+            texto=newruta;
             Nodo obj=crearnodo("Objeto", newruta);
             nodo1.addHijo(proc);
             nodo1.addHijo(obj);
             master.addHijo(nodo1);
-            
+            Crearmaster.master();
+       if(pr1compilarodores2.principal2.usua.equalsIgnoreCase("admin")==false){
+           Nodo nuevo=nodo_existeusuario(usuarios, pr1compilarodores2.principal2.usua);
+           if(nuevo != null){
+               Nodo tmp = crearnodo(arbol.getNombre(), "");
+               Nodo tmp1 = crearnodo("todos", "");
+               valor = tiene_permiso(usuarios, master,arbol.getNombre() ,pr1compilarodores2.principal2.usua,"objeto");
+               if(valor==false){
+                   Nodo tmp2 = nuevo.getHijos().get(1);
+                   tmp.addHijo(tmp1);
+                   tmp2.addHijo(tmp);
+                   System.out.println("Se creo permiso");
+               }
+           }
+       }
         }
-     //  Crearmaster.master();
+       
     }
+    
     public static String remplazar(String cadena){
         String palabra = cadena.replace("\\", "\\\\");
         return palabra;
