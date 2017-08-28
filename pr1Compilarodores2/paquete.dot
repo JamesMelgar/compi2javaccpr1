@@ -1,5 +1,5 @@
 digraph G {node[shape=box, style=filled, color=blanchedalmond]; edge[color=chocolate3];rankdir=UD 
 
-"26_paquete"->"27_usql""27_usql"->"20039_otorgar todos""27_usql"->"20040_denegar idp"
+"0_paquete"->"1_usql""1_usql"->"20013_crear base""20013_crear base"->"20014_datos"
 
 }

@@ -21,6 +21,15 @@ public class Nodo {
     private int columna;
     private int fila;
     private int numNodo;
+    private String texto;
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
 
     public int getColumna() {
         return columna;
@@ -48,6 +57,7 @@ public class Nodo {
         setFila(0);
         setColumna(0);
         setTipo("");
+        setTexto("");
     }
 
     public Nodo(int columna, int fila) {

@@ -62,9 +62,9 @@ public class accpaquete {
     }
     
     public static void tipousql(Nodo paquete, Nodo usuario, Nodo master, Nodo hijo){
-        Nodo temp;
+        
         for(Nodo arbol : hijo.getHijos()){  
-            temp = arbol;
+            Nodo temp = arbol;
             if(arbol.getNombre().equalsIgnoreCase("crear usuario") == true){
                 crearusuario(usuario, temp);
             }else if(arbol.getNombre().equalsIgnoreCase("usar") == true){
@@ -77,6 +77,8 @@ public class accpaquete {
                 sentencia_denegar_todos(usuario, master, temp);
             }else if(arbol.getNombre().equalsIgnoreCase("denegar idp") == true){
                sentencia_denegar_objeto(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("crear base") == true){
+               sentencia_crear_base(usuario, master, temp);
             }
         }
     }
@@ -127,7 +129,6 @@ public class accpaquete {
            Nodo nodo1 = new Nodo(cadena);
            nodo1.setValor(valor);
            nodo1.setNumNodo(gramatica_usu.grausu.contador++);
-           System.out.println("Acciones.accpaquete.crearnodo()");
            return nodo1;
      }
     
@@ -253,7 +254,7 @@ public class accpaquete {
     
     public static boolean tiene_permiso(Nodo usuario,Nodo master,String baseD,String usu,String permiso){
         Nodo persona, db;
-        Nodo nodo1, nodo2, nodo3;
+        Nodo nodo1;
         persona=nodo_existeusuario(usuario, usu); 
         db=nodo_buscar_bd(master, baseD);
         
@@ -436,4 +437,34 @@ public class accpaquete {
         }
     }
      
+    public static void sentencia_crear_base(Nodo usuarios,Nodo master, Nodo paquete){
+        Nodo arbol = paquete.getHijos().get(0);
+        String ruta,texto;
+        String newruta;
+        boolean valor;
+        valor=buscar_bd(master, arbol.getNombre());
+        if(valor==false){
+            ruta = pr1compilarodores2.principal2.ruta_master+"\\"+arbol.getNombre()+"\\db.usac";
+            texto=remplazar(ruta);
+            String cadena = texto.substring(0, texto.length()-9);
+            System.out.println("ruta "+cadena);
+            Crearmaster.crearcarpeta(cadena);
+            Nodo nodo1=crearnodo(arbol.getNombre(), texto);
+            newruta = ruta + "\\" +"proce.usac"; 
+            texto=remplazar(newruta);
+            Nodo proc=crearnodo("procedure", texto);
+            newruta = ruta + "\\" +"obj.usac"; 
+            texto=remplazar(newruta);
+            Nodo obj=crearnodo("Objeto", newruta);
+            nodo1.addHijo(proc);
+            nodo1.addHijo(obj);
+            master.addHijo(nodo1);
+            
+        }
+     //  Crearmaster.master();
+    }
+    public static String remplazar(String cadena){
+        String palabra = cadena.replace("\\", "\\\\");
+        return palabra;
+    }
 }

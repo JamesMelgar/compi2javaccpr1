@@ -27,9 +27,11 @@ public class principal2 extends javax.swing.JFrame {
     public static String usua;
     public static String db;
     public static String textopaquete;
+    public static String ruta_master;
     
     public principal2() {
         principal2.usua = "admin";
+        principal2.ruta_master = "C:\\Users\\James_PC\\Documents\\compi2javaccpr1\\DB";
         initComponents();
     }
 
@@ -54,7 +56,7 @@ public class principal2 extends javax.swing.JFrame {
 
         tx_entrada.setColumns(20);
         tx_entrada.setRows(5);
-        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\n\n%,\n]");
+        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\ncrear base_datos datos;\n%,\n]");
         jScrollPane1.setViewportView(tx_entrada);
 
         jLabel1.setText("Entrada");

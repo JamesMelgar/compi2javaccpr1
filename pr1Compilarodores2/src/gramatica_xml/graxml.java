@@ -260,7 +260,7 @@ Nodo tmp = new Nodo(t1.image);
                      tmp.setNumNodo(graxml.contador++);
                      tmp.setColumna(t1.beginColumn);
                      tmp.setFila(t1.beginLine);
-                     tmp.setValor("texto");
+                     tmp.setValor("text");
                      nodo1 = tmp;
       jj_consume_token(Textf);
       nodo1 = complemento(nodo1);
@@ -357,6 +357,7 @@ raiz.addHijo(nodo1);
   }
 
   final public Nodo complemento(Nodo hijo) throws ParseException {Token t1;
+   Token t2;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Pk:
     case Nulo:
@@ -369,6 +370,7 @@ Nodo tmp = new Nodo(t1.image);
                             tmp.setColumna(t1.beginColumn);
                             tmp.setFila(t1.beginLine);
                             tmp.setValor("");
+                            tmp.setTipo("otro");
                             hijo.addHijo(tmp);
       hijo = complemento(hijo);
 {if ("" != null) return hijo;}
@@ -377,11 +379,13 @@ Nodo tmp = new Nodo(t1.image);
     case Fki:{
       jj_consume_token(Fki);
       t1 = jj_consume_token(Id);
+      t2 = jj_consume_token(Id);
 Nodo tmp = new Nodo(t1.image);
                             tmp.setNumNodo(graxml.contador++);
                             tmp.setColumna(t1.beginColumn);
                             tmp.setFila(t1.beginLine);
-                            tmp.setValor("");
+                            tmp.setValor(t2.image);
+                            tmp.setTipo("fk");
                             hijo.addHijo(tmp);
       jj_consume_token(Fkf);
       hijo = complemento(hijo);
@@ -541,7 +545,7 @@ nodo1.setTipo("num");
       }
     case Texto:{
       t1 = jj_consume_token(Texto);
-nodo1.setTipo("texto");
+nodo1.setTipo("text");
                  nodo1.setValor(t1.image);
                  {if ("" != null) return nodo1;}
       break;
@@ -911,6 +915,7 @@ Nodo tmp = new Nodo(t1.image);
 nodo1 = hijo;
                       Nodo tmp = new Nodo(t1.image);
                      tmp.setNumNodo(graxml.contador++);
+                     hijo.setValor(t1.image);
                      hijo = pr1compilarodores2.CrearArbol.Analisiusuql(nodo1, t1.image);
                      //hijo.addHijo(tmp);
 

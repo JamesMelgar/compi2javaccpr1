@@ -337,7 +337,7 @@ Nodo tbcont(Nodo raiz):
                      tmp.setNumNodo(graxml.contador++);
                      tmp.setColumna(t1.beginColumn);
                      tmp.setFila(t1.beginLine);
-                     tmp.setValor("texto");
+                     tmp.setValor("text");
                      nodo1 = tmp; 
                  } 
      <Textf> nodo1=complemento(nodo1) {raiz.addHijo(nodo1);} raiz=tbcont(raiz) { return raiz; }
@@ -393,21 +393,24 @@ Nodo tbcont(Nodo raiz):
 Nodo complemento(Nodo hijo):
 {
    Token t1;
+   Token t2;
 }{
       t1=tipocomplemento() { Nodo tmp = new Nodo(t1.image);
                             tmp.setNumNodo(graxml.contador++);
                             tmp.setColumna(t1.beginColumn);
                             tmp.setFila(t1.beginLine);
                             tmp.setValor("");
+                            tmp.setTipo("otro");
                             hijo.addHijo(tmp);
                    } 
      hijo=complemento(hijo) { return hijo; }
 
-    | <Fki> t1=<Id> { Nodo tmp = new Nodo(t1.image);
+    | <Fki> t1=<Id> t2=<Id> { Nodo tmp = new Nodo(t1.image);
                             tmp.setNumNodo(graxml.contador++);
                             tmp.setColumna(t1.beginColumn);
                             tmp.setFila(t1.beginLine);
-                            tmp.setValor("");
+                            tmp.setValor(t2.image);
+                            tmp.setTipo("fk");
                             hijo.addHijo(tmp);
                    } 
      <Fkf> hijo=complemento(hijo) { return hijo; }
@@ -496,7 +499,7 @@ Nodo tipo(Nodo nodo1):
     |t1=<Num> { nodo1.setTipo("num");
                nodo1.setValor(t1.image);
                return nodo1; }
-    |t1=<Texto> { nodo1.setTipo("texto");
+    |t1=<Texto> { nodo1.setTipo("text");
                  nodo1.setValor(t1.image);
                  return nodo1; }
     |t1=<Date> { nodo1.setTipo("date");
@@ -756,6 +759,7 @@ Nodo sentencias(Nodo hijo):
     <Srci> t1=<Sql> { nodo1 = hijo;
                       Nodo tmp = new Nodo(t1.image);
                      tmp.setNumNodo(graxml.contador++);
+                     hijo.setValor(t1.image);
                      hijo = pr1compilarodores2.CrearArbol.Analisiusuql(nodo1, t1.image); 
                      //hijo.addHijo(tmp);
     } <Srcf> { return hijo; }
