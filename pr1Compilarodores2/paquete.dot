@@ -1,5 +1,5 @@
 digraph G {node[shape=box, style=filled, color=blanchedalmond]; edge[color=chocolate3];rankdir=UD 
 
-"0_paquete"->"1_usql""1_usql"->"20013_denegar todos"
+"4_paquete"->"5_usql""5_usql"->"20078_imprimir""20078_imprimir"->"20076_mas""20076_mas"->"20074_mas""20074_mas"->"20072_mas""20072_mas"->"20070_mas""20070_mas"->"20069_'10-10-1994'""20070_mas"->"20071_hola""20072_mas"->"20073_1""20074_mas"->"20075_5""20076_mas"->"20077_7"
 
 }

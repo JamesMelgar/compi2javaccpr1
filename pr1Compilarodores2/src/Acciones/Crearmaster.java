@@ -50,8 +50,8 @@ public class Crearmaster {
                    for(Nodo primo : nodo2.getHijos()){ 
                        newcadena=newcadena + "<"+primo.getValor()+">" +primo.getNombre() + "</"+ primo.getValor()+">";
                        for(Nodo tio : primo.getHijos()){
-                           if(tio.getTipo().equalsIgnoreCase("fk")){
-                               newcadena = newcadena + "<fk>"+tio.getNombre()+"  "+tio.getValor()+"</fk>";
+                           if(tio.getNombre().equalsIgnoreCase("<fk>")){
+                               newcadena = newcadena + "<fk>"+tio.getValor()+"  "+tio.getTipo()+"</fk>";
                            }else{
                                newcadena = newcadena+tio.getNombre();
                            }

@@ -79,6 +79,14 @@ public class accpaquete {
                sentencia_denegar_objeto(usuario, master, temp);
             }else if(arbol.getNombre().equalsIgnoreCase("crear base") == true){
                sentencia_crear_base(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("crear objeto") == true){
+                sentencia_crear_objeto(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("crear proce") == true){
+                sentencia_crear_proce(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("crear tabla") == true){
+                sentencia_crear_tabla(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("imprimir") == true){
+                sentencia_imprimir(usuario, master, temp);
             }
         }
     }
@@ -145,6 +153,15 @@ public class accpaquete {
     
     public static Nodo nodo_buscar_bd(Nodo master,String texto){
         for(Nodo arbol : master.getHijos()){ 
+            if(arbol.getNombre().equalsIgnoreCase(texto) == true){
+                return arbol;
+            }
+        } 
+        return null;
+    }
+    
+    public static Nodo nodo_buscar_tabla(Nodo db,String texto){
+        for(Nodo arbol : db.getHijos()){ 
             if(arbol.getNombre().equalsIgnoreCase(texto) == true){
                 return arbol;
             }
@@ -314,6 +331,33 @@ public class accpaquete {
         return false;
     }
     
+     public static boolean exite_solo_obj(Nodo master,String base, String objeto){
+        Nodo db;
+        db = nodo_buscar_bd(master, base);
+        if(db != null){
+            for(Nodo hijos : db.getHijos()){
+                if(hijos.getNombre().equalsIgnoreCase("procedure")){
+                    for(Nodo primo : hijos.getHijos()){
+                        if(primo.getNombre().equalsIgnoreCase(objeto)){
+                            return false;
+                        }
+                    }
+                }else if(hijos.getNombre().equalsIgnoreCase("objeto")){
+                    for(Nodo primo : hijos.getHijos()){
+                        if(primo.getNombre().equalsIgnoreCase(objeto)){
+                            return true;
+                        }
+                    }
+                }else{
+                    if(hijos.getNombre().equalsIgnoreCase(objeto)){
+                        return false;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+     
     public static void sentencia_permitir_objeto(Nodo usuarios,Nodo master , Nodo permiso){
         int contador=0;
         int con=0;
@@ -471,6 +515,7 @@ public class accpaquete {
                    tmp.addHijo(tmp1);
                    tmp2.addHijo(tmp);
                    System.out.println("Se creo permiso");
+                   crearxml.Usuario();
                }
            }
        }
@@ -481,5 +526,241 @@ public class accpaquete {
     public static String remplazar(String cadena){
         String palabra = cadena.replace("\\", "\\\\");
         return palabra;
+    }
+    
+    public static void sentencia_crear_objeto(Nodo usuarios,Nodo master, Nodo paquete){
+        //verificar que el objeto exita
+        Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db);
+        boolean valor = exite_objusql(master, pr1compilarodores2.principal2.db, paquete.getValor());
+        if(db != null && valor==false){
+             Nodo nodo1=crearnodo(paquete.getValor(), "");
+             for(Nodo arbol : paquete.getHijos()){
+                 Nodo nodo2 = crearnodo(arbol.getNombre(), arbol.getTipo());
+                 nodo1.addHijo(nodo2);
+             } 
+              Nodo tmp=db.getHijos().get(1);
+              tmp.addHijo(nodo1);
+              Crearmaster.master();
+              agregar_permiso(usuarios, master, pr1compilarodores2.principal2.db, pr1compilarodores2.principal2.usua, paquete.getValor());
+        }
+    }
+    
+    public static void agregar_permiso(Nodo usuarios,Nodo master ,String base, String usuario, String objeto){
+        int contador=0;
+        int con=0;
+        boolean valor;
+        int prueba=0;
+        if(pr1compilarodores2.principal2.usua.equalsIgnoreCase("admin") == false ){
+            Nodo persona = nodo_existeusuario(usuarios, usuario);
+            Nodo db = nodo_buscar_bd(master, base);
+            valor = exite_objusql(master, base, objeto);       
+            if (persona != null && db != null && valor==true){
+                 Nodo nodo1 = persona.getHijos().get(0);
+                 for(Nodo hijo : nodo1.getHijos()){
+                     //eliminar nodo si exite el nodo
+                     if(hijo.getNombre().equalsIgnoreCase(base)){
+                        for(Nodo primo : hijo.getHijos() ){
+                            if(primo.getNombre().equalsIgnoreCase(objeto)){
+                                  hijo.getHijos().remove(con);
+                                  break;
+                            }
+                            ++con;
+                        }
+                        break;
+                     }
+                     ++contador; 
+                 }
+               contador=0; con=0;
+                 //verificar si exite nodo en permiso
+                 Nodo nodo2 = persona.getHijos().get(1);
+                 for(Nodo hijo : nodo2.getHijos()){
+                     if(hijo.getNombre().equalsIgnoreCase(base)){
+                         int numero=0;
+                         for(Nodo primo : hijo.getHijos()){
+                             if(primo.getNombre().equalsIgnoreCase("todos")){
+                                prueba = 1; numero=1;
+                             }else if(primo.getNombre().equalsIgnoreCase(objeto)){
+                                 numero=1; prueba=1;
+                             }
+                             ++con;
+                         }if(numero == 0){
+                             Nodo tmp = new Nodo(objeto); //objeto
+                             tmp.setNumNodo(++gramatica_xml.graxml.contador);
+                             hijo.addHijo(tmp);
+                             prueba = 1;
+                         }
+                         break;
+                     }
+                     ++contador; 
+                } 
+                 if(prueba == 0){ 
+                      Nodo tmp = new Nodo(base); //tabla
+                      tmp.setNumNodo(++gramatica_xml.graxml.contador);
+                      Nodo tmp1 = new Nodo(objeto); //objeto
+                      tmp1.setNumNodo(++gramatica_xml.graxml.contador);
+                      tmp.addHijo(tmp1);
+                      nodo2.addHijo(tmp);
+                 } 
+                crearxml.Usuario();
+            }
+        }
+    }
+    
+    public static String partirtextoenlineas(String cadena,int inf, int sup ){
+        String[] texto=cadena.split("\\n");
+        String palabra="";
+        int contador=0;
+        for (int i = 0; i < texto.length; i++) {
+            if(contador>=inf && contador<=sup){
+                palabra=palabra+texto[contador]+"\n";
+            }
+            ++contador;
+        }
+        System.out.println("texto "+palabra);
+        return palabra;
+    }
+    
+    public static void sentencia_crear_proce(Nodo usuarios,Nodo master, Nodo paquete){
+        //verificar que el objeto exita
+        Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db);
+        boolean valor = exite_objusql(master, pr1compilarodores2.principal2.db, paquete.getValor());
+        if(db != null && valor==false){
+             Nodo nodo1=crearnodo(paquete.getValor(), "");
+             Nodo nuew=paquete.getHijos().get(0);
+             Nodo n2 = crearnodo("parametros", "");
+             for(Nodo arbol: nuew.getHijos()){
+                 Nodo hijo1=crearnodo(arbol.getNombre(), arbol.getTipo());
+                 n2.addHijo(hijo1);
+             }
+             nodo1.addHijo(n2);
+             Nodo n1=paquete.getHijos().get(1);
+             int f=n1.getFila()-2;
+             int i=n1.getColumna();
+             System.out.println("ini "+Integer.toString(i)+" fin "+Integer.toString(f));
+             String texto=partirtextoenlineas(pr1compilarodores2.principal2.texfun, i, f);
+             texto="%$ "+texto+" %";
+             Nodo n3=crearnodo("sentencias", texto);
+             nodo1.addHijo(n3);
+             Nodo tmp=db.getHijos().get(0);
+             tmp.addHijo(nodo1);
+             Crearmaster.master();
+             agregar_permiso(usuarios, master, pr1compilarodores2.principal2.db, pr1compilarodores2.principal2.usua, paquete.getValor());
+        }
+    }
+    
+    public static void sentencia_crear_tabla(Nodo usuarios,Nodo master, Nodo paquete){
+        //verificar que el objeto exita
+        Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db);
+        boolean valor = exite_objusql(master, pr1compilarodores2.principal2.db, paquete.getValor());
+        if(db != null && valor==false ){
+              valor = verificar_1_pk(paquete);
+              boolean valor2 = verificar_autoincreme(paquete);
+              boolean valor3 = verificar_objeto(paquete, master);
+              boolean valor4 = verificar_fk(master, paquete);
+              if(valor==true && valor2==true && valor3==true && valor4==true){ 
+               
+              String ruta = pr1compilarodores2.principal2.ruta_master+"\\"+pr1compilarodores2.principal2.db+"\\"+paquete.getValor()+".usac";
+              String texto=remplazar(ruta);
+              System.out.println("Acciones.accpaquete.sentencia_crear_tabla()"+texto);
+              Nodo nodo1 = crearnodo(paquete.getValor(), texto);
+              
+              Nodo n1 = crearnodo("datos", "");
+              Nodo n2 = crearnodo("campos", "");
+              for(Nodo arbol : paquete.getHijos()){
+                  arbol.setValor(arbol.getTipo());
+                  n2.addHijo(arbol);
+              }
+              nodo1.addHijo(n1);
+              nodo1.addHijo(n2);
+              db.addHijo(nodo1);
+              System.out.println("correcto"); }
+              else{ System.out.println("incorrecto");}
+              Crearmaster.master();
+              agregar_permiso(usuarios, master, pr1compilarodores2.principal2.db, pr1compilarodores2.principal2.usua, paquete.getValor());
+        }
+    }
+    
+    public static boolean verificar_1_pk(Nodo tabla){
+        int contador=0;
+        for(Nodo arbol : tabla.getHijos()){
+            for(Nodo primo : arbol.getHijos()){
+                if(primo.getNombre().equalsIgnoreCase("<pk>")){
+                    ++contador;
+                }
+            }
+        }
+        if(contador > 1){ return false;
+        }else{ return true;}
+    }
+    
+    public static boolean verificar_autoincreme(Nodo tabla){
+        int error=0;
+        for(Nodo arbol : tabla.getHijos()){
+            String tipo=arbol.getTipo();
+            for(Nodo primo : arbol.getHijos()){
+                if(primo.getNombre().equalsIgnoreCase("<auto>")){
+                    if(tipo.equalsIgnoreCase("int")==false){
+                        error=1;
+                    }
+                }
+            }
+        }
+        if(error==1){ return false;
+        }else{ return true;}
+    }
+    
+    public static boolean verificar_objeto(Nodo tabla, Nodo master){
+        boolean valor;
+        for(Nodo arbol : tabla.getHijos()){
+            if(arbol.getValor() != null){
+                 valor = exite_solo_obj(master, pr1compilarodores2.principal2.db, arbol.getTipo());
+                if(valor==false){
+                    return false;
+                }
+            } else { }
+        }
+       return true;
+    }
+    
+    public static boolean verificar_fk(Nodo master,Nodo tabla){
+        int contador=0;
+        for(Nodo arbol : tabla.getHijos()){
+            for(Nodo primo : arbol.getHijos()){
+                if(primo.getNombre().equalsIgnoreCase("<fk>")){
+                    Nodo db = nodo_buscar_bd(master, pr1compilarodores2.principal2.db);
+                    Nodo tb = nodo_buscar_tabla(db, primo.getValor());
+                    if(db != null && tb != null){
+                        boolean valor = es_pkllaveforanea(tb.getHijos().get(1), primo.getTipo());
+                        if(valor==false){
+                            return false;
+                        }else{
+                            System.out.println("exite tabla"+primo.getValor());
+                        } 
+                    }else{ return false; }
+                }
+            }
+        }
+        return true;
+    }
+    
+    public static boolean es_pkllaveforanea(Nodo tabla, String id){
+        for(Nodo arbol : tabla.getHijos()){
+            for(Nodo primo : arbol.getHijos()){
+                if(primo.getNombre().equalsIgnoreCase("<pk>")){
+                    if(arbol.getNombre().equalsIgnoreCase(id)){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    public static void sentencia_imprimir(Nodo usuarios,Nodo master, Nodo paquete){
+            Nodo nodo1 = paquete.getHijos().get(0);
+            Nodo nodo2 = expresiones.expresiones(nodo1);
+            System.out.println("respuesta:"+nodo2.getNombre());
     }
 }

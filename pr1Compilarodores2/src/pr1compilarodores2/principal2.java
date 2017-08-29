@@ -26,12 +26,14 @@ public class principal2 extends javax.swing.JFrame {
     public static Nodo paquete;
     public static String usua;
     public static String db;
+    public static String texfun;
     public static String textopaquete;
     public static String ruta_master;
     
     public principal2() {
-        principal2.usua = "admin";
+        principal2.usua = "bolo";
         principal2.ruta_master = "C:\\Users\\James_PC\\Documents\\compi2javaccpr1\\DB";
+        db = "db2";
         initComponents();
     }
 
@@ -56,7 +58,7 @@ public class principal2 extends javax.swing.JFrame {
 
         tx_entrada.setColumns(20);
         tx_entrada.setRows(5);
-        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\ncrear base_datos datos;\n%,\n]");
+        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\nimprimir(2+3*4+5);\n%,\n]");
         jScrollPane1.setViewportView(tx_entrada);
 
         jLabel1.setText("Entrada");
@@ -103,9 +105,13 @@ public class principal2 extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel2)
@@ -188,16 +194,12 @@ public class principal2 extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String cadena = "123456";
-        String prueba1 = "hola";
-        String prueba2 = "ho2La";
-        cadena = cadena.substring(1, cadena.length()-1);
-        if( true == !false){
-            System.out.println(cadena);
+        String cadena = "123456 \n 11 \n 1 \n 13 \n 14 \n";
+        Acciones.accpaquete.partirtextoenlineas(cadena, 1, 3);
+        if(true || true){
+            System.out.println("pr1compilarodores2.principal2.jButton1ActionPerformed()");
         }
-        if (prueba1.equalsIgnoreCase(prueba2)){
-             System.out.println("Son iguales");
-        }
+        
         
         // Para borar el ultimo digito haces esto 
          

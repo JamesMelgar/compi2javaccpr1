@@ -56,8 +56,8 @@ TOKEN :
     | < Textf: "</text>">
     | < Inti: "<int>">
     | < Intf: "</int>">
-    | < Doublei: "<Doublei>">
-    | < Doublef: "</Doublef>">
+    | < Doublei: "<Double>">
+    | < Doublef: "</Double>">
     | < Booli: "<bool>">
     | < Boolf: "</bool>">
     | < Datei: "<date>">
@@ -113,6 +113,7 @@ TOKEN :
 TOKEN :
 {
       <Id: (["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*)>
+     |<Aid: (("@")["a"-"z"](["a"-"z"]|("_")|["0"-"9"])*)>
      |<Ruta: (("c:")(("\\\\")["a"-"z"](["a"-"z"]|"_"|["0"-"9"])*)*(".usac")) >
      |<Bool: ( ("0"|"1"))>
      |<Num: ((["0"-"9"])+("."(["0"-"9"])+)?)>
@@ -323,6 +324,7 @@ Nodo tbcont(Nodo raiz):
 { 
     Nodo nodo1;
     Token t1;
+    Token t2;
 }{
     <Inti> t1=<Id> { Nodo tmp = new Nodo(t1.image);
                      tmp.setNumNodo(graxml.contador++);
@@ -378,14 +380,26 @@ Nodo tbcont(Nodo raiz):
                  } 
      <Datetf> nodo1=complemento(nodo1) {raiz.addHijo(nodo1);} raiz=tbcont(raiz) { return raiz; }
 
+   |<Ai> t2=<Id> <Af> t1=<Id> { Nodo tmp = new Nodo(t1.image);
+                     tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor(t2.image);
+                     tmp.setTipo("obj"); 
+                     nodo1 = tmp; 
+                   } 
+     <Ai> <D> t2=<Id> <Af> nodo1=complemento(nodo1) {raiz.addHijo(nodo1);} raiz=tbcont(raiz) { return raiz; }
+   
    |<Obji> t1=<Id> { Nodo tmp = new Nodo(t1.image);
                      tmp.setNumNodo(graxml.contador++);
                      tmp.setColumna(t1.beginColumn);
                      tmp.setFila(t1.beginLine);
                      tmp.setValor("obj");
+                     tmp.setTipo("obj"); 
                      nodo1 = tmp; 
                    } 
      <Objf> nodo1=complemento(nodo1) {raiz.addHijo(nodo1);} raiz=tbcont(raiz) { return raiz; }
+
    | {return raiz;}
 }
 
@@ -686,7 +700,7 @@ Nodo archivoproce(Nodo raiz):
     Nodo nodo3;
     Token t1;
 }{
-      <Proci>  nodo1=procearchivo() {Nodo tmp2 = new Nodo("paramatros");
+      <Proci>  nodo1=procearchivo() {Nodo tmp2 = new Nodo("parametros");
                                          tmp2.setNumNodo(graxml.contador++);
                                          Nodo tmp3 = new Nodo("sentencias");
                                          tmp3.setNumNodo(graxml.contador++);
@@ -747,7 +761,7 @@ Nodo procearchivo():
 Nodo parametros(Nodo primo):
 { }
 {
-    <Paramsi> primo=tbcont(primo) <Paramsf> { return primo; }
+    <Paramsi> primo=tbcont2(primo) <Paramsf> { return primo; }
 }
 
 Nodo sentencias(Nodo hijo):
@@ -765,6 +779,72 @@ Nodo sentencias(Nodo hijo):
     } <Srcf> { return hijo; }
 }
 
-//{ nodo1 = hijo;
-//                     hijo = pr1compilarodores2.CrearArbol.Analisiusuql(nodo1, t1.image); 
-//   }
+Nodo tbcont2(Nodo raiz):
+{ 
+    Nodo nodo1;
+    Token t1;
+}{
+    <Inti> t1=<Aid> { Nodo tmp = new Nodo(t1.image);
+                     tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor("int");
+                     nodo1 = tmp; 
+                 } 
+    <Intf> {raiz.addHijo(nodo1);} raiz=tbcont2(raiz) { return raiz; }
+
+   |<Texti> t1=<Aid> { Nodo tmp = new Nodo(t1.image);
+                     tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor("text");
+                     nodo1 = tmp; 
+                 } 
+     <Textf> {raiz.addHijo(nodo1);} raiz=tbcont2(raiz) { return raiz; }
+
+   |<Doublei> t1=<Aid> { Nodo tmp = new Nodo(t1.image);
+                        tmp.setNumNodo(graxml.contador++);
+                        tmp.setColumna(t1.beginColumn);
+                        tmp.setFila(t1.beginLine);
+                        tmp.setValor("double");
+                        nodo1 = tmp; 
+                    } 
+    <Doublef> {raiz.addHijo(nodo1);} raiz=tbcont2(raiz) { return raiz; }
+
+   |<Booli> t1=<Aid> { Nodo tmp = new Nodo(t1.image);
+                     tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor("Bool");
+                     nodo1 = tmp; 
+                 } 
+     <Boolf> {raiz.addHijo(nodo1);} raiz=tbcont2(raiz) { return raiz; }
+
+   |<Datei> t1=<Aid> { Nodo tmp = new Nodo(t1.image);
+                      tmp.setNumNodo(graxml.contador++);
+                      tmp.setColumna(t1.beginColumn);
+                      tmp.setFila(t1.beginLine);
+                      tmp.setValor("date");
+                      nodo1 = tmp; 
+                   } 
+     <Datef>   {raiz.addHijo(nodo1);} raiz=tbcont2(raiz) { return raiz; }
+
+   |<Dateti> t1=<Aid> { Nodo tmp = new Nodo(t1.image);
+                      tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor("datetime");
+                     nodo1 = tmp; 
+                 } 
+     <Datetf> {raiz.addHijo(nodo1);} raiz=tbcont2(raiz) { return raiz; }
+
+   |<Obji> t1=<Aid> { Nodo tmp = new Nodo(t1.image);
+                     tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor("obj");
+                     nodo1 = tmp; 
+                   } 
+     <Objf> {raiz.addHijo(nodo1);} raiz=tbcont2(raiz) { return raiz; }
+   | {return raiz;}
+}

@@ -172,6 +172,7 @@ TOKEN:
     | <Or  : "||">
     | <Not : "!">
     | <Simbolo:"%">
+    | <Dolar:"$">
 }
 
 TOKEN :
@@ -216,7 +217,14 @@ TOKEN:
 Nodo inicio(Nodo raiz):
 { }
 {
-    <Simbolo> raiz=instrucciones(raiz) <Simbolo> <EOF> { return raiz; }
+    <Simbolo> raiz=nuevo(raiz) { return raiz; } 
+}
+
+Nodo nuevo(Nodo raiz):
+{ }
+{
+      <Dolar> raiz=proceconte(raiz) <Simbolo> <EOF> { return raiz; }
+    | raiz=instrucciones(raiz) <Simbolo> <EOF> { return raiz; }
 }
 
 Nodo instrucciones(Nodo raiz):
@@ -372,7 +380,7 @@ Nodo complemento(Nodo primo):
     Token t1; 
 }
 {
-     t1=<Nulo> { Nodo tmp = new Nodo(t1.image);
+     t1=<Nulo> { Nodo tmp = new Nodo("<Nulo>");
                  tmp.setNumNodo(grausu.contador++);
                  tmp.setColumna(t1.beginColumn);
                  tmp.setFila(t1.beginLine);
@@ -381,7 +389,7 @@ Nodo complemento(Nodo primo):
     } primo=complemento(primo) { return primo; }
 
 
-   | t1=<NoNulo> { Nodo tmp = new Nodo(t1.image);
+   | t1=<NoNulo> { Nodo tmp = new Nodo("<NNulo>");
                  tmp.setNumNodo(grausu.contador++);
                  tmp.setColumna(t1.beginColumn);
                  tmp.setFila(t1.beginLine);
@@ -389,7 +397,7 @@ Nodo complemento(Nodo primo):
                  primo.addHijo(nodo1);
     } primo=complemento(primo) { return primo; }
 
-    | t1=<Unico> { Nodo tmp = new Nodo(t1.image);
+    | t1=<Unico> { Nodo tmp = new Nodo("<Unico>");
                  tmp.setNumNodo(grausu.contador++);
                  tmp.setColumna(t1.beginColumn);
                  tmp.setFila(t1.beginLine);
@@ -397,7 +405,7 @@ Nodo complemento(Nodo primo):
                  primo.addHijo(nodo1);
     } primo=complemento(primo) { return primo; }
 
-   | t1=<AutoI> { Nodo tmp = new Nodo(t1.image);
+   | t1=<AutoI> { Nodo tmp = new Nodo("<Auto>");
                  tmp.setNumNodo(grausu.contador++);
                  tmp.setColumna(t1.beginColumn);
                  tmp.setFila(t1.beginLine);
@@ -405,7 +413,7 @@ Nodo complemento(Nodo primo):
                  primo.addHijo(nodo1);
     } primo=complemento(primo) { return primo; }
 
-   | t1=<LlaveP> { Nodo tmp = new Nodo(t1.image);
+   | t1=<LlaveP> { Nodo tmp = new Nodo("<pk>");
                  tmp.setNumNodo(grausu.contador++);
                  tmp.setColumna(t1.beginColumn);
                  tmp.setFila(t1.beginLine);
@@ -413,7 +421,7 @@ Nodo complemento(Nodo primo):
                  primo.addHijo(nodo1);
     } primo=complemento(primo) { return primo; }
 
-   | t1=<LlaveF> { Nodo tmp = new Nodo(t1.image);
+   | t1=<LlaveF> { Nodo tmp = new Nodo("<fk>");
                  tmp.setNumNodo(grausu.contador++);
                  tmp.setColumna(t1.beginColumn);
                  tmp.setFila(t1.beginLine);
@@ -438,7 +446,7 @@ Nodo tipodato():
 
     | t1=<Integer> {  Nodo tmp = new Nodo(t1.image);
                       tmp.setNumNodo(grausu.contador++);
-                      tmp.setTipo("integer"); 
+                      tmp.setTipo("int"); 
                       return tmp; }
 
     | t1=<Double> { Nodo tmp = new Nodo(t1.image);
@@ -453,16 +461,17 @@ Nodo tipodato():
 
     | t1=<TDate> {  Nodo tmp = new Nodo(t1.image);
                       tmp.setNumNodo(grausu.contador++);
-                      tmp.setTipo("tdate"); 
+                      tmp.setTipo("date"); 
                       return tmp; }
 
     | t1=<TDateT> { Nodo tmp = new Nodo(t1.image);
                     tmp.setNumNodo(grausu.contador++);
-                    tmp.setTipo("tdatet"); 
+                    tmp.setTipo("datetime"); 
                     return tmp; } 
 
     | t1=<Id> { Nodo tmp = new Nodo(t1.image);
                 tmp.setNumNodo(grausu.contador++);
+                tmp.setValor("obj");
                 tmp.setTipo(t1.image); 
                 return tmp; }
 }
@@ -485,8 +494,9 @@ Nodo crearfuncion(Nodo hijo):
                             tmp1.setNumNodo(grausu.contador++);
                              nodo1 = tmp1;
                              hijo.setTipo(n2.getTipo()); 
-    }<Lli> nodo1=proceconte(nodo1) { hijo.addHijo(nodo1); 
-    } llf() { return hijo; } 
+    } t1=<Lli> nodo1=proceconte(nodo1) { nodo1.setColumna(t1.beginLine);
+    } t1=<Llf> {  nodo1.setFila(t1.beginLine); hijo.addHijo(nodo1); 
+                  return hijo; } 
 }
 
 //<Id> <Pai> paraproce() <Paf> <Lli> proceconte() llf() 
@@ -505,8 +515,11 @@ Nodo crearproce(Nodo hijo):
     } <Paf>{ Nodo tmp1 = new Nodo("sentencias");
              tmp1.setNumNodo(grausu.contador++);
              nodo1 = tmp1;
-    }<Lli> nodo1=proceconte(nodo1) { hijo.addHijo(nodo1); 
-    } llf() { return hijo; } 
+    } t1=<Lli> nodo1=proceconte(nodo1) { nodo1.setColumna(t1.beginLine);
+    } t1=<Llf> {  nodo1.setFila(t1.beginLine); hijo.addHijo(nodo1); 
+                  return hijo; } 
+
+ 
 }
 
 Nodo paraproce(Nodo primo):

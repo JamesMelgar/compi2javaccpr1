@@ -226,6 +226,7 @@ Nodo usql(Nodo hijo):
 }
 {
     <Instruccion> <Pp> t1=<Sql> { nodo1 = hijo;
+                      pr1compilarodores2.principal2.texfun = t1.image;
                       hijo = pr1compilarodores2.CrearArbol.Analisiusuql(nodo1, t1.image); 
     }
      <Cm> { return hijo; }

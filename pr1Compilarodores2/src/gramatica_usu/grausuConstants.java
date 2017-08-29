@@ -191,33 +191,35 @@ public interface grausuConstants {
   /** RegularExpression Id. */
   int Simbolo = 99;
   /** RegularExpression Id. */
-  int Pai = 100;
+  int Dolar = 100;
   /** RegularExpression Id. */
-  int Paf = 101;
+  int Pai = 101;
   /** RegularExpression Id. */
-  int Pt = 102;
+  int Paf = 102;
   /** RegularExpression Id. */
-  int Cm = 103;
+  int Pt = 103;
   /** RegularExpression Id. */
-  int Lli = 104;
+  int Cm = 104;
   /** RegularExpression Id. */
-  int Llf = 105;
+  int Lli = 105;
   /** RegularExpression Id. */
-  int Igual = 106;
+  int Llf = 106;
   /** RegularExpression Id. */
-  int Pp = 107;
+  int Igual = 107;
   /** RegularExpression Id. */
-  int Cii = 108;
+  int Pp = 108;
   /** RegularExpression Id. */
-  int Cif = 109;
+  int Cii = 109;
   /** RegularExpression Id. */
-  int punto = 110;
+  int Cif = 110;
   /** RegularExpression Id. */
-  int Ucom = 111;
+  int punto = 111;
   /** RegularExpression Id. */
-  int Texto = 112;
+  int Ucom = 112;
   /** RegularExpression Id. */
-  int Comilla = 113;
+  int Texto = 113;
+  /** RegularExpression Id. */
+  int Comilla = 114;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -328,6 +330,7 @@ public interface grausuConstants {
     "\"||\"",
     "\"!\"",
     "\"%\"",
+    "\"$\"",
     "\"(\"",
     "\")\"",
     "\";\"",

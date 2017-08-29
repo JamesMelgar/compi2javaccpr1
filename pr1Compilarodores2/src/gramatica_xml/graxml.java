@@ -236,6 +236,7 @@ raiz.addHijo(nodo1); {if ("" != null) return raiz;}
   final public 
 Nodo tbcont(Nodo raiz) throws ParseException {Nodo nodo1;
     Token t1;
+    Token t2;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Inti:{
       jj_consume_token(Inti);
@@ -333,6 +334,28 @@ raiz.addHijo(nodo1);
 {if ("" != null) return raiz;}
       break;
       }
+    case Ai:{
+      jj_consume_token(Ai);
+      t2 = jj_consume_token(Id);
+      jj_consume_token(Af);
+      t1 = jj_consume_token(Id);
+Nodo tmp = new Nodo(t1.image);
+                     tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor(t2.image);
+                     tmp.setTipo("obj");
+                     nodo1 = tmp;
+      jj_consume_token(Ai);
+      jj_consume_token(D);
+      t2 = jj_consume_token(Id);
+      jj_consume_token(Af);
+      nodo1 = complemento(nodo1);
+raiz.addHijo(nodo1);
+      raiz = tbcont(raiz);
+{if ("" != null) return raiz;}
+      break;
+      }
     case Obji:{
       jj_consume_token(Obji);
       t1 = jj_consume_token(Id);
@@ -341,6 +364,7 @@ Nodo tmp = new Nodo(t1.image);
                      tmp.setColumna(t1.beginColumn);
                      tmp.setFila(t1.beginLine);
                      tmp.setValor("obj");
+                     tmp.setTipo("obj");
                      nodo1 = tmp;
       jj_consume_token(Objf);
       nodo1 = complemento(nodo1);
@@ -824,7 +848,7 @@ Nodo funproce(Nodo raiz) throws ParseException {
     case Proci:{
       jj_consume_token(Proci);
       nodo1 = procearchivo();
-Nodo tmp2 = new Nodo("paramatros");
+Nodo tmp2 = new Nodo("parametros");
                                          tmp2.setNumNodo(graxml.contador++);
                                          Nodo tmp3 = new Nodo("sentencias");
                                          tmp3.setNumNodo(graxml.contador++);
@@ -902,7 +926,7 @@ Nodo tmp = new Nodo(t1.image);
 
   final public Nodo parametros(Nodo primo) throws ParseException {
     jj_consume_token(Paramsi);
-    primo = tbcont(primo);
+    primo = tbcont2(primo);
     jj_consume_token(Paramsf);
 {if ("" != null) return primo;}
     throw new Error("Missing return statement in function");
@@ -924,6 +948,121 @@ nodo1 = hijo;
     throw new Error("Missing return statement in function");
   }
 
+  final public Nodo tbcont2(Nodo raiz) throws ParseException {Nodo nodo1;
+    Token t1;
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case Inti:{
+      jj_consume_token(Inti);
+      t1 = jj_consume_token(Aid);
+Nodo tmp = new Nodo(t1.image);
+                     tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor("int");
+                     nodo1 = tmp;
+      jj_consume_token(Intf);
+raiz.addHijo(nodo1);
+      raiz = tbcont2(raiz);
+{if ("" != null) return raiz;}
+      break;
+      }
+    case Texti:{
+      jj_consume_token(Texti);
+      t1 = jj_consume_token(Aid);
+Nodo tmp = new Nodo(t1.image);
+                     tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor("text");
+                     nodo1 = tmp;
+      jj_consume_token(Textf);
+raiz.addHijo(nodo1);
+      raiz = tbcont2(raiz);
+{if ("" != null) return raiz;}
+      break;
+      }
+    case Doublei:{
+      jj_consume_token(Doublei);
+      t1 = jj_consume_token(Aid);
+Nodo tmp = new Nodo(t1.image);
+                        tmp.setNumNodo(graxml.contador++);
+                        tmp.setColumna(t1.beginColumn);
+                        tmp.setFila(t1.beginLine);
+                        tmp.setValor("double");
+                        nodo1 = tmp;
+      jj_consume_token(Doublef);
+raiz.addHijo(nodo1);
+      raiz = tbcont2(raiz);
+{if ("" != null) return raiz;}
+      break;
+      }
+    case Booli:{
+      jj_consume_token(Booli);
+      t1 = jj_consume_token(Aid);
+Nodo tmp = new Nodo(t1.image);
+                     tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor("Bool");
+                     nodo1 = tmp;
+      jj_consume_token(Boolf);
+raiz.addHijo(nodo1);
+      raiz = tbcont2(raiz);
+{if ("" != null) return raiz;}
+      break;
+      }
+    case Datei:{
+      jj_consume_token(Datei);
+      t1 = jj_consume_token(Aid);
+Nodo tmp = new Nodo(t1.image);
+                      tmp.setNumNodo(graxml.contador++);
+                      tmp.setColumna(t1.beginColumn);
+                      tmp.setFila(t1.beginLine);
+                      tmp.setValor("date");
+                      nodo1 = tmp;
+      jj_consume_token(Datef);
+raiz.addHijo(nodo1);
+      raiz = tbcont2(raiz);
+{if ("" != null) return raiz;}
+      break;
+      }
+    case Dateti:{
+      jj_consume_token(Dateti);
+      t1 = jj_consume_token(Aid);
+Nodo tmp = new Nodo(t1.image);
+                      tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor("datetime");
+                     nodo1 = tmp;
+      jj_consume_token(Datetf);
+raiz.addHijo(nodo1);
+      raiz = tbcont2(raiz);
+{if ("" != null) return raiz;}
+      break;
+      }
+    case Obji:{
+      jj_consume_token(Obji);
+      t1 = jj_consume_token(Aid);
+Nodo tmp = new Nodo(t1.image);
+                     tmp.setNumNodo(graxml.contador++);
+                     tmp.setColumna(t1.beginColumn);
+                     tmp.setFila(t1.beginLine);
+                     tmp.setValor("obj");
+                     nodo1 = tmp;
+      jj_consume_token(Objf);
+raiz.addHijo(nodo1);
+      raiz = tbcont2(raiz);
+{if ("" != null) return raiz;}
+      break;
+      }
+    default:
+      jj_la1[17] = jj_gen;
+{if ("" != null) return raiz;}
+    }
+    throw new Error("Missing return statement in function");
+  }
+
   /** Generated Token Manager. */
   public graxmlTokenManager token_source;
   SimpleCharStream jj_input_stream;
@@ -933,7 +1072,7 @@ nodo1 = hijo;
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[17];
+  final private int[] jj_la1 = new int[18];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static private int[] jj_la1_2;
@@ -943,13 +1082,13 @@ nodo1 = hijo;
       jj_la1_init_2();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x4100,0x40,0x1500000,0x54000000,0x0,0x0,0x40000,0x0,0x0,0x0,0x0,0x400,0x40,0x0,0x40,0x0,0x0,};
+      jj_la1_0 = new int[] {0x4100,0x40,0x1500000,0x54000000,0x0,0x0,0x40000,0x0,0x0,0x0,0x0,0x400,0x40,0x0,0x40,0x0,0x0,0x54000000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x150000,0x0,0x0,0x115,0x0,0x0,0x0,0x100,0x0,0x100,0x400000,0x15000000,0x0,0x40000000,0x0,0x40000000,0x4000,};
+      jj_la1_1 = new int[] {0x150000,0x0,0x0,0x115,0x0,0x0,0x0,0x100,0x0,0x100,0x400000,0x15000000,0x0,0x40000000,0x0,0x40000000,0x4000,0x115,};
    }
    private static void jj_la1_init_2() {
-      jj_la1_2 = new int[] {0x20,0x0,0x0,0x0,0x1ec0,0x1e40,0x0,0x80000,0x47a000,0x0,0x0,0x0,0x0,0x0,0x0,0x1,0x2,};
+      jj_la1_2 = new int[] {0x20,0x0,0x0,0x100000,0x1ec0,0x1e40,0x0,0x100000,0x8f2000,0x0,0x0,0x0,0x0,0x0,0x0,0x1,0x2,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -963,7 +1102,7 @@ nodo1 = hijo;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -977,7 +1116,7 @@ nodo1 = hijo;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -987,7 +1126,7 @@ nodo1 = hijo;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -997,7 +1136,7 @@ nodo1 = hijo;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -1006,7 +1145,7 @@ nodo1 = hijo;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -1015,7 +1154,7 @@ nodo1 = hijo;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -1066,12 +1205,12 @@ nodo1 = hijo;
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[88];
+    boolean[] la1tokens = new boolean[89];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 17; i++) {
+    for (int i = 0; i < 18; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -1086,7 +1225,7 @@ nodo1 = hijo;
         }
       }
     }
-    for (int i = 0; i < 88; i++) {
+    for (int i = 0; i < 89; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

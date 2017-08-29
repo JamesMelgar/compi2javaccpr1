@@ -187,6 +187,7 @@ raiz.addHijo(nodo1);
     jj_consume_token(Pp);
     t1 = jj_consume_token(Sql);
 nodo1 = hijo;
+                      pr1compilarodores2.principal2.texfun = t1.image;
                       hijo = pr1compilarodores2.CrearArbol.Analisiusuql(nodo1, t1.image);
     jj_consume_token(Cm);
 {if ("" != null) return hijo;}
