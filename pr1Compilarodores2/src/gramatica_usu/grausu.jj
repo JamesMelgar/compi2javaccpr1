@@ -164,8 +164,8 @@ TOKEN:
     | <Pote: "^">
     | <Iguales:"==">
     | <Dife:"!=">
-    | <Menorq :">">
-    | <Mayorq :"<">
+    | <Mayorq :">">
+    | <Menorq :"<">
     | <Menori :"<=">
     | <Mayori :">=">
     | <And : "&&">

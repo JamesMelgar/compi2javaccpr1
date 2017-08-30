@@ -175,9 +175,9 @@ public interface grausuConstants {
   /** RegularExpression Id. */
   int Dife = 91;
   /** RegularExpression Id. */
-  int Menorq = 92;
+  int Mayorq = 92;
   /** RegularExpression Id. */
-  int Mayorq = 93;
+  int Menorq = 93;
   /** RegularExpression Id. */
   int Menori = 94;
   /** RegularExpression Id. */

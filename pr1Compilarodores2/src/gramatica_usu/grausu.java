@@ -1842,8 +1842,8 @@ n3.addHijo(n1); n3.addHijo(n2); n1=n3;
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case Iguales:
       case Dife:
-      case Menorq:
       case Mayorq:
+      case Menorq:
       case Menori:
       case Mayori:{
         ;

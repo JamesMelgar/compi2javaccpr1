@@ -6,12 +6,16 @@
 package pr1compilarodores2;
 
 import gramatica_xml.graxml;
+import Acciones.tablasimbolos;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -193,17 +197,11 @@ public class principal2 extends javax.swing.JFrame {
     }//GEN-LAST:event_BtGraficarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        String cadena = "123456 \n 11 \n 1 \n 13 \n 14 \n";
-        Acciones.accpaquete.partirtextoenlineas(cadena, 1, 3);
-        if(true || true){
-            System.out.println("pr1compilarodores2.principal2.jButton1ActionPerformed()");
+            if("2".compareTo("1")==1){
+                System.out.println("pr1compilarodores2.principal2.jButton1ActionPerformed()");
+            } else {
+                System.out.println("pr1compilarodores2)");
         }
-        
-        
-        // Para borar el ultimo digito haces esto 
-         
-        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
