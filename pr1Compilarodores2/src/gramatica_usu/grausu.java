@@ -2051,7 +2051,7 @@ Nodo tmp = new Nodo(t1.image);
       t1 = jj_consume_token(Texto);
 cadena = t1.image.substring(1, t1.image.length()-1);
                   Nodo tmp = new Nodo(cadena);
-                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("texto");
+                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("text");
                  tmp.setColumna(t1.beginColumn); tmp.setFila(t1.beginLine);
                  {if ("" != null) return tmp;}
       break;

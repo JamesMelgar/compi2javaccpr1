@@ -907,43 +907,55 @@ public class accpaquete {
        if(expr.getHijos().size()>0){
            Nodo nodo1 = expr.getHijos().get(0);
            Nodo nodo2 = expresiones.expresiones(nodo1);
-           if(variables.getTipo().equalsIgnoreCase("int")){ //verificacion de tipos
-                if(nodo2.getTipo().equalsIgnoreCase("num")){
-                    valor=true;
-                }
-            }else if(variables.getTipo().equalsIgnoreCase(nodo2.getTipo())){
-                valor=true; }
-           if(valor==true){
-                for(Nodo arbol : variables.getHijos()){
-                    boolean valor1 = exite_entabladesimbolo(arbol.getNombre());
-                    if(valor1==false){
-                        agregar_a_tabla(arbol.getNombre(), nodo2.getTipo(), nodo2.getNombre());
+           if(nodo2.getNombre().equalsIgnoreCase("error")){
+               System.out.println("Se encontro un error al hacer la expresion");
+           }else if(nodo2.getNombre().equalsIgnoreCase("obj")){
+               System.out.println("No se puede asignar un tipo objeto");
+           }else{
+                if(variables.getTipo().equalsIgnoreCase("int")){ //verificacion de tipos
+                    if(nodo2.getTipo().equalsIgnoreCase("num")){
+                        valor=true;
                     }
-                }
-            }
-       }else{ //si no hay exp
+                }else if(variables.getTipo().equalsIgnoreCase(nodo2.getTipo())){
+                    valor=true; }
+                if(valor==true){
+                     for(Nodo arbol : variables.getHijos()){
+                         boolean valor1 = exite_entabladesimbolo(arbol.getNombre());
+                        if(valor1==false){
+                        agregar_a_tabla(arbol.getNombre(), nodo2.getTipo(), nodo2.getNombre());
+                        }
+                    }
+                }   
+           }
+        }else{ //si no hay exp
            if(variables.getValor().equalsIgnoreCase("obj")){
                Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db);
-               Nodo obj=nodo_buscar_objeto(db,variables.getTipo());
+               Nodo obj=nodo_buscar_objeto(db,variables.getTipo()); //variables.getTipo es el objeto
                if(obj!=null){
                     for(Nodo arbol : variables.getHijos()){
-                         for(Nodo primo : obj.getHijos()){
-                             String cadena = arbol.getNombre()+"."+primo.getNombre();//@obj + .val
-                             boolean val = exite_entabladesimbolo(cadena);
-                             if(val==false){
-                                 if(primo.getValor().equalsIgnoreCase("int")){ 
-                                     agregar_a_tabla_obj(cadena, "num","",variables.getTipo());
-                                 }else{
-                                     agregar_a_tabla_obj(cadena, primo.getValor(),"",variables.getTipo());
+                        boolean valor2 = exite_entabladesimbolo(arbol.getNombre());
+                        if(valor2==false){
+                            String tamano = Integer.toString(obj.getHijos().size());
+                            agregar_a_tabla_obj(arbol.getNombre(), "obj",tamano,variables.getTipo());
+                            for(Nodo primo : obj.getHijos()){
+                                String cadena = arbol.getNombre()+"."+primo.getNombre();//@obj + .val
+                                boolean val = exite_entabladesimbolo(cadena);
+                                if(val==false){
+                                    if(primo.getValor().equalsIgnoreCase("int")){ 
+                                       agregar_a_tabla_obj(cadena, "num","",variables.getTipo());
+                                    }else{
+                                       agregar_a_tabla_obj(cadena, primo.getValor(),"",variables.getTipo());
                                  }
                              }else{
-                                 System.out.println("Este objeto ya exite en tabla de simbolos");
-                             }
-                         }
+                                 System.out.println("Este objeto ya exite en tabla de simbolos ");  }
+                            }
+                            //imprimir_tabla_simbolos();
+                        }else {
+                            System.out.println("Este objeto ya exite en tabla de simbolos "+arbol.getNombre()); }
                     }
                }else{
                    System.out.println("Error el objeto no exite" ); }
-           }else{
+           }else{ //no es tipo objeto
                for(Nodo arbol : variables.getHijos()){
                     boolean val = exite_entabladesimbolo(arbol.getNombre());
                     if(val==false){
@@ -952,7 +964,7 @@ public class accpaquete {
                         System.out.println("Esta varible ya exite"+arbol.getNombre());
                     }
                }
-               imprimir_tabla_simbolos();
+               //imprimir_tabla_simbolos();
            }
 
        }
@@ -985,9 +997,34 @@ public class accpaquete {
              if(valor==true){
                  Nodo nodo1 = paquete.getHijos().get(0);
                  Nodo nodo2 = expresiones.expresiones(nodo1);
-                 String tipo = devolver_tipo_tb(paquete.getValor());
-                 if(nodo2.getTipo().equalsIgnoreCase(tipo)){
+                 imprimir_nodo(nodo2, "nodo2");
+                 if(nodo2.getValor().equalsIgnoreCase("error")){
+                     System.out.println("Error en expresion");
+                 }else if(nodo2.getValor().equalsIgnoreCase("obj")){
+                     tablasimbolos tb1 = devolver_elemento_tb(paquete.getValor());
+                     Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db);
+                     Nodo obj=nodo_buscar_objeto(db,tb1.getObj());
+                     if(tb1.getObj().equalsIgnoreCase(nodo2.getTexto())){
+                         for(Nodo primo : obj.getHijos()){
+                                String cadena1 = paquete.getValor()+"."+primo.getNombre();//@obj + .val
+                                String cadena2 = nodo2.getNombre()+"."+primo.getNombre();//@objdevuelto + .val
+                                System.out.println("cadena1: "+cadena1);
+                                System.out.println("cadena2: "+cadena2);
+                                tablasimbolos devo=devolver_elemento_tb(cadena2);
+                                cambiar_valor_tb(cadena1, devo.getValor());
+//                                boolean val = exite_entabladesimbolo(cadena);
+                         }
+                         System.out.println("son del mismo tipo");
+                     }else{
+                         System.out.println("Son de diferente tipo");
+                     }
+                 }else{
+                   String tipo = devolver_tipo_tb(paquete.getValor());
+                   if(nodo2.getTipo().equalsIgnoreCase(tipo)){
                      cambiar_valor_tb(paquete.getValor(), nodo2.getNombre());
+                    }else{
+                       System.out.println("No son de mismo tipo asignacion");
+                    }
                  }
                  imprimir_tabla_simbolos();
              }else{
@@ -1013,5 +1050,15 @@ public class accpaquete {
            }
        }
        return "ninguno";
+   }
+   
+    public static tablasimbolos devolver_elemento_tb(String variable){
+       tablasimbolos tb = expresiones.pila.peek();
+       for(tablasimbolos hijos : tb.getSiguiente()){
+           if(hijos.getNombre().equalsIgnoreCase(variable)){
+              return hijos;
+           }
+       }
+       return null;
    }
 }

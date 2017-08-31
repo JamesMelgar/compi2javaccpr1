@@ -16,9 +16,10 @@ import pr1compilarodores2.Nodo;
 
 public class expresiones {
     public static Stack<tablasimbolos> pila = new Stack<tablasimbolos>();
+    public static tablasimbolos pivote = new  tablasimbolos("nombre", "tipo", "valor");
     
     
-    public static Nodo expresiones(Nodo raiz){
+public static Nodo expresiones(Nodo raiz){
         String cadena;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Nodo nodo1, nodo2;
@@ -54,15 +55,18 @@ public class expresiones {
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                       c1 = izq.getNombre();
                       c2 = der.getNombre();
                       cadena= c1 + c2;
-                      nodo1=crear_nodo(cadena, "", "texto");
+                      nodo1=crear_nodo(cadena, "", "text");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
+                  }else{ 
+                    nodo1=crear_nodo("error","","error");
+                    return nodo1;
                   }//op bool 
               }else if(izq.getTipo().equalsIgnoreCase("bool")){
                   if(der.getTipo().equalsIgnoreCase("bool")){
@@ -86,11 +90,11 @@ public class expresiones {
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                       c1 = izq.getNombre();
                       c2 = der.getNombre();
                       cadena= c1 + c2;
-                      nodo1=crear_nodo(cadena, "", "texto");
+                      nodo1=crear_nodo(cadena, "", "text");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("error", "", "error");
@@ -121,11 +125,11 @@ public class expresiones {
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                       c1 = izq.getNombre();
                       c2 = der.getNombre();
                       cadena= c1 + c2;
-                      nodo1=crear_nodo(cadena, "", "texto");
+                      nodo1=crear_nodo(cadena, "", "text");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("error", "", "error");
@@ -134,36 +138,36 @@ public class expresiones {
                     nodo1=crear_nodo("error","","error");
                     return nodo1;
                   }//texto
-              }else if(izq.getTipo().equalsIgnoreCase("texto")){
-                  if(der.getTipo().equalsIgnoreCase("texto")){
+              }else if(izq.getTipo().equalsIgnoreCase("text")){
+                  if(der.getTipo().equalsIgnoreCase("text")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
                     cadena=c1 + c2;
-                    nodo1=crear_nodo(cadena,"","texto");
+                    nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("num")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
                     cadena=c1 + c2;
-                    nodo1=crear_nodo(cadena,"","texto");
+                    nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("double")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
                     cadena=c1 + c2;
-                    nodo1=crear_nodo(cadena,"","texto");
+                    nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
                     cadena=c1 + c2;
-                    nodo1=crear_nodo(cadena,"","texto");
+                    nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
                     c1=izq.getNombre();
                     c2=der.getNombre();
                     cadena=c1 + c2;
-                    nodo1=crear_nodo(cadena,"","texto");
+                    nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
                     nodo1=crear_nodo("error","","error");
@@ -179,11 +183,11 @@ public class expresiones {
                   }else if(der.getTipo().equalsIgnoreCase("double")){
                     nodo1=crear_nodo("error","","error");
                     return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
                     cadena=c1 + c2;
-                    nodo1=crear_nodo(cadena,"","texto");
+                    nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
                     nodo1=crear_nodo("error","","error");
@@ -217,12 +221,15 @@ public class expresiones {
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
+                  }else if(der.getTipo().equalsIgnoreCase("error")){
+                    nodo1=crear_nodo("error","","error");
+                    return nodo1;
                   }//op bool 
               }else if(izq.getTipo().equalsIgnoreCase("bool")){
                   if(der.getTipo().equalsIgnoreCase("bool")){
@@ -242,7 +249,7 @@ public class expresiones {
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
@@ -274,7 +281,7 @@ public class expresiones {
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("error","","error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
@@ -284,7 +291,7 @@ public class expresiones {
                     nodo1=crear_nodo("error","","error");
                     return nodo1;
                   }//texto
-              }else if(izq.getTipo().equalsIgnoreCase("texto")){
+              }else if(izq.getTipo().equalsIgnoreCase("text")){
                   nodo1=crear_nodo("error","","error");
                   return nodo1; //op date
               }else if(izq.getTipo().equalsIgnoreCase("datatime") || izq.getTipo().equalsIgnoreCase("date")){
@@ -318,12 +325,15 @@ public class expresiones {
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
+                  }else if(der.getTipo().equalsIgnoreCase("error")){
+                    nodo1=crear_nodo("error","","error");
+                    return nodo1;
                   }//op bool 
               }else if(izq.getTipo().equalsIgnoreCase("bool")){
                   if(der.getTipo().equalsIgnoreCase("bool")){
@@ -347,7 +357,7 @@ public class expresiones {
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
@@ -379,7 +389,7 @@ public class expresiones {
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
@@ -389,15 +399,15 @@ public class expresiones {
                     nodo1=crear_nodo("error","","error");
                     return nodo1;
                   }//texto
-              }else if(izq.getTipo().equalsIgnoreCase("texto")){
+              }else if(izq.getTipo().equalsIgnoreCase("text")){
                  nodo1=crear_nodo("", "", "error");
                  return nodo1;
               }else if(izq.getTipo().equalsIgnoreCase("datatime") || izq.getTipo().equalsIgnoreCase("date")){
-                  if(der.getTipo().equalsIgnoreCase("texto")){
+                  if(der.getTipo().equalsIgnoreCase("text")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
                     cadena=c1 + c2;
-                    nodo1=crear_nodo(cadena,"","texto");
+                    nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
                   }else{
                     nodo1=crear_nodo("error","","error");
@@ -431,12 +441,15 @@ public class expresiones {
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
+                  }else if(der.getTipo().equalsIgnoreCase("error")){
+                    nodo1=crear_nodo("error","","error");
+                    return nodo1;
                   }//op bool 
               }else if(izq.getTipo().equalsIgnoreCase("bool")){
                   if(der.getTipo().equalsIgnoreCase("bool")){
@@ -456,7 +469,7 @@ public class expresiones {
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
@@ -488,7 +501,7 @@ public class expresiones {
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
@@ -498,15 +511,15 @@ public class expresiones {
                     nodo1=crear_nodo("error","","error");
                     return nodo1;
                   }//texto
-              }else if(izq.getTipo().equalsIgnoreCase("texto")){
+              }else if(izq.getTipo().equalsIgnoreCase("text")){
                  nodo1=crear_nodo("", "", "error");
                  return nodo1;
               }else if(izq.getTipo().equalsIgnoreCase("datatime") || izq.getTipo().equalsIgnoreCase("date")){
-                  if(der.getTipo().equalsIgnoreCase("texto")){
+                  if(der.getTipo().equalsIgnoreCase("text")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
                     cadena=c1 + c2;
-                    nodo1=crear_nodo(cadena,"","texto");
+                    nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
                   }else{
                     nodo1=crear_nodo("error","","error");
@@ -540,12 +553,15 @@ public class expresiones {
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
+                  }else if(der.getTipo().equalsIgnoreCase("error")){
+                    nodo1=crear_nodo("error","","error");
+                    return nodo1;
                   }//op bool 
               }else if(izq.getTipo().equalsIgnoreCase("bool")){
                   if(der.getTipo().equalsIgnoreCase("bool")){
@@ -565,7 +581,7 @@ public class expresiones {
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
@@ -597,7 +613,7 @@ public class expresiones {
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("texto")){
+                  }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
@@ -607,15 +623,15 @@ public class expresiones {
                     nodo1=crear_nodo("error","","error");
                     return nodo1;
                   }//texto
-              }else if(izq.getTipo().equalsIgnoreCase("texto")){
+              }else if(izq.getTipo().equalsIgnoreCase("text")){
                  nodo1=crear_nodo("", "", "error");
                  return nodo1;
               }else if(izq.getTipo().equalsIgnoreCase("datatime") || izq.getTipo().equalsIgnoreCase("date")){
-                  if(der.getTipo().equalsIgnoreCase("texto")){
+                  if(der.getTipo().equalsIgnoreCase("text")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
                     cadena=c1 + c2;
-                    nodo1=crear_nodo(cadena,"","texto");
+                    nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
                   }else{
                     nodo1=crear_nodo("error","","error");
@@ -673,8 +689,8 @@ public class expresiones {
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
                    }
-               }else if(izq.getTipo().equalsIgnoreCase("texto")){
-                   if(der.getTipo().equalsIgnoreCase("texto")){ 
+               }else if(izq.getTipo().equalsIgnoreCase("text")){
+                   if(der.getTipo().equalsIgnoreCase("text")){ 
                        c1=izq.getNombre();
                        c2=der.getNombre();
                        if (c1.compareTo(c2) > 0){
@@ -754,8 +770,8 @@ public class expresiones {
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
                    }
-               }else if(izq.getTipo().equalsIgnoreCase("texto")){
-                   if(der.getTipo().equalsIgnoreCase("texto")){ 
+               }else if(izq.getTipo().equalsIgnoreCase("text")){
+                   if(der.getTipo().equalsIgnoreCase("text")){ 
                        c1=izq.getNombre();
                        c2=der.getNombre();
                        if (c1.compareTo(c2) < 0){
@@ -835,8 +851,8 @@ public class expresiones {
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
                    }
-               }else if(izq.getTipo().equalsIgnoreCase("texto")){
-                   if(der.getTipo().equalsIgnoreCase("texto")){ 
+               }else if(izq.getTipo().equalsIgnoreCase("text")){
+                   if(der.getTipo().equalsIgnoreCase("text")){ 
                        c1=izq.getNombre();
                        c2=der.getNombre();
                        if (c1.compareTo(c2) <= 0){
@@ -916,8 +932,8 @@ public class expresiones {
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
                    }
-               }else if(izq.getTipo().equalsIgnoreCase("texto")){
-                   if(der.getTipo().equalsIgnoreCase("texto")){ 
+               }else if(izq.getTipo().equalsIgnoreCase("text")){
+                   if(der.getTipo().equalsIgnoreCase("text")){ 
                        c1=izq.getNombre();
                        c2=der.getNombre();
                        if (c1.compareTo(c2) >= 0){
@@ -1103,17 +1119,21 @@ public static String convertirString(boolean valor){
             for(tablasimbolos hoja : tb.getSiguiente()){
                 if(hoja.getNombre().equalsIgnoreCase(raiz.getNombre())){
 //                    imprimir_estenodo(raiz, "raiz");
-                    if(hoja.getValor().equalsIgnoreCase("")){ //si no fue declado
+                    if(hoja.getTipo().equalsIgnoreCase("obj")){ //cuando se quiere hacer asignaciones de objeto a objeto
+                        Nodo nodo1 = crear_nodo(hoja.getNombre(),"obj", "error");
+                        nodo1.setTexto(hoja.getObj());
+                        return nodo1;
+                    }else{
+                        if(hoja.getValor().equalsIgnoreCase("")){ //si no fue declado
                          System.out.println("error esta variable no a sido asignada");
                          Nodo nodo1=crear_nodo("error","","error");
                          return nodo1;
-                    }else{
-                        Nodo nodo1 = crear_nodo(hoja.getValor(), hoja.getNombre(), hoja.getTipo());
-                        return nodo1;
+                        }else{
+                            Nodo nodo1 = crear_nodo(hoja.getValor(), hoja.getNombre(), hoja.getTipo());
+                            return nodo1; }
                     }
-                   
                 }
-            }
+            }//No se encontro la variable quitar @ a la variable para ver si 
         }else{
 //            imprimir_estenodo(raiz, "normal");
             return raiz;
