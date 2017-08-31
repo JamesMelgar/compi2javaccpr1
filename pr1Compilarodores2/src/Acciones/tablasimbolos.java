@@ -14,7 +14,16 @@ public class tablasimbolos {
     private String tipo;
     private String obj;
     private String valor;
+    private int ambito;
     private String extra;
+
+    public int getAmbito() {
+        return ambito;
+    }
+
+    public void setAmbito(int ambito) {
+        this.ambito = ambito;
+    }
     
     public tablasimbolos(String nombre,String tipo, String valor) {
         super();
@@ -22,6 +31,7 @@ public class tablasimbolos {
         this.tipo = tipo;
         siguiente = new ArrayList<>();
         this.valor = valor;
+        setAmbito(0);
         setObj("");
         setExtra("");
     }

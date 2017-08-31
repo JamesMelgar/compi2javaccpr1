@@ -851,7 +851,7 @@ Nodo tmp = new Nodo("declarar");
                 nodo2.addHijo(tmp4);
     nodo2 = listavariable(nodo2);
     nodo4 = tipodato();
-nodo2.setTipo(nodo4.getTipo()); nodo1.addHijo(nodo2);
+nodo2.setTipo(nodo4.getTipo());  nodo2.setValor(nodo4.getValor()); nodo1.addHijo(nodo2);
     nodo3 = expresion(nodo3);
 nodo1.addHijo(nodo3); padre.addHijo(nodo1); {if ("" != null) return padre;}
     throw new Error("Missing return statement in function");

@@ -62,7 +62,7 @@ public class principal2 extends javax.swing.JFrame {
 
         tx_entrada.setColumns(20);
         tx_entrada.setRows(5);
-        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\nimprimir(2+3*4+5);\n%,\n]");
+        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\nset_Salario(1.1,2.3,3);\n%,\n]");
         jScrollPane1.setViewportView(tx_entrada);
 
         jLabel1.setText("Entrada");
@@ -173,7 +173,7 @@ public class principal2 extends javax.swing.JFrame {
         }
         tep = tx_entrada.getText();
         if(tep.equals("a") == false){
-             System.out.println(tx_entrada.getText());
+//             System.out.println(tx_entrada.getText());
              principal2.paquete = CrearArbol.trypaquete(paquete, tep);
              Acciones.accpaquete.tipopaquete(principal2.paquete, principal2.usuarios, principal2.master);
              tx_salida.setText(principal2.textopaquete);
@@ -197,11 +197,21 @@ public class principal2 extends javax.swing.JFrame {
     }//GEN-LAST:event_BtGraficarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-            if("2".compareTo("1")==1){
-                System.out.println("pr1compilarodores2.principal2.jButton1ActionPerformed()");
-            } else {
-                System.out.println("pr1compilarodores2)");
-        }
+        String numero;
+        Stack<String> pila = new Stack<String>();
+        pila.push("1");
+        pila.push("2");
+        pila.push("3");
+        pila.push("4");
+        numero = pila.peek();
+        System.out.println("pila elemneto"+numero);
+        numero = pila.peek();
+        System.out.println("pila elemneto"+numero);
+        pila.pop();
+        numero = pila.peek();
+        System.out.println("pila elemneto"+numero);
+       
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

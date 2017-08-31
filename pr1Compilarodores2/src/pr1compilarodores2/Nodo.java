@@ -52,7 +52,7 @@ public class Nodo {
     {
         setNombre(nombre);
         hijos = new ArrayList<>();
-        //setValor("");
+        setValor("");
         setNumNodo(0);
         setFila(0);
         setColumna(0);

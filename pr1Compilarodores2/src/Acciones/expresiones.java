@@ -1036,8 +1036,7 @@ public class expresiones {
                 }
             }
         }else{
-            System.out.println("tipo "+raiz.getTipo());
-            System.out.println("valor "+raiz.getValor());
+            raiz = acciones_exp(raiz);
             return raiz;
         }
         return raiz;
@@ -1068,7 +1067,7 @@ public static String convertirString(boolean valor){
     }
 }
 
-public static void prueba(){
+    public static void prueba(){
     tablasimbolos tb = new tablasimbolos("nombre", "tipo", "valor");
     tablasimbolos tb1 = new tablasimbolos("uno", "tres", "cuatro");
     tablasimbolos tb2 = new tablasimbolos("Dos", "tres", "cuatro");
@@ -1091,5 +1090,35 @@ public static void prueba(){
 
      public static String[] cortarCadenaPorcomilla(String cadena) {
         return cadena.split("\\'");
+    }
+     
+    public static void imprimir_estenodo(Nodo imp, String texto){
+       System.out.println(texto+" Nombre:"+imp.getNombre()+" Valor:"+imp.getValor()+" tipo:"+imp.getTipo());
+   }
+     
+    public static Nodo acciones_exp(Nodo raiz){
+        if(raiz.getTipo().equalsIgnoreCase("variable") || raiz.getTipo().equalsIgnoreCase("variable1p")){
+            tablasimbolos tb = expresiones.pila.peek();
+            boolean valor = false;
+            for(tablasimbolos hoja : tb.getSiguiente()){
+                if(hoja.getNombre().equalsIgnoreCase(raiz.getNombre())){
+//                    imprimir_estenodo(raiz, "raiz");
+                    if(hoja.getValor().equalsIgnoreCase("")){ //si no fue declado
+                         System.out.println("error esta variable no a sido asignada");
+                         Nodo nodo1=crear_nodo("error","","error");
+                         return nodo1;
+                    }else{
+                        Nodo nodo1 = crear_nodo(hoja.getValor(), hoja.getNombre(), hoja.getTipo());
+                        return nodo1;
+                    }
+                   
+                }
+            }
+        }else{
+//            imprimir_estenodo(raiz, "normal");
+            return raiz;
+        }
+        Nodo nodo1=crear_nodo("error","","error");
+        return nodo1;
     }
 }

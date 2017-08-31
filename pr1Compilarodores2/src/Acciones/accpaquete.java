@@ -15,7 +15,7 @@ public class accpaquete {
         if(temp.getNombre().equalsIgnoreCase("login") == true ){
            login(temp, usuario);
         }else if(temp.getNombre().equalsIgnoreCase("usql") == true){
-           tipousql(paquete,usuario,master,temp);
+           tipousql(usuario,master,temp);
         }else{
             System.out.println(temp.getNombre());
         }
@@ -61,7 +61,7 @@ public class accpaquete {
         return false;
     }
     
-    public static void tipousql(Nodo paquete, Nodo usuario, Nodo master, Nodo hijo){
+    public static void tipousql( Nodo usuario, Nodo master, Nodo hijo){
         
         for(Nodo arbol : hijo.getHijos()){  
             Nodo temp = arbol;
@@ -87,6 +87,12 @@ public class accpaquete {
                 sentencia_crear_tabla(usuario, master, temp);
             }else if(arbol.getNombre().equalsIgnoreCase("imprimir") == true){
                 sentencia_imprimir(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("llamada") == true){
+                sentencia_llamada(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("declarar") == true){
+                sentencia_declarar(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("asignar") == true){
+                sentencia_asignar(usuario, master, temp);
             }
         }
     }
@@ -166,6 +172,32 @@ public class accpaquete {
                 return arbol;
             }
         } 
+        return null;
+    }
+    
+    public static Nodo nodo_buscar_proce(Nodo db,String texto){
+        for(Nodo arbol : db.getHijos()){ 
+           if(arbol.getNombre().equalsIgnoreCase("procedure")){
+                for(Nodo primo : arbol.getHijos()){
+                    if(primo.getNombre().equalsIgnoreCase(texto)){
+                        return primo;
+                      }
+                }
+            } 
+        }
+        return null;
+    }
+    
+    public static Nodo nodo_buscar_objeto(Nodo db,String texto){
+        for(Nodo arbol : db.getHijos()){ 
+           if(arbol.getNombre().equalsIgnoreCase("objeto")){
+                for(Nodo primo : arbol.getHijos()){
+                    if(primo.getNombre().equalsIgnoreCase(texto)){
+                        return primo;
+                      }
+                }
+            } 
+        }
         return null;
     }
     
@@ -274,11 +306,11 @@ public class accpaquete {
         Nodo nodo1;
         persona=nodo_existeusuario(usuario, usu); 
         db=nodo_buscar_bd(master, baseD);
-        
+        //modique este metodo revisar luego************
         if(persona != null && db != null){
             //verificando en noper
              nodo1 = persona.getHijos().get(0);
-             for(Nodo hijos : db.getHijos()){ 
+             for(Nodo hijos : nodo1.getHijos()){ 
                  if(hijos.getNombre().equalsIgnoreCase(baseD)){
                      for(Nodo primos : hijos.getHijos()){
                          if(primos.getNombre().equalsIgnoreCase(permiso)){
@@ -289,7 +321,7 @@ public class accpaquete {
              }
             //verificando en permisos
              nodo1 = persona.getHijos().get(1);
-             for(Nodo hijos : db.getHijos()){ 
+             for(Nodo hijos : nodo1.getHijos()){ 
                  if(hijos.getNombre().equalsIgnoreCase(baseD)){
                      for(Nodo primos : hijos.getHijos()){
                          if(primos.getNombre().equalsIgnoreCase(permiso)){
@@ -763,4 +795,223 @@ public class accpaquete {
             Nodo nodo2 = expresiones.expresiones(nodo1);
             System.out.println("respuesta:"+nodo2.getNombre());
     }
+    
+    public static void sentencia_llamada(Nodo usuarios,Nodo master, Nodo paquete){
+        Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db); 
+        Nodo proce=nodo_buscar_proce(db, paquete.getValor());
+        boolean valor = tiene_permiso(usuarios, master, pr1compilarodores2.principal2.db, pr1compilarodores2.principal2.usua , paquete.getValor());
+        if(db != null && proce != null && valor){
+            if(proce.getTipo().equalsIgnoreCase("proce")){
+                realizar_ope_para(paquete); //realizo las  expresiones
+                valor = verificar_parametros_tipos(paquete, proce.getHijos().get(0)); //verifico que los tipos sean iguales
+                if(valor){
+                     tablasimbolos tb = new tablasimbolos("nombre", "tipo", "valor"); //creo la tabla de simbolos
+                     tb.setAmbito(0); //ambito cero
+                     expresiones.pila.push(tb); //ingreso a la pila un tabla de simbolos
+                     llenar_tabla(paquete);//lleno la tabla de simbolos
+//                     imprimir_tabla_simbolos();
+                     tipousql( usuarios, master, proce.getHijos().get(1));//realizar sentencias
+                     expresiones.pila.pop();
+                     System.out.println("correcto");
+                }
+            }else{
+                System.out.println("Usted esta llamando a una funcion"); }
+        }else{
+            System.out.println("El procedimiento no exite o no tiene permiso");
+        }
+    }
+    
+    public static boolean verificar_parametros_tipos(Nodo paquete, Nodo proce){
+        int con=0;
+        if(paquete.getHijos().size()==proce.getHijos().size()){
+             for(Nodo arbol : proce.getHijos()){
+                Nodo para=paquete.getHijos().get(con);
+                para.setValor(arbol.getNombre());
+                if(arbol.getValor().equals("int")){
+                    if(para.getTipo().equalsIgnoreCase("num")==false){
+                        return false;
+                    }
+                }else{
+                    if(arbol.getValor().equalsIgnoreCase(para.getTipo())==false){
+                        System.out.println("tipos de parametros incorrectos");
+                        return false;
+                    }
+                }
+                ++con;
+            }
+        }else{
+            System.out.println("parametros incorrectos");
+            return false;
+        }
+           
+        return true;
+    }
+    
+    public static void realizar_ope_para(Nodo paquete){
+        int con=0;
+        for (Nodo hijo : paquete.getHijos()){
+             Nodo nodo2 = expresiones.expresiones(hijo); //paquete
+             paquete.getHijos().set(con, nodo2);
+             ++con;
+             
+        }
+    }
+    
+    public static void llenar_tabla(Nodo paquete){
+        boolean valor = false;
+        for(Nodo arbol : paquete.getHijos()){
+            boolean valor1 = exite_entabladesimbolo(arbol.getValor());
+            if(valor1==true){
+                valor=true;
+            }
+        }
+        if(valor==false){
+             for(Nodo arbol : paquete.getHijos()){
+                  tablasimbolos tb = expresiones.pila.peek();
+                  int numero = tb.getAmbito();
+//                  imprimir_nodo(arbol, "paquete");
+                  tablasimbolos tb1 = new tablasimbolos(arbol.getValor(), arbol.getTipo(), arbol.getNombre());
+                  tb1.setAmbito(numero);
+                  tb.addHijo(tb1);
+             }
+       
+        }
+         
+    }
+    
+   public static boolean exite_entabladesimbolo(String texto){
+        tablasimbolos tb = expresiones.pila.peek();
+        for(tablasimbolos hijo: tb.getSiguiente()){
+            if(hijo.getNombre().equalsIgnoreCase(texto)){
+                return true;
+            }
+        }
+        return false;
+   }
+    
+   public static void imprimir_tabla_simbolos(){
+       if (!expresiones.pila.empty()){
+           tablasimbolos tb = expresiones.pila.peek();
+           for(tablasimbolos hijos : tb.getSiguiente()){
+               System.out.println("Nombre:"+hijos.getNombre()+
+                       " Tipo:"+hijos.getTipo()+" obj: "+
+                            hijos.getObj()+" Valor:"+hijos.getValor()+" Ambito:"+Integer.toString(hijos.getAmbito()));
+           }
+       } 
+   }
+   
+   public static void sentencia_declarar(Nodo usuarios,Nodo master, Nodo paquete){
+       boolean valor=false;
+       Nodo variables = paquete.getHijos().get(0);//hijo izquierdo
+       Nodo expr = paquete.getHijos().get(1);//hijo derecho
+       if(expr.getHijos().size()>0){
+           Nodo nodo1 = expr.getHijos().get(0);
+           Nodo nodo2 = expresiones.expresiones(nodo1);
+           if(variables.getTipo().equalsIgnoreCase("int")){ //verificacion de tipos
+                if(nodo2.getTipo().equalsIgnoreCase("num")){
+                    valor=true;
+                }
+            }else if(variables.getTipo().equalsIgnoreCase(nodo2.getTipo())){
+                valor=true; }
+           if(valor==true){
+                for(Nodo arbol : variables.getHijos()){
+                    boolean valor1 = exite_entabladesimbolo(arbol.getNombre());
+                    if(valor1==false){
+                        agregar_a_tabla(arbol.getNombre(), nodo2.getTipo(), nodo2.getNombre());
+                    }
+                }
+            }
+       }else{ //si no hay exp
+           if(variables.getValor().equalsIgnoreCase("obj")){
+               Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db);
+               Nodo obj=nodo_buscar_objeto(db,variables.getTipo());
+               if(obj!=null){
+                    for(Nodo arbol : variables.getHijos()){
+                         for(Nodo primo : obj.getHijos()){
+                             String cadena = arbol.getNombre()+"."+primo.getNombre();//@obj + .val
+                             boolean val = exite_entabladesimbolo(cadena);
+                             if(val==false){
+                                 if(primo.getValor().equalsIgnoreCase("int")){ 
+                                     agregar_a_tabla_obj(cadena, "num","",variables.getTipo());
+                                 }else{
+                                     agregar_a_tabla_obj(cadena, primo.getValor(),"",variables.getTipo());
+                                 }
+                             }else{
+                                 System.out.println("Este objeto ya exite en tabla de simbolos");
+                             }
+                         }
+                    }
+               }else{
+                   System.out.println("Error el objeto no exite" ); }
+           }else{
+               for(Nodo arbol : variables.getHijos()){
+                    boolean val = exite_entabladesimbolo(arbol.getNombre());
+                    if(val==false){
+                        agregar_a_tabla(arbol.getNombre(), variables.getTipo(), "");
+                    }else{
+                        System.out.println("Esta varible ya exite"+arbol.getNombre());
+                    }
+               }
+               imprimir_tabla_simbolos();
+           }
+
+       }
+   }
+    
+   public static void imprimir_nodo(Nodo imp, String texto){
+       System.out.println(texto+" Nombre:"+imp.getNombre()+" Valor:"+imp.getValor()+" tipo:"+imp.getTipo());
+   }
+   
+   public static void agregar_a_tabla(String nombre, String tipo, String valor){
+       tablasimbolos tb = expresiones.pila.peek();
+       int numero = tb.getAmbito();
+       tablasimbolos tb1 = new tablasimbolos(nombre, tipo, valor);
+       tb1.setAmbito(numero);
+       tb.addHijo(tb1);
+   }
+   
+   public static void agregar_a_tabla_obj(String nombre, String tipo, String valor, String obj){
+       tablasimbolos tb = expresiones.pila.peek();
+       int numero = tb.getAmbito();
+       tablasimbolos tb1 = new tablasimbolos(nombre, tipo, valor);
+       tb1.setObj(obj);
+       tb1.setAmbito(numero);
+       tb.addHijo(tb1);
+   }
+   
+   public static void sentencia_asignar(Nodo usuarios,Nodo master, Nodo paquete){
+         if(paquete.getTipo().equalsIgnoreCase("variable") || paquete.getTipo().equalsIgnoreCase("variable1p")){
+             boolean valor = exite_entabladesimbolo(paquete.getValor());
+             if(valor==true){
+                 Nodo nodo1 = paquete.getHijos().get(0);
+                 Nodo nodo2 = expresiones.expresiones(nodo1);
+                 String tipo = devolver_tipo_tb(paquete.getValor());
+                 if(nodo2.getTipo().equalsIgnoreCase(tipo)){
+                     cambiar_valor_tb(paquete.getValor(), nodo2.getNombre());
+                 }
+                 imprimir_tabla_simbolos();
+             }else{
+                 System.out.println("Este objeto no exite");
+             }
+         }           
+   }
+   
+   public static void cambiar_valor_tb(String variable,String valor){
+       tablasimbolos tb = expresiones.pila.peek();
+       for(tablasimbolos hijos : tb.getSiguiente()){
+           if(hijos.getNombre().equalsIgnoreCase(variable)){
+               hijos.setValor(valor);
+           }
+       }
+   }
+   
+   public static String devolver_tipo_tb(String variable){
+       tablasimbolos tb = expresiones.pila.peek();
+       for(tablasimbolos hijos : tb.getSiguiente()){
+           if(hijos.getNombre().equalsIgnoreCase(variable)){
+              return hijos.getTipo();
+           }
+       }
+       return "ninguno";
+   }
 }

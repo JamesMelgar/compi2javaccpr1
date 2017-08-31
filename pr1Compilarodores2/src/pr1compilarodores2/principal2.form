@@ -111,7 +111,7 @@
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="[&#xa;&quot;validar&quot;: 1500,&#xa;&quot;paquete&quot;: &quot;usql&quot;,&#xa;&quot;Instruccion&quot;: %&#xa;imprimir(2+3*4+5);&#xa;%,&#xa;]"/>
+            <Property name="text" type="java.lang.String" value="[&#xa;&quot;validar&quot;: 1500,&#xa;&quot;paquete&quot;: &quot;usql&quot;,&#xa;&quot;Instruccion&quot;: %&#xa;set_Salario(1.1,2.3,3);&#xa;%,&#xa;]"/>
           </Properties>
         </Component>
       </SubComponents>
