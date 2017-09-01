@@ -1129,6 +1129,7 @@ public static String convertirString(boolean valor){
                     if(hoja.getTipo().equalsIgnoreCase("obj")){ //cuando se quiere hacer asignaciones de objeto a objeto
                         Nodo nodo1 = crear_nodo(hoja.getNombre(),"obj", "error");
                         nodo1.setTexto(hoja.getObj());
+                        imprimir_estenodo(nodo1, "objeto");
                         return nodo1;
                     }else{
                         if(hoja.getValor().equalsIgnoreCase("")){ //si no fue declado
@@ -1176,20 +1177,27 @@ public static String convertirString(boolean valor){
                      }
                     Nodo nodo2=accpaquete.fun_tipousql( usuario, master, fun.getHijos().get(1));//verificar que lo retornado sea igual
 //                    imprimir_estenodo(fun, "llamada"); //nombre: nombre fun
-                    imprimir_estenodo(nodo2, "nodo2");
                     expresiones.pivote.push(expresiones.pila.peek());
                     expresiones.pila.pop();
                     if(nodo2.getValor().equalsIgnoreCase("error")){
                         nodo2=crear_nodo("error","","error");
                         return nodo2;
-                    }else if(fun.getValor().equalsIgnoreCase(nodo2.getValor())){
+                    }else if(nodo2.getValor().equalsIgnoreCase("obj")){ //modifique esto
+                             System.out.println("correcto");
+                             imprimir_estenodo(nodo2, "***********");
+                             System.out.println("****"+nodo2.getTexto());
+                             return nodo2;
+                    }else if(fun.getValor().equalsIgnoreCase(nodo2.getTipo())){
                         //imprimir_tabla_simbolos();
                         System.out.println("correcto");
                         return nodo2;
+                    }else{
+                        imprimir_estenodo(nodo2, "nodo2");
+                        imprimir_estenodo(fun,"fun");
+                        System.out.println("Error retorno de tipos diferentes");
                     }
-//                    if(nodo2.equals(tb))
-                    
-                    return nodo2;
+                        nodo2=crear_nodo("error","","error");
+                        return nodo2;
                 }else{
                     System.out.println("Parametros incorrectos");
                 }

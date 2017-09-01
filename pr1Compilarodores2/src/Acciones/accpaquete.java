@@ -135,7 +135,8 @@ public class accpaquete {
             }else if(arbol.getNombre().equalsIgnoreCase("asignar") == true){
                 sentencia_asignar(usuario, master, temp);
             }else if(arbol.getNombre().equalsIgnoreCase("retorno") == true){
-                Nodo nodo2 = sentencia_Retorno(usuario, master, temp);             
+                Nodo nodo2 = sentencia_Retorno(usuario, master, temp);   
+                imprimir_nodo(nodo2, "texto****");
                 return nodo2;
             }
         }
@@ -1007,7 +1008,6 @@ public class accpaquete {
         }
     }
     
-   
    public static boolean exite_entabladesimbolo(String texto){
         tablasimbolos tb = expresiones.pila.peek();
         for(tablasimbolos hijo: tb.getSiguiente()){
@@ -1139,23 +1139,44 @@ public class accpaquete {
                  if(nodo2.getValor().equalsIgnoreCase("error")){
                      System.out.println("Error en expresion");
                  }else if(nodo2.getValor().equalsIgnoreCase("obj")){
-                     tablasimbolos tb1 = devolver_elemento_tb(paquete.getValor());
-                     Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db);
-                     Nodo obj=nodo_buscar_objeto(db,tb1.getObj());
-                     if(tb1.getObj().equalsIgnoreCase(nodo2.getTexto())){
-                         for(Nodo primo : obj.getHijos()){
-                                String cadena1 = paquete.getValor()+"."+primo.getNombre();//@obj + .val
-                                String cadena2 = nodo2.getNombre()+"."+primo.getNombre();//@objdevuelto + .val
-                                System.out.println("cadena1: "+cadena1);
-                                System.out.println("cadena2: "+cadena2);
-                                tablasimbolos devo=devolver_elemento_tb(cadena2);
-                                cambiar_valor_tb(cadena1, devo.getValor());
-//                                boolean val = exite_entabladesimbolo(cadena);
+                     if(!expresiones.pivote.empty()){
+                         tablasimbolos tb1 = devolver_elemento_tb(paquete.getValor());//simbolo lado izquierdo
+                         tablasimbolos tb2 = expresiones.pivote.pop();//saco la tabla de simbolos pasadas
+                         Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db); //busco el objeto en la tabla de simbolos
+                         Nodo obj=nodo_buscar_objeto(db,tb1.getObj());//me devuelve el objeto
+                         if(tb1.getObj().equalsIgnoreCase(nodo2.getTexto())){
+                             for(Nodo primo : obj.getHijos()){
+                                    String cadena1 = paquete.getValor()+"."+primo.getNombre();//@obj + .val
+                                    String cadena2 = nodo2.getNombre()+"."+primo.getNombre();//@objdevuelto + .val
+                                    System.out.println("cadena1: "+cadena1);
+                                    System.out.println("cadena2: "+cadena2);
+                                    tablasimbolos devo=devolver_elemento_tb_pivote(cadena2,tb2);
+                                    cambiar_valor_tb(cadena1, devo.getValor());
+    //                                boolean val = exite_entabladesimbolo(cadena);
+                             }
+                         }else{ 
+                             System.out.println("retotno de tipos de objtos incorrecto ");
                          }
-                         System.out.println("son del mismo tipo");
                      }else{
-                         System.out.println("Son de diferente tipo");
+                         tablasimbolos tb1 = devolver_elemento_tb(paquete.getValor());
+                         Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db);
+                         Nodo obj=nodo_buscar_objeto(db,tb1.getObj());
+                         if(tb1.getObj().equalsIgnoreCase(nodo2.getTexto())){
+                             for(Nodo primo : obj.getHijos()){
+                                    String cadena1 = paquete.getValor()+"."+primo.getNombre();//@obj + .val
+                                    String cadena2 = nodo2.getNombre()+"."+primo.getNombre();//@objdevuelto + .val
+                                    System.out.println("cadena1: "+cadena1);
+                                    System.out.println("cadena2: "+cadena2);
+                                    tablasimbolos devo=devolver_elemento_tb(cadena2);
+                                    cambiar_valor_tb(cadena1, devo.getValor());
+    //                                boolean val = exite_entabladesimbolo(cadena);
+                             }
+                             System.out.println("son del mismo tipo");
+                         }else{
+                             System.out.println("Son de diferente tipo");
+                         }
                      }
+                    ///////// 
                  }else{
                    String tipo = devolver_tipo_tb(paquete.getValor());
                    if(nodo2.getTipo().equalsIgnoreCase(tipo)){
@@ -1164,7 +1185,6 @@ public class accpaquete {
                        System.out.println("No son de mismo tipo asignacion");
                     }
                  }
-                 imprimir_tabla_simbolos();
              }else{
                  System.out.println("Este objeto no exite");
              }
