@@ -1356,7 +1356,7 @@ Nodo s8():
     Token t1;
 }{
       t1=<Num> { Nodo tmp = new Nodo(t1.image);
-                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("num");
+                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("int");
                  tmp.setColumna(t1.beginColumn); tmp.setFila(t1.beginLine);
                  return tmp; }
     | t1=<Bo> {  Nodo tmp = new Nodo(t1.image);

@@ -62,7 +62,7 @@ public class principal2 extends javax.swing.JFrame {
 
         tx_entrada.setColumns(20);
         tx_entrada.setRows(5);
-        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\nset_Salario(1.1,2.3,3);\n%,\n]");
+        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\nimprimir(3+suma(\"Mundo\",2.4,5));\n%,\n]");
         jScrollPane1.setViewportView(tx_entrada);
 
         jLabel1.setText("Entrada");

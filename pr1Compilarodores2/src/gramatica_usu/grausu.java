@@ -2026,7 +2026,7 @@ n3.addHijo(n1); n3.addHijo(n2); n1=n3;
     case Num:{
       t1 = jj_consume_token(Num);
 Nodo tmp = new Nodo(t1.image);
-                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("num");
+                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("int");
                  tmp.setColumna(t1.beginColumn); tmp.setFila(t1.beginLine);
                  {if ("" != null) return tmp;}
       break;

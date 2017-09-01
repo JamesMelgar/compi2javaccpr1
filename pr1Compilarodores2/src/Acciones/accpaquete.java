@@ -4,10 +4,11 @@
  * and open the template in the editor.
  */
 package Acciones;
+import static Acciones.expresiones.crear_nodo;
 import pr1compilarodores2.Nodo;
 
 public class accpaquete {
-    
+
     public static void tipopaquete(Nodo paquete, Nodo usuario, Nodo master){
         Nodo temp = paquete;
         temp = temp.getHijos().get(0);
@@ -83,6 +84,8 @@ public class accpaquete {
                 sentencia_crear_objeto(usuario, master, temp);
             }else if(arbol.getNombre().equalsIgnoreCase("crear proce") == true){
                 sentencia_crear_proce(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("crear funcion") == true){
+                sentencia_crear_funcion(usuario, master, temp);
             }else if(arbol.getNombre().equalsIgnoreCase("crear tabla") == true){
                 sentencia_crear_tabla(usuario, master, temp);
             }else if(arbol.getNombre().equalsIgnoreCase("imprimir") == true){
@@ -95,6 +98,48 @@ public class accpaquete {
                 sentencia_asignar(usuario, master, temp);
             }
         }
+    }
+    
+     public static Nodo fun_tipousql( Nodo usuario, Nodo master, Nodo hijo){
+        
+        for(Nodo arbol : hijo.getHijos()){  
+            Nodo temp = arbol;
+            if(arbol.getNombre().equalsIgnoreCase("crear usuario") == true){
+               crearusuario(usuario, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("usar") == true){
+                sentencia_usar(master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("otorgar idp") == true){
+                 sentencia_permitir_objeto(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("otorgar todos") == true){
+                sentencia_permiso_todos(usuario,master,temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("denegar todos") == true){
+                sentencia_denegar_todos(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("denegar idp") == true){
+               sentencia_denegar_objeto(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("crear base") == true){
+               sentencia_crear_base(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("crear objeto") == true){
+                sentencia_crear_objeto(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("crear proce") == true){
+                sentencia_crear_proce(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("crear funcion") == true){
+                sentencia_crear_funcion(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("crear tabla") == true){
+                sentencia_crear_tabla(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("imprimir") == true){
+                sentencia_imprimir(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("llamada") == true){
+                sentencia_llamada(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("declarar") == true){
+                sentencia_declarar(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("asignar") == true){
+                sentencia_asignar(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("retorno") == true){
+                Nodo nodo2 = sentencia_Retorno(usuario, master, temp);             
+                return nodo2;
+            }
+        }
+        return null;
     }
     
     public static void crearusuario(Nodo usuario, Nodo hijo){
@@ -680,6 +725,35 @@ public class accpaquete {
         }
     }
     
+    public static void sentencia_crear_funcion(Nodo usuarios,Nodo master, Nodo paquete){
+        //verificar que el objeto exita
+        Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db);
+        boolean valor = exite_objusql(master, pr1compilarodores2.principal2.db, paquete.getValor());
+        if(db != null && valor==false){
+             Nodo nodo1=crearnodo(paquete.getValor(), paquete.getTipo());
+             nodo1.setTipo("fun");
+             Nodo nuew=paquete.getHijos().get(0);
+             Nodo n2 = crearnodo("parametros", "");
+             for(Nodo arbol: nuew.getHijos()){
+                 Nodo hijo1=crearnodo(arbol.getNombre(), arbol.getTipo());
+                 n2.addHijo(hijo1);
+             }
+             nodo1.addHijo(n2);
+             Nodo n1=paquete.getHijos().get(1);
+             int f=n1.getFila()-2;
+             int i=n1.getColumna();
+             System.out.println("ini "+Integer.toString(i)+" fin "+Integer.toString(f));
+             String texto=partirtextoenlineas(pr1compilarodores2.principal2.texfun, i, f);
+             texto="%$ "+texto+" %";
+             Nodo n3=crearnodo("sentencias", texto);
+             nodo1.addHijo(n3);
+             Nodo tmp=db.getHijos().get(0);
+             tmp.addHijo(nodo1);
+             Crearmaster.master();
+             agregar_permiso(usuarios, master, pr1compilarodores2.principal2.db, pr1compilarodores2.principal2.usua, paquete.getValor());
+        }
+    }
+    
     public static void sentencia_crear_tabla(Nodo usuarios,Nodo master, Nodo paquete){
         //verificar que el objeto exita
         Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db);
@@ -805,20 +879,89 @@ public class accpaquete {
                 realizar_ope_para(paquete); //realizo las  expresiones
                 valor = verificar_parametros_tipos(paquete, proce.getHijos().get(0)); //verifico que los tipos sean iguales
                 if(valor){
-                     tablasimbolos tb = new tablasimbolos("nombre", "tipo", "valor"); //creo la tabla de simbolos
-                     tb.setAmbito(0); //ambito cero
-                     expresiones.pila.push(tb); //ingreso a la pila un tabla de simbolos
-                     llenar_tabla(paquete);//lleno la tabla de simbolos
-//                     imprimir_tabla_simbolos();
-                     tipousql( usuarios, master, proce.getHijos().get(1));//realizar sentencias
-                     expresiones.pila.pop();
-                     System.out.println("correcto");
+                     if(!expresiones.pila.empty()){
+                         tablasimbolos pivote = expresiones.pila.peek();
+                         tablasimbolos tb = new tablasimbolos("nombre", "tipo", "valor"); //creo la tabla de simbolos
+                         tb.setAmbito(0); //ambito cero
+                         expresiones.pila.push(tb);
+                         llenar_tabla_concontenido(paquete, pivote);
+                         tipousql( usuarios, master, proce.getHijos().get(1));//realizar sentencias
+                         expresiones.pila.pop();
+                         System.out.println("correctoss");
+                     }else{
+                         tablasimbolos tb = new tablasimbolos("nombre", "tipo", "valor"); //creo la tabla de simbolos
+                         tb.setAmbito(0); //ambito cero
+                         expresiones.pila.push(tb); //ingreso a la pila un tabla de simbolos
+                        llenar_tabla(paquete);//lleno la tabla de simbolos
+//                      imprimir_tabla_simbolos();
+                        tipousql( usuarios, master, proce.getHijos().get(1));//realizar sentencias
+                        expresiones.pila.pop();
+                        System.out.println("correcto");
+                     }
+                     
                 }
             }else{
                 System.out.println("Usted esta llamando a una funcion"); }
         }else{
             System.out.println("El procedimiento no exite o no tiene permiso");
         }
+    }
+    
+    public static void llenar_tabla_concontenido(Nodo paquete,tablasimbolos pivote){
+        
+        tablasimbolos actual = expresiones.pila.peek();
+        for(Nodo arbol : paquete.getHijos()){
+            if(arbol.getTexto()!=""){//este es un objeto
+                boolean valor=exite_entabla_pivote(arbol.getNombre(),pivote);
+                Nodo db=nodo_buscar_bd(pr1compilarodores2.principal2.master, pr1compilarodores2.principal2.db);
+                Nodo obj=nodo_buscar_objeto(db,arbol.getTexto());
+                boolean val = exite_entabladesimbolo(paquete.getValor());//si en la tabla de simbolos actual no exite la variable
+                if(valor==true && obj!=null && val==false){//Si exite en la tabla pivote
+                    String tamano = Integer.toString(obj.getHijos().size());
+                    agregar_a_tabla_obj(arbol.getValor(), "obj", tamano, arbol.getTexto());
+                    for(Nodo primo : obj.getHijos()){ //recorriendo arbol master de objeto
+                        String cadena = arbol.getNombre()+"."+primo.getNombre();//@emp + .val
+                        String cadena2 = arbol.getValor()+"."+primo.getNombre();//@comision +val
+                        tablasimbolos tep=devolver_elemento_tb_pivote(cadena, pivote);
+                        agregar_a_tabla_obj(cadena2, primo.getValor(), tep.getValor(), arbol.getTexto());
+                    }
+                }
+            }else{
+                boolean valor1 = exite_entabladesimbolo(arbol.getValor()); //verificando que no exita en tabla de simbolo.
+                if(valor1==false){
+                  tablasimbolos tb = expresiones.pila.peek();
+                  int numero = tb.getAmbito();
+//                  imprimir_nodo(arbol, "paquete");
+                  tablasimbolos tb1 = new tablasimbolos(arbol.getValor(), arbol.getTipo(), arbol.getNombre());
+                  tb1.setAmbito(numero);
+                  tb.addHijo(tb1);
+                }else{
+                    System.out.println("Error este ya exite en tabla de simbolos");
+                }
+            }
+        }
+    }
+
+    public static void llenar_tabla(Nodo paquete){
+        boolean valor = false;
+        for(Nodo arbol : paquete.getHijos()){
+        boolean valor1 = exite_entabladesimbolo(arbol.getValor());
+            if(valor1==true){
+                valor=true;
+            }
+        }
+        if(valor==false){
+             for(Nodo arbol : paquete.getHijos()){
+                  tablasimbolos tb = expresiones.pila.peek();
+                  int numero = tb.getAmbito();
+//                  imprimir_nodo(arbol, "paquete");
+                  tablasimbolos tb1 = new tablasimbolos(arbol.getValor(), arbol.getTipo(), arbol.getNombre());
+                  tb1.setAmbito(numero);
+                  tb.addHijo(tb1);
+             }
+       
+        }
+         
     }
     
     public static boolean verificar_parametros_tipos(Nodo paquete, Nodo proce){
@@ -828,10 +971,17 @@ public class accpaquete {
                 Nodo para=paquete.getHijos().get(con);
                 para.setValor(arbol.getNombre());
                 if(arbol.getValor().equals("int")){
-                    if(para.getTipo().equalsIgnoreCase("num")==false){
+                    if(para.getTipo().equalsIgnoreCase("int")==false){
+                        return false;
+                    }
+                }else if(arbol.getTipo().equalsIgnoreCase("obj")){
+                    if(arbol.getValor().equalsIgnoreCase(para.getTexto())==false){
+                        System.out.println("tipos de parametros incorrectos");
                         return false;
                     }
                 }else{
+//                    imprimir_nodo(arbol, "arbol");
+//                    imprimir_nodo(para, "para");para.getTexto()
                     if(arbol.getValor().equalsIgnoreCase(para.getTipo())==false){
                         System.out.println("tipos de parametros incorrectos");
                         return false;
@@ -857,30 +1007,18 @@ public class accpaquete {
         }
     }
     
-    public static void llenar_tabla(Nodo paquete){
-        boolean valor = false;
-        for(Nodo arbol : paquete.getHijos()){
-            boolean valor1 = exite_entabladesimbolo(arbol.getValor());
-            if(valor1==true){
-                valor=true;
-            }
-        }
-        if(valor==false){
-             for(Nodo arbol : paquete.getHijos()){
-                  tablasimbolos tb = expresiones.pila.peek();
-                  int numero = tb.getAmbito();
-//                  imprimir_nodo(arbol, "paquete");
-                  tablasimbolos tb1 = new tablasimbolos(arbol.getValor(), arbol.getTipo(), arbol.getNombre());
-                  tb1.setAmbito(numero);
-                  tb.addHijo(tb1);
-             }
-       
-        }
-         
-    }
-    
+   
    public static boolean exite_entabladesimbolo(String texto){
         tablasimbolos tb = expresiones.pila.peek();
+        for(tablasimbolos hijo: tb.getSiguiente()){
+            if(hijo.getNombre().equalsIgnoreCase(texto)){
+                return true;
+            }
+        }
+        return false;
+   }
+   
+   public static boolean exite_entabla_pivote(String texto, tablasimbolos tb){
         for(tablasimbolos hijo: tb.getSiguiente()){
             if(hijo.getNombre().equalsIgnoreCase(texto)){
                 return true;
@@ -913,7 +1051,7 @@ public class accpaquete {
                System.out.println("No se puede asignar un tipo objeto");
            }else{
                 if(variables.getTipo().equalsIgnoreCase("int")){ //verificacion de tipos
-                    if(nodo2.getTipo().equalsIgnoreCase("num")){
+                    if(nodo2.getTipo().equalsIgnoreCase("int")){
                         valor=true;
                     }
                 }else if(variables.getTipo().equalsIgnoreCase(nodo2.getTipo())){
@@ -942,7 +1080,7 @@ public class accpaquete {
                                 boolean val = exite_entabladesimbolo(cadena);
                                 if(val==false){
                                     if(primo.getValor().equalsIgnoreCase("int")){ 
-                                       agregar_a_tabla_obj(cadena, "num","",variables.getTipo());
+                                       agregar_a_tabla_obj(cadena, "int","",variables.getTipo());
                                     }else{
                                        agregar_a_tabla_obj(cadena, primo.getValor(),"",variables.getTipo());
                                  }
@@ -1061,4 +1199,28 @@ public class accpaquete {
        }
        return null;
    }
+    
+    public static tablasimbolos devolver_elemento_tb_pivote(String variable,tablasimbolos tb){
+       for(tablasimbolos hijos : tb.getSiguiente()){
+           if(hijos.getNombre().equalsIgnoreCase(variable)){
+              return hijos;
+           }
+       }
+       return null;
+   }
+    
+    public static Nodo sentencia_Retorno(Nodo usuarios,Nodo master, Nodo paquete){
+         Nodo nodo1 = paquete.getHijos().get(0);
+         Nodo nodo2 = expresiones.expresiones(nodo1);
+         if(nodo2.getValor().equalsIgnoreCase("error")){
+             Nodo nodo3=crear_nodo("error","","error");
+             return nodo3;
+         }else if(nodo2.getValor().equalsIgnoreCase("obj")){
+             
+         }else{
+             imprimir_nodo(nodo2, "paquete");
+             return nodo2;
+         }
+         return nodo2;
+    }
 }

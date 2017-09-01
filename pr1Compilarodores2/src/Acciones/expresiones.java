@@ -5,6 +5,9 @@
  */
 package Acciones;
 
+import static Acciones.accpaquete.imprimir_tabla_simbolos;
+import static Acciones.accpaquete.llenar_tabla;
+import static Acciones.accpaquete.verificar_parametros_tipos;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -13,10 +16,11 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Stack;
 import pr1compilarodores2.Nodo;
+import static pr1compilarodores2.principal2.paquete;
 
 public class expresiones {
     public static Stack<tablasimbolos> pila = new Stack<tablasimbolos>();
-    public static tablasimbolos pivote = new  tablasimbolos("nombre", "tipo", "valor");
+    public static Stack<tablasimbolos> pivote = new Stack<tablasimbolos>();    
     
     
 public static Nodo expresiones(Nodo raiz){
@@ -27,26 +31,29 @@ public static Nodo expresiones(Nodo raiz){
         double d1, d2,d3;
         String c1, c2, c3;
         boolean b1, b2, b3;
-        if(raiz.getHijos().size()==2){
+        if(raiz.getNombre().equalsIgnoreCase("llamada")){
+            Nodo nodo5=llamada_funcion(raiz);
+            return nodo5;
+        }else if(raiz.getHijos().size()==2){
             Nodo izq = expresiones(raiz.getHijos().get(0));
             Nodo der = expresiones(raiz.getHijos().get(1));
             
           if(raiz.getNombre().equalsIgnoreCase("mas")){   
              //num
-              if(izq.getTipo().equalsIgnoreCase("num")){
-                  if(der.getTipo().equalsIgnoreCase("num")){
+              if(izq.getTipo().equalsIgnoreCase("int")){
+                  if(der.getTipo().equalsIgnoreCase("int")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     n3=n1+n2;
                     cadena=Integer.toString(n3);
-                    nodo1=crear_nodo(cadena,"","num");
+                    nodo1=crear_nodo(cadena,"","int");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("bool")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     n3=n1+n2;
                     cadena=Integer.toString(n3);
-                    nodo1=crear_nodo(cadena,"","num");
+                    nodo1=crear_nodo(cadena,"","int");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("double")){
                      d1=Double.parseDouble(izq.getNombre());
@@ -76,12 +83,12 @@ public static Nodo expresiones(Nodo raiz){
                     cadena=convertirString(b3);
                     nodo1=crear_nodo(cadena,"","bool");
                     return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("num")){
+                  }else if(der.getTipo().equalsIgnoreCase("int")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     n3=n1+n2;
                     cadena=Integer.toString(n3);
-                    nodo1=crear_nodo(cadena,"","num");
+                    nodo1=crear_nodo(cadena,"","int");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("double")){
                      d1=Double.parseDouble(izq.getNombre());
@@ -111,7 +118,7 @@ public static Nodo expresiones(Nodo raiz){
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("num")){
+                  }else if(der.getTipo().equalsIgnoreCase("int")){
                      d1=Double.parseDouble(izq.getNombre());
                      d2=Double.parseDouble(der.getNombre());
                      d3=d1+d2;
@@ -145,7 +152,7 @@ public static Nodo expresiones(Nodo raiz){
                     cadena=c1 + c2;
                     nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("num")){
+                  }else if(der.getTipo().equalsIgnoreCase("int")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
                     cadena=c1 + c2;
@@ -177,7 +184,7 @@ public static Nodo expresiones(Nodo raiz){
                   if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date")){
                     nodo1=crear_nodo("error","","error");
                     return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("num")){
+                  }else if(der.getTipo().equalsIgnoreCase("int")){
                     nodo1=crear_nodo("error","","error");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("double")){
@@ -199,20 +206,20 @@ public static Nodo expresiones(Nodo raiz){
               } //***************************************************************************************Menos       
           }else if(raiz.getNombre().equalsIgnoreCase("menos")){
               //num
-              if(izq.getTipo().equalsIgnoreCase("num")){
-                  if(der.getTipo().equalsIgnoreCase("num")){
+              if(izq.getTipo().equalsIgnoreCase("int")){
+                  if(der.getTipo().equalsIgnoreCase("int")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     n3=n1-n2;
                     cadena=Integer.toString(n3);
-                    nodo1=crear_nodo(cadena,"","num");
+                    nodo1=crear_nodo(cadena,"","int");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("bool")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     n3=n1-n2;
                     cadena=Integer.toString(n3);
-                    nodo1=crear_nodo(cadena,"","num");
+                    nodo1=crear_nodo(cadena,"","int");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("double")){
                      d1=Double.parseDouble(izq.getNombre());
@@ -235,12 +242,12 @@ public static Nodo expresiones(Nodo raiz){
                   if(der.getTipo().equalsIgnoreCase("bool")){
                     nodo1=crear_nodo("", "", "error");
                     return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("num")){
+                  }else if(der.getTipo().equalsIgnoreCase("int")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     n3=n1-n2;
                     cadena=Integer.toString(n3);
-                    nodo1=crear_nodo(cadena,"","num");
+                    nodo1=crear_nodo(cadena,"","int");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("double")){
                      d1=Double.parseDouble(izq.getNombre());
@@ -267,7 +274,7 @@ public static Nodo expresiones(Nodo raiz){
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("num")){
+                  }else if(der.getTipo().equalsIgnoreCase("int")){
                      d1=Double.parseDouble(izq.getNombre());
                      d2=Double.parseDouble(der.getNombre());
                      d3=d1-d2;
@@ -303,20 +310,20 @@ public static Nodo expresiones(Nodo raiz){
               }     //***********************************************************************************MULTIPLICACION
           }else if(raiz.getNombre().equalsIgnoreCase("mult")){   
              //num
-              if(izq.getTipo().equalsIgnoreCase("num")){
-                  if(der.getTipo().equalsIgnoreCase("num")){
+              if(izq.getTipo().equalsIgnoreCase("int")){
+                  if(der.getTipo().equalsIgnoreCase("int")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     n3=n1*n2;
                     cadena=Integer.toString(n3);
-                    nodo1=crear_nodo(cadena,"","num");
+                    nodo1=crear_nodo(cadena,"","int");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("bool")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     n3=n1*n2;
                     cadena=Integer.toString(n3);
-                    nodo1=crear_nodo(cadena,"","num");
+                    nodo1=crear_nodo(cadena,"","int");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("double")){
                      d1=Double.parseDouble(izq.getNombre());
@@ -343,12 +350,12 @@ public static Nodo expresiones(Nodo raiz){
                     cadena=convertirString(b3);
                     nodo1=crear_nodo(cadena,"","bool");
                     return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("num")){
+                  }else if(der.getTipo().equalsIgnoreCase("int")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     n3=n1*n2;
                     cadena=Integer.toString(n3);
-                    nodo1=crear_nodo(cadena,"","num");
+                    nodo1=crear_nodo(cadena,"","int");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("double")){
                      d1=Double.parseDouble(izq.getNombre());
@@ -375,7 +382,7 @@ public static Nodo expresiones(Nodo raiz){
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("num")){
+                  }else if(der.getTipo().equalsIgnoreCase("int")){
                      d1=Double.parseDouble(izq.getNombre());
                      d2=Double.parseDouble(der.getNombre());
                      d3=d1*d2;
@@ -419,20 +426,20 @@ public static Nodo expresiones(Nodo raiz){
               } //***************************************************************************************Division      
           }else if(raiz.getNombre().equalsIgnoreCase("divi")){   
              //num
-              if(izq.getTipo().equalsIgnoreCase("num")){
-                  if(der.getTipo().equalsIgnoreCase("num")){
+              if(izq.getTipo().equalsIgnoreCase("int")){
+                  if(der.getTipo().equalsIgnoreCase("int")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     n3=n1/n2;
                     cadena=Integer.toString(n3);
-                    nodo1=crear_nodo(cadena,"","num");
+                    nodo1=crear_nodo(cadena,"","int");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("bool")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     n3=n1/n2;
                     cadena=Integer.toString(n3);
-                    nodo1=crear_nodo(cadena,"","num");
+                    nodo1=crear_nodo(cadena,"","int");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("double")){
                      d1=Double.parseDouble(izq.getNombre());
@@ -455,12 +462,12 @@ public static Nodo expresiones(Nodo raiz){
                   if(der.getTipo().equalsIgnoreCase("bool")){
                     nodo1=crear_nodo("", "", "error");
                     return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("num")){
+                  }else if(der.getTipo().equalsIgnoreCase("int")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     n3=n1/n2;
                     cadena=Integer.toString(n3);
-                    nodo1=crear_nodo(cadena,"","num");
+                    nodo1=crear_nodo(cadena,"","int");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("double")){
                      d1=Double.parseDouble(izq.getNombre());
@@ -487,7 +494,7 @@ public static Nodo expresiones(Nodo raiz){
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("num")){
+                  }else if(der.getTipo().equalsIgnoreCase("int")){
                      d1=Double.parseDouble(izq.getNombre());
                      d2=Double.parseDouble(der.getNombre());
                      d3=d1/d2;
@@ -531,20 +538,20 @@ public static Nodo expresiones(Nodo raiz){
               } //***************************************************************************************potencia    
           }else if(raiz.getNombre().equalsIgnoreCase("pote")){   
              //num
-              if(izq.getTipo().equalsIgnoreCase("num")){
-                  if(der.getTipo().equalsIgnoreCase("num")){
+              if(izq.getTipo().equalsIgnoreCase("int")){
+                  if(der.getTipo().equalsIgnoreCase("int")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     n3= (int) Math.pow(n1, n2);
                     cadena=Integer.toString(n3);
-                    nodo1=crear_nodo(cadena,"","num");
+                    nodo1=crear_nodo(cadena,"","int");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("bool")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     n3=(int) Math.pow(n1, n2);
                     cadena=Integer.toString(n3);
-                    nodo1=crear_nodo(cadena,"","num");
+                    nodo1=crear_nodo(cadena,"","int");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("double")){
                      d1=Double.parseDouble(izq.getNombre());
@@ -567,12 +574,12 @@ public static Nodo expresiones(Nodo raiz){
                   if(der.getTipo().equalsIgnoreCase("bool")){
                     nodo1=crear_nodo("", "", "error");
                     return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("num")){
+                  }else if(der.getTipo().equalsIgnoreCase("int")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     n3=(int) Math.pow(n1, n2);
                     cadena=Integer.toString(n3);
-                    nodo1=crear_nodo(cadena,"","num");
+                    nodo1=crear_nodo(cadena,"","int");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("double")){
                      d1=Double.parseDouble(izq.getNombre());
@@ -599,7 +606,7 @@ public static Nodo expresiones(Nodo raiz){
                      cadena=String.valueOf(d3);
                      nodo1=crear_nodo(cadena, "", "double");
                      return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("num")){
+                  }else if(der.getTipo().equalsIgnoreCase("int")){
                      d1=Double.parseDouble(izq.getNombre());
                      d2=Double.parseDouble(der.getNombre());
                      d3=Math.pow(d1, d2);
@@ -662,8 +669,8 @@ public static Nodo expresiones(Nodo raiz){
                   return nodo1;
                } //**************************************************************************************mayor   
           }else if(raiz.getNombre().equalsIgnoreCase(">")){
-               if(izq.getTipo().equalsIgnoreCase("num")){
-                   if(der.getTipo().equalsIgnoreCase("num")){
+               if(izq.getTipo().equalsIgnoreCase("int")){
+                   if(der.getTipo().equalsIgnoreCase("int")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     if(n1>n2){
@@ -743,8 +750,8 @@ public static Nodo expresiones(Nodo raiz){
                    return nodo1;
                }  //***************************************************************************************menor 
           }else if(raiz.getNombre().equalsIgnoreCase("<")){
-               if(izq.getTipo().equalsIgnoreCase("num")){
-                   if(der.getTipo().equalsIgnoreCase("num")){
+               if(izq.getTipo().equalsIgnoreCase("int")){
+                   if(der.getTipo().equalsIgnoreCase("int")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     if(n1<n2){
@@ -824,8 +831,8 @@ public static Nodo expresiones(Nodo raiz){
                    return nodo1;
                }  //***************************************************************************************menor o igual
           } else if(raiz.getNombre().equalsIgnoreCase("<=")){
-               if(izq.getTipo().equalsIgnoreCase("num")){
-                   if(der.getTipo().equalsIgnoreCase("num")){
+               if(izq.getTipo().equalsIgnoreCase("int")){
+                   if(der.getTipo().equalsIgnoreCase("int")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     if(n1<=n2){
@@ -905,8 +912,8 @@ public static Nodo expresiones(Nodo raiz){
                    return nodo1;
                } //***************************************************************************************mayor o igual
           } else if(raiz.getNombre().equalsIgnoreCase(">=")){
-               if(izq.getTipo().equalsIgnoreCase("num")){
-                   if(der.getTipo().equalsIgnoreCase("num")){
+               if(izq.getTipo().equalsIgnoreCase("int")){
+                   if(der.getTipo().equalsIgnoreCase("int")){
                     n1=Integer.parseInt(izq.getNombre());
                     n2=Integer.parseInt(der.getNombre());
                     if(n1>=n2){
@@ -1024,11 +1031,11 @@ public static Nodo expresiones(Nodo raiz){
             //*******************************************************************************************Union
             if(raiz.getNombre().equalsIgnoreCase("union")){
                 Nodo nuevo = expresiones(raiz.getHijos().get(0));
-                if(nuevo.getTipo().equalsIgnoreCase("num")){
+                if(nuevo.getTipo().equalsIgnoreCase("int")){
                     n1 = Integer.parseInt(nuevo.getNombre());
                     n3 = n1 * -1;
                     cadena=Integer.toString(n3);
-                    nodo1=crear_nodo(cadena,"","num");
+                    nodo1=crear_nodo(cadena,"","int");
                     return nodo1;
                 }else if(nuevo.getTipo().equalsIgnoreCase("double")){
                      d1=Double.parseDouble(nuevo.getNombre());
@@ -1133,11 +1140,63 @@ public static String convertirString(boolean valor){
                             return nodo1; }
                     }
                 }
-            }//No se encontro la variable quitar @ a la variable para ver si 
+            }
         }else{
 //            imprimir_estenodo(raiz, "normal");
             return raiz;
         }
+        Nodo nodo1=crear_nodo("error","","error");
+        return nodo1;
+    }
+    
+    public static Nodo llamada_funcion(Nodo llamada){
+        Nodo master = pr1compilarodores2.principal2.master;
+        String base = pr1compilarodores2.principal2.db;    
+        Nodo usuario = pr1compilarodores2.principal2.usuarios;
+        String usu = pr1compilarodores2.principal2.usua;       
+        Nodo db=accpaquete.nodo_buscar_bd(master, base); 
+        Nodo fun=accpaquete.nodo_buscar_proce(db, llamada.getValor());
+        boolean valor = accpaquete.tiene_permiso(usuario, master, base, pr1compilarodores2.principal2.usua , llamada.getValor());
+        if(db != null && fun != null && valor){
+            if(fun.getTipo().equalsIgnoreCase("fun")){ 
+                Acciones.accpaquete.realizar_ope_para(llamada); //realizo las  expresiones
+                valor = verificar_parametros_tipos(llamada, fun.getHijos().get(0));
+                if(valor){
+                    if(!expresiones.pila.empty()){
+                         tablasimbolos pivote = expresiones.pila.peek();
+                         tablasimbolos tb = new tablasimbolos("nombre", "tipo", "valor"); //creo la tabla de simbolos
+                         tb.setAmbito(0); //ambito cero
+                         expresiones.pila.push(tb);
+                         accpaquete.llenar_tabla_concontenido(llamada, pivote);
+                     }else{
+                        tablasimbolos tb = new tablasimbolos("nombre", "tipo", "valor"); //creo la tabla de simbolos
+                        tb.setAmbito(0); //ambito cero
+                        expresiones.pila.push(tb); //ingreso a la pila un tabla de simbolos
+                        llenar_tabla(llamada);
+                     }
+                    Nodo nodo2=accpaquete.fun_tipousql( usuario, master, fun.getHijos().get(1));//verificar que lo retornado sea igual
+//                    imprimir_estenodo(fun, "llamada"); //nombre: nombre fun
+                    imprimir_estenodo(nodo2, "nodo2");
+                    expresiones.pivote.push(expresiones.pila.peek());
+                    expresiones.pila.pop();
+                    if(nodo2.getValor().equalsIgnoreCase("error")){
+                        nodo2=crear_nodo("error","","error");
+                        return nodo2;
+                    }else if(fun.getValor().equalsIgnoreCase(nodo2.getValor())){
+                        //imprimir_tabla_simbolos();
+                        System.out.println("correcto");
+                        return nodo2;
+                    }
+//                    if(nodo2.equals(tb))
+                    
+                    return nodo2;
+                }else{
+                    System.out.println("Parametros incorrectos");
+                }
+            }else{
+                System.out.println("Error esta es un metodo");
+            }
+        }else{ System.out.println("Error no existe funcion o no tiene permiso");}
         Nodo nodo1=crear_nodo("error","","error");
         return nodo1;
     }

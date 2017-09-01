@@ -128,7 +128,7 @@ public class Crearmaster {
                 //<retorno>nombre_proc1</retorno> valor
                 cadena=cadena+"<fun> \n";
                 cadena=cadena+"<nombre>"+arbol.getNombre()+"</nombre> \n";
-                cadena=cadena+"<retorno>"+arbol.getNombre()+"</retorno> \n";
+                cadena=cadena+"<retorno>"+arbol.getValor()+"</retorno> \n";
                 cadena=cadena+"<params> \n";
                 Nodo nodo1 = arbol.getHijos().get(0);
                 for(Nodo primo: nodo1.getHijos()){

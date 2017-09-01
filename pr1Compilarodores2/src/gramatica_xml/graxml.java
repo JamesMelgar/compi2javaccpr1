@@ -404,12 +404,12 @@ Nodo tmp = new Nodo(t1.image);
       jj_consume_token(Fki);
       t1 = jj_consume_token(Id);
       t2 = jj_consume_token(Id);
-Nodo tmp = new Nodo(t1.image);
+Nodo tmp = new Nodo("<fk>");
                             tmp.setNumNodo(graxml.contador++);
                             tmp.setColumna(t1.beginColumn);
                             tmp.setFila(t1.beginLine);
-                            tmp.setValor(t2.image);
-                            tmp.setTipo("fk");
+                            tmp.setValor(t1.image);
+                            tmp.setTipo(t2.image);
                             hijo.addHijo(tmp);
       jj_consume_token(Fkf);
       hijo = complemento(hijo);
@@ -950,6 +950,7 @@ nodo1 = hijo;
 
   final public Nodo tbcont2(Nodo raiz) throws ParseException {Nodo nodo1;
     Token t1;
+    Token t2;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Inti:{
       jj_consume_token(Inti);
@@ -1041,16 +1042,22 @@ raiz.addHijo(nodo1);
 {if ("" != null) return raiz;}
       break;
       }
-    case Obji:{
-      jj_consume_token(Obji);
+    case Ai:{
+      jj_consume_token(Ai);
+      t2 = jj_consume_token(Id);
+      jj_consume_token(Af);
       t1 = jj_consume_token(Aid);
 Nodo tmp = new Nodo(t1.image);
                      tmp.setNumNodo(graxml.contador++);
                      tmp.setColumna(t1.beginColumn);
                      tmp.setFila(t1.beginLine);
-                     tmp.setValor("obj");
+                     tmp.setValor(t2.image);
+                     tmp.setTipo("obj");
                      nodo1 = tmp;
-      jj_consume_token(Objf);
+      jj_consume_token(Ai);
+      jj_consume_token(D);
+      t2 = jj_consume_token(Id);
+      jj_consume_token(Af);
 raiz.addHijo(nodo1);
       raiz = tbcont2(raiz);
 {if ("" != null) return raiz;}
@@ -1085,10 +1092,10 @@ raiz.addHijo(nodo1);
       jj_la1_0 = new int[] {0x4100,0x40,0x1500000,0x54000000,0x0,0x0,0x40000,0x0,0x0,0x0,0x0,0x400,0x40,0x0,0x40,0x0,0x0,0x54000000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x150000,0x0,0x0,0x115,0x0,0x0,0x0,0x100,0x0,0x100,0x400000,0x15000000,0x0,0x40000000,0x0,0x40000000,0x4000,0x115,};
+      jj_la1_1 = new int[] {0x150000,0x0,0x0,0x115,0x0,0x0,0x0,0x100,0x0,0x100,0x400000,0x15000000,0x0,0x40000000,0x0,0x40000000,0x4000,0x15,};
    }
    private static void jj_la1_init_2() {
-      jj_la1_2 = new int[] {0x20,0x0,0x0,0x100000,0x1ec0,0x1e40,0x0,0x100000,0x8f2000,0x0,0x0,0x0,0x0,0x0,0x0,0x1,0x2,0x0,};
+      jj_la1_2 = new int[] {0x20,0x0,0x0,0x100000,0x1ec0,0x1e40,0x0,0x100000,0x8f2000,0x0,0x0,0x0,0x0,0x0,0x0,0x1,0x2,0x100000,};
    }
 
   /** Constructor with InputStream. */

@@ -419,12 +419,12 @@ Nodo complemento(Nodo hijo):
                    } 
      hijo=complemento(hijo) { return hijo; }
 
-    | <Fki> t1=<Id> t2=<Id> { Nodo tmp = new Nodo(t1.image);
+    | <Fki> t1=<Id> t2=<Id> { Nodo tmp = new Nodo("<fk>");
                             tmp.setNumNodo(graxml.contador++);
                             tmp.setColumna(t1.beginColumn);
                             tmp.setFila(t1.beginLine);
-                            tmp.setValor(t2.image);
-                            tmp.setTipo("fk");
+                            tmp.setValor(t1.image);
+                            tmp.setTipo(t2.image);
                             hijo.addHijo(tmp);
                    } 
      <Fkf> hijo=complemento(hijo) { return hijo; }
@@ -783,6 +783,7 @@ Nodo tbcont2(Nodo raiz):
 { 
     Nodo nodo1;
     Token t1;
+    Token t2;
 }{
     <Inti> t1=<Aid> { Nodo tmp = new Nodo(t1.image);
                      tmp.setNumNodo(graxml.contador++);
@@ -838,13 +839,15 @@ Nodo tbcont2(Nodo raiz):
                  } 
      <Datetf> {raiz.addHijo(nodo1);} raiz=tbcont2(raiz) { return raiz; }
 
-   |<Obji> t1=<Aid> { Nodo tmp = new Nodo(t1.image);
+   |<Ai> t2=<Id> <Af> t1=<Aid> { Nodo tmp = new Nodo(t1.image);
                      tmp.setNumNodo(graxml.contador++);
                      tmp.setColumna(t1.beginColumn);
                      tmp.setFila(t1.beginLine);
-                     tmp.setValor("obj");
+                     tmp.setValor(t2.image);
+                     tmp.setTipo("obj");
                      nodo1 = tmp; 
                    } 
-     <Objf> {raiz.addHijo(nodo1);} raiz=tbcont2(raiz) { return raiz; }
+     <Ai> <D> t2=<Id> <Af> {raiz.addHijo(nodo1);} raiz=tbcont2(raiz) { return raiz; }
+
    | {return raiz;}
 }
