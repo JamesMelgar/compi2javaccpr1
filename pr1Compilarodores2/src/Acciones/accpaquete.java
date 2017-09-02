@@ -96,6 +96,10 @@ public class accpaquete {
                 sentencia_declarar(usuario, master, temp);
             }else if(arbol.getNombre().equalsIgnoreCase("asignar") == true){
                 sentencia_asignar(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("insertar") == true){
+                manejodetablas.sentencia_insertar_en_tabla(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("insertar Valores") == true){
+                manejodetablas.sentencia_insertar_especial_tabla(usuario, master, temp);
             }
         }
     }
@@ -998,6 +1002,15 @@ public class accpaquete {
         return true;
     }
     
+    public static String devolever_tipo_tabla(Nodo tb, String variable){
+        for(Nodo hijos : tb.getHijos()){
+            if(hijos.getNombre().equalsIgnoreCase(variable)){
+                return hijos.getValor();
+            }
+        }
+        return "";
+    }
+    
     public static void realizar_ope_para(Nodo paquete){
         int con=0;
         for (Nodo hijo : paquete.getHijos()){
@@ -1210,6 +1223,15 @@ public class accpaquete {
        return "ninguno";
    }
    
+   public static String devolver_valor_tb(String variable){
+       tablasimbolos tb = expresiones.pila.peek();
+       for(tablasimbolos hijos : tb.getSiguiente()){
+           if(hijos.getNombre().equalsIgnoreCase(variable)){
+              return hijos.getValor();
+           }
+       }
+       return "ninguno";
+   }
     public static tablasimbolos devolver_elemento_tb(String variable){
        tablasimbolos tb = expresiones.pila.peek();
        for(tablasimbolos hijos : tb.getSiguiente()){

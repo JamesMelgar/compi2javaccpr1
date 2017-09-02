@@ -486,6 +486,13 @@ Nodo contcolumna(Nodo hijo):
     <Af> nodo1=tipo(nodo1) <Ai> <D> <Id> <Af> { hijo.addHijo(nodo1); } 
      hijo=contcolumna(hijo) {return hijo;}
 
+    |<Nombrei> { Nodo tmp = new Nodo("Nombre");
+                      tmp.setNumNodo(graxml.contador++);
+                      nodo1 = tmp; 
+        }
+     nodo1=tipo(nodo1) <Nombref> { hijo.addHijo(nodo1); }
+     hijo=contcolumna(hijo) {return hijo;}
+
    | <Obji> t1=<Id> { Nodo tmp = new Nodo("obj");
                       tmp.setNumNodo(graxml.contador++);
                       tmp.setColumna(t1.beginColumn);

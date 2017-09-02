@@ -65,7 +65,7 @@ public static Nodo expresiones(Nodo raiz){
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                       c1 = izq.getNombre();
                       c2 = der.getNombre();
-                      cadena= c1 + c2;
+                      cadena= concacadena(c1, c2);
                       nodo1=crear_nodo(cadena, "", "text");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
@@ -100,7 +100,7 @@ public static Nodo expresiones(Nodo raiz){
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                       c1 = izq.getNombre();
                       c2 = der.getNombre();
-                      cadena= c1 + c2;
+                      cadena= concacadena(c1, c2);
                       nodo1=crear_nodo(cadena, "", "text");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
@@ -135,7 +135,7 @@ public static Nodo expresiones(Nodo raiz){
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                       c1 = izq.getNombre();
                       c2 = der.getNombre();
-                      cadena= c1 + c2;
+                      cadena=  concacadena(c1, c2);
                       nodo1=crear_nodo(cadena, "", "text");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
@@ -149,31 +149,31 @@ public static Nodo expresiones(Nodo raiz){
                   if(der.getTipo().equalsIgnoreCase("text")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
-                    cadena=c1 + c2;
+                    cadena= concacadena(c1, c2);;
                     nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("int")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
-                    cadena=c1 + c2;
+                    cadena=concacadena(c1, c2);
                     nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("double")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
-                    cadena=c1 + c2;
+                    cadena = concacadena(c1, c2);
                     nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
-                    cadena=c1 + c2;
+                    cadena= concacadena(c1, c2);
                     nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
                     c1=izq.getNombre();
                     c2=der.getNombre();
-                    cadena=c1 + c2;
+                    cadena= concacadena(c1, c2);
                     nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
@@ -193,7 +193,7 @@ public static Nodo expresiones(Nodo raiz){
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
-                    cadena=c1 + c2;
+                    cadena= concacadena(c1, c2);;
                     nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
@@ -413,7 +413,7 @@ public static Nodo expresiones(Nodo raiz){
                   if(der.getTipo().equalsIgnoreCase("text")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
-                    cadena=c1 + c2;
+                    cadena=concacadena(c1, c2);;
                     nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
                   }else{
@@ -637,7 +637,7 @@ public static Nodo expresiones(Nodo raiz){
                   if(der.getTipo().equalsIgnoreCase("text")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
-                    cadena=c1 + c2;
+                    cadena= concacadena(c1, c2);
                     nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
                   }else{
@@ -1143,6 +1143,9 @@ public static String convertirString(boolean valor){
                 }
             }
         }else{
+            if(raiz.getTipo().equalsIgnoreCase("text")){
+                raiz.setNombre(concacadena(raiz.getNombre(), ""));
+            }
 //            imprimir_estenodo(raiz, "normal");
             return raiz;
         }
@@ -1183,9 +1186,9 @@ public static String convertirString(boolean valor){
                         nodo2=crear_nodo("error","","error");
                         return nodo2;
                     }else if(nodo2.getValor().equalsIgnoreCase("obj")){ //modifique esto
-                             System.out.println("correcto");
-                             imprimir_estenodo(nodo2, "***********");
-                             System.out.println("****"+nodo2.getTexto());
+//                             System.out.println("correcto");
+//                             imprimir_estenodo(nodo2, "***********");
+//                             System.out.println("****"+nodo2.getTexto());
                              return nodo2;
                     }else if(fun.getValor().equalsIgnoreCase(nodo2.getTipo())){
                         //imprimir_tabla_simbolos();
@@ -1207,5 +1210,12 @@ public static String convertirString(boolean valor){
         }else{ System.out.println("Error no existe funcion o no tiene permiso");}
         Nodo nodo1=crear_nodo("error","","error");
         return nodo1;
+    }
+    
+    public static String concacadena(String cadena1, String cadena2){
+        cadena1=cadena1.replaceAll("\"", "");
+        cadena2=cadena2.replaceAll("\"", "");
+        String cadena3 = "\""+cadena1+cadena2+"\"";
+        return cadena3;
     }
 }

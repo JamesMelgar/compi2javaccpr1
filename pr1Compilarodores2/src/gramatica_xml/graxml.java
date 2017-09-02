@@ -521,6 +521,18 @@ hijo.addHijo(nodo1);
 {if ("" != null) return hijo;}
       break;
       }
+    case Nombrei:{
+      jj_consume_token(Nombrei);
+Nodo tmp = new Nodo("Nombre");
+                      tmp.setNumNodo(graxml.contador++);
+                      nodo1 = tmp;
+      nodo1 = tipo(nodo1);
+      jj_consume_token(Nombref);
+hijo.addHijo(nodo1);
+      hijo = contcolumna(hijo);
+{if ("" != null) return hijo;}
+      break;
+      }
     case Obji:{
       jj_consume_token(Obji);
       t1 = jj_consume_token(Id);
@@ -1089,7 +1101,7 @@ raiz.addHijo(nodo1);
       jj_la1_init_2();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x4100,0x40,0x1500000,0x54000000,0x0,0x0,0x40000,0x0,0x0,0x0,0x0,0x400,0x40,0x0,0x40,0x0,0x0,0x54000000,};
+      jj_la1_0 = new int[] {0x4100,0x40,0x1500000,0x54000000,0x0,0x0,0x40000,0x400,0x0,0x0,0x0,0x400,0x40,0x0,0x40,0x0,0x0,0x54000000,};
    }
    private static void jj_la1_init_1() {
       jj_la1_1 = new int[] {0x150000,0x0,0x0,0x115,0x0,0x0,0x0,0x100,0x0,0x100,0x400000,0x15000000,0x0,0x40000000,0x0,0x40000000,0x4000,0x15,};

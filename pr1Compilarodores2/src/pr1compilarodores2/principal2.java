@@ -62,7 +62,7 @@ public class principal2 extends javax.swing.JFrame {
 
         tx_entrada.setColumns(20);
         tx_entrada.setRows(5);
-        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\nimprimir(3+suma(\"Mundo\",2.4,5));\n%,\n]");
+        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\nejemplo();\n%,\n]");
         jScrollPane1.setViewportView(tx_entrada);
 
         jLabel1.setText("Entrada");
@@ -279,7 +279,9 @@ public class principal2 extends javax.swing.JFrame {
         String cadena = "";
         for(Nodo hijos : nodo.getHijos())
         {
-            cadena += "\"" + nodo.getNumNodo() + "_" + nodo.getNombre() + "\"->\"" + hijos.getNumNodo() + "_" + hijos.getNombre()  + "\"";
+            String nombre = nodo.getNombre().replaceAll("\"", "");
+            String hijo =   hijos.getNombre().replaceAll("\"", "");     
+            cadena += "\"" + nodo.getNumNodo() + "_" + nombre + "\"->\"" + hijos.getNumNodo() + "_" + hijo  + "\"";
             cadena += graficarNodo(hijos);
         }
         return cadena;
