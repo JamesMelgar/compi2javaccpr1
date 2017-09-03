@@ -168,7 +168,7 @@ public class Crearmaster {
             cadena = cadena + "<Row> \n";
             for(Nodo primo : arbol.getHijos()){
                 if(primo.getNombre().equalsIgnoreCase("obj")){
-                    cadena=cadena+"<obj>"+primo.getValor()+"\n";
+                    cadena=cadena+"<obj>"+primo.getValor()+"<"+primo.getTipo()+">"+"\n";
                     for(Nodo abue: primo.getHijos()){
                         cadena = cadena + "<"+abue.getNombre()+">" +abue.getValor() + "</"+ abue.getNombre()+"> \n";
                     }

@@ -100,6 +100,10 @@ public class accpaquete {
                 manejodetablas.sentencia_insertar_en_tabla(usuario, master, temp);
             }else if(arbol.getNombre().equalsIgnoreCase("insertar Valores") == true){
                 manejodetablas.sentencia_insertar_especial_tabla(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("actualizar")){
+                manejodetablas.Sentencia_Actualizar(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("actualizar cond")){
+                manejodetablas.Sentencia_Actualizar_cond(usuario, master, temp);
             }
         }
     }
@@ -142,6 +146,8 @@ public class accpaquete {
                 Nodo nodo2 = sentencia_Retorno(usuario, master, temp);   
                 imprimir_nodo(nodo2, "texto****");
                 return nodo2;
+            }else if(arbol.getNombre().equalsIgnoreCase("actualizar cond")){
+                manejodetablas.Sentencia_Actualizar_cond(usuario, master, temp);
             }
         }
         return null;

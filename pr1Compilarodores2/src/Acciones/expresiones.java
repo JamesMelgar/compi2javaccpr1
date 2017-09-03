@@ -651,22 +651,43 @@ public static Nodo expresiones(Nodo raiz){
           }else if(raiz.getNombre().equalsIgnoreCase("==")){
                c1=izq.getNombre();
                c2=der.getNombre();
-               if(c1.equalsIgnoreCase(c2)){
-                  nodo1=crear_nodo("1","","bool");
-                  return nodo1; 
+               if(izq.getTipo().equalsIgnoreCase(der.getTipo())){
+                   if(izq.getTipo().equalsIgnoreCase("error")){
+                       nodo1=crear_nodo("error","","error");
+                       return nodo1;
+                   }else{
+                       if(c1.equalsIgnoreCase(c2)){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1; 
+                       }else{
+                          nodo1=crear_nodo("0","","bool");
+                          return nodo1;
+                       }
+                    }
                }else{
-                  nodo1=crear_nodo("0","","bool");
-                  return nodo1;
-               } //***************************************************************************************diferente   
+                   nodo1=crear_nodo("error","","error");
+                   return nodo1;
+               }
+                //***************************************************************************************diferente   
           }else if(raiz.getNombre().equalsIgnoreCase("!=")){
                c1=izq.getNombre();
                c2=der.getNombre();
-               if(c1.equalsIgnoreCase(c2)==false){
-                  nodo1=crear_nodo("1","","bool");
-                  return nodo1; 
+               if(izq.getTipo().equalsIgnoreCase(der.getTipo())){
+                   if(izq.getTipo().equalsIgnoreCase("error")){
+                       nodo1=crear_nodo("error","","error");
+                       return nodo1;
+                   }else{
+                       if(c1.equalsIgnoreCase(c2)==false){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1; 
+                       }else{
+                          nodo1=crear_nodo("0","","bool");
+                          return nodo1;
+                       }
+                    }
                }else{
-                  nodo1=crear_nodo("0","","bool");
-                  return nodo1;
+                   nodo1=crear_nodo("error","","error");
+                   return nodo1;
                } //**************************************************************************************mayor   
           }else if(raiz.getNombre().equalsIgnoreCase(">")){
                if(izq.getTipo().equalsIgnoreCase("int")){
@@ -1065,7 +1086,6 @@ public static Nodo expresiones(Nodo raiz){
         return raiz;
     }
 
-
 public static Nodo crear_nodo(String cadena, String valor, String tipo){
            Nodo nodo1 = new Nodo(cadena);
            nodo1.setValor(valor);
@@ -1090,7 +1110,7 @@ public static String convertirString(boolean valor){
     }
 }
 
-    public static void prueba(){
+public static void prueba(){
     tablasimbolos tb = new tablasimbolos("nombre", "tipo", "valor");
     tablasimbolos tb1 = new tablasimbolos("uno", "tres", "cuatro");
     tablasimbolos tb2 = new tablasimbolos("Dos", "tres", "cuatro");
@@ -1111,48 +1131,68 @@ public static String convertirString(boolean valor){
         expresiones.pila.push(tb3);
     }
 
-     public static String[] cortarCadenaPorcomilla(String cadena) {
-        return cadena.split("\\'");
-    }
+public static String[] cortarCadenaPorcomilla(String cadena) {
+    return cadena.split("\\'");
+}
      
-    public static void imprimir_estenodo(Nodo imp, String texto){
-       System.out.println(texto+" Nombre:"+imp.getNombre()+" Valor:"+imp.getValor()+" tipo:"+imp.getTipo());
-   }
+public static void imprimir_estenodo(Nodo imp, String texto){
+   System.out.println(texto+" Nombre:"+imp.getNombre()+" Valor:"+imp.getValor()+" tipo:"+imp.getTipo());
+}
      
-    public static Nodo acciones_exp(Nodo raiz){
-        if(raiz.getTipo().equalsIgnoreCase("variable") || raiz.getTipo().equalsIgnoreCase("variable1p")){
-            tablasimbolos tb = expresiones.pila.peek();
-            boolean valor = false;
-            for(tablasimbolos hoja : tb.getSiguiente()){
-                if(hoja.getNombre().equalsIgnoreCase(raiz.getNombre())){
+public static Nodo acciones_exp(Nodo raiz){
+    if(raiz.getTipo().equalsIgnoreCase("variable") || raiz.getTipo().equalsIgnoreCase("variable1p")){
+        tablasimbolos tb = expresiones.pila.peek();
+        boolean valor = false;
+        for(tablasimbolos hoja : tb.getSiguiente()){
+            if(hoja.getNombre().equalsIgnoreCase(raiz.getNombre())){
 //                    imprimir_estenodo(raiz, "raiz");
-                    if(hoja.getTipo().equalsIgnoreCase("obj")){ //cuando se quiere hacer asignaciones de objeto a objeto
-                        Nodo nodo1 = crear_nodo(hoja.getNombre(),"obj", "error");
-                        nodo1.setTexto(hoja.getObj());
-                        imprimir_estenodo(nodo1, "objeto");
-                        return nodo1;
+                if(hoja.getTipo().equalsIgnoreCase("obj")){ //cuando se quiere hacer asignaciones de objeto a objeto
+                    Nodo nodo1 = crear_nodo(hoja.getNombre(),"obj", "error");
+                    nodo1.setTexto(hoja.getObj());
+                    imprimir_estenodo(nodo1, "objeto");
+                    return nodo1;
+                }else{
+                    if(hoja.getValor().equalsIgnoreCase("")){ //si no fue declado
+                     System.out.println("error esta variable no a sido asignada");
+                     Nodo nodo1=crear_nodo("error","","error");
+                     return nodo1;
                     }else{
-                        if(hoja.getValor().equalsIgnoreCase("")){ //si no fue declado
-                         System.out.println("error esta variable no a sido asignada");
-                         Nodo nodo1=crear_nodo("error","","error");
-                         return nodo1;
-                        }else{
-                            Nodo nodo1 = crear_nodo(hoja.getValor(), hoja.getNombre(), hoja.getTipo());
-                            return nodo1; }
-                    }
+                        Nodo nodo1 = crear_nodo(hoja.getValor(), hoja.getNombre(), hoja.getTipo());
+                        return nodo1; }
                 }
             }
-        }else{
-            if(raiz.getTipo().equalsIgnoreCase("text")){
-                raiz.setNombre(concacadena(raiz.getNombre(), ""));
-            }
-//            imprimir_estenodo(raiz, "normal");
-            return raiz;
         }
-        Nodo nodo1=crear_nodo("error","","error");
-        return nodo1;
+    }else if(raiz.getTipo().equalsIgnoreCase("id")
+                      || raiz.getTipo().equalsIgnoreCase("idp")
+                           || raiz.getTipo().equalsIgnoreCase("Tid") )
+    {
+        tablasimbolos tb = expresiones.pila.peek();
+        boolean valor = false;
+        for(tablasimbolos hoja : tb.getSiguiente()){
+ 
+            if(hoja.getNombre().equalsIgnoreCase(raiz.getNombre())){
+                
+                if(hoja.getValor().equalsIgnoreCase("")){ //si no fue declado
+                     System.out.println("error esta variable no a sido asignada");
+                     Nodo nodo1=crear_nodo("error","","error");
+                     return nodo1;
+                 }else{
+                        Nodo nodo1 = crear_nodo(hoja.getValor(), hoja.getNombre(), hoja.getTipo());
+                        return nodo1; 
+                }
+            }
+        }
+    }else{
+        if(raiz.getTipo().equalsIgnoreCase("text")){
+            raiz.setNombre(concacadena(raiz.getNombre(), ""));
+        }
+//            imprimir_estenodo(raiz, "normal");
+        return raiz;
     }
-    
+    Nodo nodo1=crear_nodo("error","","error");
+    return nodo1;
+}
+
     public static Nodo llamada_funcion(Nodo llamada){
         Nodo master = pr1compilarodores2.principal2.master;
         String base = pr1compilarodores2.principal2.db;    

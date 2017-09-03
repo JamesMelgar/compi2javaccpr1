@@ -2059,7 +2059,7 @@ cadena = t1.image.substring(1, t1.image.length()-1);
     case Idp:{
       t1 = jj_consume_token(Idp);
 Nodo tmp = new Nodo(t1.image);
-                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("id1p");
+                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("Idp");
                  tmp.setColumna(t1.beginColumn); tmp.setFila(t1.beginLine);
                  {if ("" != null) return tmp;}
       break;
@@ -2067,7 +2067,7 @@ Nodo tmp = new Nodo(t1.image);
     case Tid:{
       t1 = jj_consume_token(Tid);
 Nodo tmp = new Nodo(t1.image);
-                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("id2p");
+                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("Tid");
                  tmp.setColumna(t1.beginColumn); tmp.setFila(t1.beginLine);
                  {if ("" != null) return tmp;}
       break;
@@ -2152,9 +2152,10 @@ nodo2.addHijo(nodo1); {if ("" != null) return nodo2;}
       }
     case Id:{
       t1 = jj_consume_token(Id);
-Nodo tmp = new Nodo("id");
+Nodo tmp = new Nodo(t1.image);
                 tmp.setNumNodo(grausu.contador++);
                 tmp.setValor(t1.image);
+                tmp.setTipo("id");
                 tmp.setColumna(t1.beginColumn);
                 tmp.setFila(t1.beginLine);
                 nodo1 = tmp;
@@ -2945,6 +2946,12 @@ Nodo tmp = new Nodo("contar");
     return false;
   }
 
+  private boolean jj_3R_56()
+ {
+    if (jj_scan_token(Pai)) return true;
+    return false;
+  }
+
   private boolean jj_3R_7()
  {
     Token xsp;
@@ -2959,12 +2966,6 @@ Nodo tmp = new Nodo("contar");
   private boolean jj_3R_10()
  {
     if (jj_scan_token(Cm)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_56()
- {
-    if (jj_scan_token(Pai)) return true;
     return false;
   }
 

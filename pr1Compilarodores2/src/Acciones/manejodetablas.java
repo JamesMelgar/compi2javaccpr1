@@ -66,7 +66,9 @@ public class manejodetablas extends accpaquete{
                                     Nodo objeto = nodo_buscar_objeto(db, pivote.getObj()); //me devuelve el objeto verifico permisos
                                     boolean valor5 = accpaquete.tiene_permiso(usuarios, master, base, pr1compilarodores2.principal2.usua , pivote.getObj());
                                     if(objeto != null && valor5 == true){
-                                        Nodo nodo2=crearnodo("obj", arbol.getNombre());
+                                        Nodo nodo2=crearnodo("obj", pivote.getObj());
+                                        nodo2.setTipo(arbol.getNombre());
+                                        imprimir_nodo(nodo2, "***base***");
                                         for( Nodo reco : objeto.getHijos()){ //recoriendo el objeto
                                             String cadena = arbol.getNombre()+"."+reco.getNombre();//nombre.codigo
                                             String valores =devolver_valor_tb(cadena);
@@ -391,11 +393,10 @@ public class manejodetablas extends accpaquete{
                      Nodo objeto = nodo_buscar_objeto(db, camp.getValor());//Nombre del objeto   
                       if(objeto != null){
                         Nodo nodo2=crearnodo("obj", objeto.getNombre());
+                        nodo2.setTipo(camp.getNombre());
                         for( Nodo reco : objeto.getHijos()){ //recoriendo el objeto
                             String cadena = camp.getNombre()+"."+reco.getNombre();//nombre.codigo
-//                            System.out.println("888 "+cadena);
                             String valores =devolver_valor_tb(cadena);
-//                            System.out.println("Acciones.manejodetablas."+valores);
                             if(valores.equalsIgnoreCase("")){
                                    return null;
                             }else{
@@ -490,7 +491,7 @@ public class manejodetablas extends accpaquete{
     }
     
     public static Nodo retornar_existe_complemento(Nodo campo, String comple){
-        for(Nodo complemento : campo.getHijos()){
+        for(Nodo complemento : campo.getHijos()){ //para fk
            if(complemento.getNombre().equalsIgnoreCase(comple)){
                return complemento;
             }
@@ -520,5 +521,285 @@ public class manejodetablas extends accpaquete{
         return "error";
     }
     
+    public static Nodo devolver_Nodo_row(Nodo row, String campo){
+        for(Nodo primo : row.getHijos()){
+            if(primo.getNombre().equalsIgnoreCase(campo)){
+                return primo;
+            }
+        }
+        return null;
+    }
+    
+    public static Nodo devolver_Nodo_row_obj(Nodo row, String campo){
+        for(Nodo primo : row.getHijos()){
+            if(primo.getTipo().equalsIgnoreCase(campo)){
+                return primo;
+            }
+        }
+        return null;
+    }
+    
+    public static void Sentencia_Actualizar(Nodo usuarios,Nodo master, Nodo paquete){
+        String base = pr1compilarodores2.principal2.db;  //la base de datos que esta utilizada
+        Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db);
+        Nodo tabla=nodo_buscar_tabla(db, paquete.getValor()); //devuelve la tabla
+        boolean valor = accpaquete.tiene_permiso(usuarios, master, base, pr1compilarodores2.principal2.usua , paquete.getValor());
+        if(tabla != null && valor){
+            Nodo campos = paquete.getHijos().get(0);
+            Nodo valores = paquete.getHijos().get(1);
+            realizar_ope_para(valores);
+            valor = verificar_especial_valores(campos, valores, paquete.getValor()); //verifico que los campos sean iguales 
+            if(campos.getHijos().size()==valores.getHijos().size() && valor){
+                if(!expresiones.pila.empty()){ //si la pila esta vacia
+                         tablasimbolos pivote = expresiones.pila.peek(); //guardar la pila anterior
+                         tablasimbolos tb = new tablasimbolos("nombre", "tipo", "valor"); //creo la tabla de simbolos
+                         tb.setAmbito(0); //ambito cero
+                         expresiones.pila.push(tb);
+                         llenar_especial_valores(campos, valores, paquete.getValor(), pivote);
+                }else{
+                        tablasimbolos tb = new tablasimbolos("nombre", "tipo", "valor"); //creo la tabla de simbolos
+                        tb.setAmbito(0); //ambito cero
+                        expresiones.pila.push(tb); //ingreso a la pila un tabla de simbolos
+                         llenar_especial_normal(campos, valores, paquete.getValor());
+                }
+                //imprimir_tabla_simbolos();
+                Nodo row = tabla.getHijos().get(0);
+                for(Nodo cambios : row.getHijos()){
+                    imprimir_nodo(cambios, "base");
+                    actualizar_campos(tabla, cambios);
+                    Crearmaster.master();
+                }
+                expresiones.pila.pop();
+            }else{
+                System.out.println("Cantidad de valores y parametros distintos");
+            }
+        }else{
+            System.out.println("Usted No tiene permiso o la tabla exite");
+        }
+    }
+    
+    public static void actualizar_campos(Nodo tabla, Nodo row){
+         tablasimbolos actual = expresiones.pila.peek();
+         String base = pr1compilarodores2.principal2.db;  //la base de datos que esta utilizada
+         Nodo db=nodo_buscar_bd(pr1compilarodores2.principal2.master, pr1compilarodores2.principal2.db);
+         Nodo campos = tabla.getHijos().get(1); //Nodo campos
+         Nodo datos = tabla.getHijos().get(0);
+         boolean valor=true;
+         int contador = 0;
+         for(tablasimbolos tb: actual.getSiguiente()){
+             if(contador==0){
+                 if(tb.getObj().equalsIgnoreCase("")){
+                     Nodo camp = devolver_campo(campos, tb.getNombre());//busca en archivo db
+                     if(existe_complemento(camp, "<pk>")){
+                         if(metodo_pk(datos, camp.getNombre(), tb.getValor())){
+                            Nodo actualizar = devolver_Nodo_row(row, tb.getNombre());
+                            if(actualizar != null){
+                                actualizar.setValor(tb.getValor());
+                            }else{
+                                Nodo nodo2 = crearnodo(tb.getNombre(), tb.getValor());
+                                row.addHijo(nodo2);
+                            }
+                         }else{
+                             System.out.println("No se pudo agregar por error de llave primaria");
+                         }
+                     }else if(existe_complemento(camp, "<fk>")){
+                            if(existe_complemento(camp, "<unico>")){
+                                if(metodo_unico(datos, camp.getNombre(), tb.getValor())){
+                                    Nodo fk = retornar_existe_complemento(camp, "<fk>");
+                                    if(metodo_buscar_fk(fk.getValor(),fk.getTipo(),tb.getValor())){
+                                        Nodo actualizar = devolver_Nodo_row(row, tb.getNombre());
+                                        if(actualizar != null){
+                                            actualizar.setValor(tb.getValor());
+                                        }else{
+                                            Nodo nodo2 = crearnodo(tb.getNombre(), tb.getValor());
+                                            row.addHijo(nodo2);
+                                        }
+                                    }else{
+                                        System.out.println("Error esta llave foranea no existe");
+                                    }
+                                }else{
+                                    System.out.println("Error esta llave foranea debe de ser unica");
+                                }
+                            }else{
+                                Nodo fk = retornar_existe_complemento(camp, "<fk>");
+                                if(metodo_buscar_fk(fk.getValor(),fk.getTipo(),tb.getValor())){
+                                    Nodo actualizar = devolver_Nodo_row(row, tb.getNombre());
+                                    if(actualizar != null){
+                                        actualizar.setValor(tb.getValor());
+                                    }else{
+                                        Nodo nodo2 = crearnodo(tb.getNombre(), tb.getValor());
+                                        row.addHijo(nodo2);
+                                    }
+                                }else{
+                                    System.out.println("Error esta llave foranea no existe");
+                                }
+                            }
+                        }else if(existe_complemento(camp, "<unico>")){
+                            if(metodo_unico(datos, camp.getNombre(), tb.getValor())){
+                                Nodo actualizar = devolver_Nodo_row_obj(row, tb.getNombre());
+                                if(actualizar != null){
+                                        actualizar.setValor(tb.getValor());
+                                }else{
+                                    Nodo nodo2 = crearnodo(tb.getNombre(), tb.getValor());
+                                    row.addHijo(nodo2);
+                                }
+                            }else{
+                                System.out.println("Existe complemento unico");
+                            }
+                        }else{
+                            Nodo actualizar = devolver_Nodo_row(row, tb.getNombre());
+                            if(actualizar != null){
+                                actualizar.setValor(tb.getValor());
+                            }else{
+                                Nodo nodo2 = crearnodo(tb.getNombre(), tb.getValor());
+                                row.addHijo(nodo2);
+                            }
+                        }
+                 }else{
+                     Nodo nodo2=crearnodo("obj", tb.getObj());
+                     nodo2.setTipo(tb.getNombre());
+                     Nodo obj = nodo_buscar_objeto(db, tb.getObj());
+                     contador=obj.getHijos().size();
+                     boolean b1=true;
+                     if(obj != null){
+                         for(Nodo recorrer : obj.getHijos()){//recorro el obj para buscar el nombre en la tabla de simbolos
+                            String c1 = tb.getNombre() + "." +recorrer.getNombre();
+                            String v1 = devolver_valor_tb(c1); //valor en tabla de simbolos
+                            if(v1.equalsIgnoreCase("")==false){
+                                Nodo nodo1=crearnodo(recorrer.getNombre(), v1);
+                                nodo2.addHijo(nodo1);
+                            }else{
+                                b1=false;
+                            }
+                         }
+                         if(b1=true){
+                             Nodo actualizar = devolver_Nodo_row_obj(row, tb.getNombre());
+                             imprimir_nodo(actualizar, "actualizar");
+                             if(actualizar!=null){
+                                 System.out.println("entro pero hay error");
+                                 actualizar.setHijos(nodo2.getHijos());
+                                 imprimir_nodo(nodo2, "nodo2");
+                             }else{
+                                row.addHijo(nodo2);
+                             }
+                         }else{
+                             System.out.println("No todos los obj fueron instanciados");
+                         }
+                     }else{
+                         System.out.println("Este. objeto no exite");
+                     }
+                 }
+             }else{
+                 --contador;
+             }
+         }
+     }
+    
+    public static Nodo devolver_campo(Nodo campo, String nombre){
+           for( Nodo camp : campo.getHijos()){
+               if(camp.getNombre().equalsIgnoreCase(nombre)){
+                   return camp;
+               }
+           }
+           return null;
+     }
+     
+    public static void Sentencia_Actualizar_cond(Nodo usuarios,Nodo master, Nodo paquete){
+        String base = pr1compilarodores2.principal2.db;  //la base de datos que esta utilizada
+        Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db);
+        Nodo tabla=nodo_buscar_tabla(db, paquete.getValor()); //devuelve la tabla
+        boolean valor = accpaquete.tiene_permiso(usuarios, master, base, pr1compilarodores2.principal2.usua , paquete.getValor());
+        if(tabla != null && valor){
+            Nodo campos = paquete.getHijos().get(0);
+            Nodo valores = paquete.getHijos().get(1);
+            realizar_ope_para(valores);
+            valor = verificar_especial_valores(campos, valores, paquete.getValor()); //verifico que los campos sean iguales 
+            if(campos.getHijos().size()==valores.getHijos().size() && valor){
+                if(!expresiones.pila.empty()){ //si la pila esta vacia
+                         tablasimbolos pivote = expresiones.pila.peek(); //guardar la pila anterior
+                         tablasimbolos tb = new tablasimbolos("nombre", "tipo", "valor"); //creo la tabla de simbolos
+                         tb.setAmbito(0); //ambito cero
+                         expresiones.pila.push(tb);
+                         llenar_especial_valores(campos, valores, paquete.getValor(), pivote);
+                }else{
+                        tablasimbolos tb = new tablasimbolos("nombre", "tipo", "valor"); //creo la tabla de simbolos
+                        tb.setAmbito(0); //ambito cero
+                        expresiones.pila.push(tb); //ingreso a la pila un tabla de simbolos
+                         llenar_especial_normal(campos, valores, paquete.getValor());
+                }
+                //imprimir_tabla_simbolos();
+                Nodo row = tabla.getHijos().get(0);
+                Nodo condicion = paquete.getHijos().get(2);
+                for(Nodo cambios : row.getHijos()){
+                    tablasimbolos tb3 = new tablasimbolos("nombre", "tipo", "valor"); //creo la tabla de simbolos
+                    tb3.setAmbito(0); //ambito cero
+                    expresiones.pila.push(tb3); //ingreso a la pila un tabla de simbolos 
+                    tabla_de_simbolos_row(cambios, paquete.getValor() , "");
+                    Nodo nodo8 = expresiones.expresiones(condicion.getHijos().get(0));
+                    if(nodo8.getNombre().equalsIgnoreCase("1")){
+                        expresiones.pila.pop();
+                        actualizar_campos(tabla, cambios);
+                        Crearmaster.master();
+                    }else{
+                        expresiones.pila.pop();
+                    }
+                    imprimir_nodo(nodo8, "nodo8");
+                    //imprimir_tabla_simbolos();
+                    
+                }
+                expresiones.pila.pop();
+            }else{
+                System.out.println("Cantidad de valores y parametros distintos");
+            }
+        }else{
+            System.out.println("Usted No tiene permiso o la tabla exite");
+        }
+    }
+    
+    public static void tabla_de_simbolos_row(Nodo row, String Ntabla,String texto){
+        String base = pr1compilarodores2.principal2.db;  //la base de datos que esta utilizada
+        Nodo master = pr1compilarodores2.principal2.master;
+        Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db);
+        Nodo tabla=nodo_buscar_tabla(db, Ntabla); //devuelve la tabla
+        tablasimbolos tb = expresiones.pila.peek();
+        if(db != null && tabla != null){
+            Nodo campos = tabla.getHijos().get(1);
+            for(Nodo hirow : row.getHijos()){
+                if(hirow.getNombre().equalsIgnoreCase("obj")){
+                    for(Nodo campobj : hirow.getHijos()){
+                       String tipo = buscar_tipo_campo_obj(campos, campobj.getNombre(), hirow.getValor());
+                       String cadena = texto + hirow.getTipo() + row.getNombre();
+                       agregar_a_tabla_obj(texto,tipo, row.getValor(), ""); 
+                    }
+                }else{
+                    //imprimir_nodo(hirow, "texto");
+                    String cadena = texto + hirow.getNombre();
+                    agregar_a_tabla_obj(cadena,hirow.getTipo(), hirow.getValor(), "");
+                }
+           }
+        }
+    }
+    
+    public static String buscar_tipo_campo(Nodo campo, String buscar){
+        for(Nodo cp : campo.getHijos()){
+            if(cp.getNombre().equalsIgnoreCase(buscar)){
+                return cp.getValor();
+            }
+        }
+        return "error";
+    }
+    
+    public static String buscar_tipo_campo_obj(Nodo campo, String buscar, String obj){
+        for(Nodo cp : campo.getHijos()){
+            if(cp.getTipo().equalsIgnoreCase(obj)){
+                for(Nodo ob : cp.getHijos()){
+                   if(cp.getNombre().equalsIgnoreCase(buscar)){
+                       return cp.getValor();
+                   } 
+                }             
+            }
+        }
+        return "error";
+    }
 }
 

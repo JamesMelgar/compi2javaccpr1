@@ -476,6 +476,7 @@ Nodo contcolumna(Nodo hijo):
 {
     Nodo nodo1;
     Token t1;
+    Token t2;
 }
 {
     <Ai> t1=<Id> { Nodo tmp = new Nodo(t1.image);
@@ -493,10 +494,11 @@ Nodo contcolumna(Nodo hijo):
      nodo1=tipo(nodo1) <Nombref> { hijo.addHijo(nodo1); }
      hijo=contcolumna(hijo) {return hijo;}
 
-   | <Obji> t1=<Id> { Nodo tmp = new Nodo("obj");
+   | <Obji> t1=<Id> <Ai> t2=<Id> <Af> { Nodo tmp = new Nodo("obj");
                       tmp.setNumNodo(graxml.contador++);
                       tmp.setColumna(t1.beginColumn);
                       tmp.setFila(t1.beginLine);
+                      tmp.setTipo(t2.image);
                       tmp.setValor(t1.image);
                       nodo1 = tmp; 
         }
@@ -517,7 +519,7 @@ Nodo tipo(Nodo nodo1):
     |t1=<Bool> { nodo1.setTipo("bool");
                nodo1.setValor(t1.image);
                return nodo1; }
-    |t1=<Num> { nodo1.setTipo("num");
+    |t1=<Num> { nodo1.setTipo("int");
                nodo1.setValor(t1.image);
                return nodo1; }
     |t1=<Texto> { nodo1.setTipo("text");

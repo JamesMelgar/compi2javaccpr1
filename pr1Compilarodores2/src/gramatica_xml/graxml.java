@@ -501,6 +501,7 @@ raiz.addHijo(nodo1);
 
 Nodo contcolumna(Nodo hijo) throws ParseException {Nodo nodo1;
     Token t1;
+    Token t2;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case Ai:{
       jj_consume_token(Ai);
@@ -536,10 +537,14 @@ hijo.addHijo(nodo1);
     case Obji:{
       jj_consume_token(Obji);
       t1 = jj_consume_token(Id);
+      jj_consume_token(Ai);
+      t2 = jj_consume_token(Id);
+      jj_consume_token(Af);
 Nodo tmp = new Nodo("obj");
                       tmp.setNumNodo(graxml.contador++);
                       tmp.setColumna(t1.beginColumn);
                       tmp.setFila(t1.beginLine);
+                      tmp.setTipo(t2.image);
                       tmp.setValor(t1.image);
                       nodo1 = tmp;
       nodo1 = contcolumna(nodo1);
@@ -574,7 +579,7 @@ nodo1.setTipo("bool");
       }
     case Num:{
       t1 = jj_consume_token(Num);
-nodo1.setTipo("num");
+nodo1.setTipo("int");
                nodo1.setValor(t1.image);
                {if ("" != null) return nodo1;}
       break;

@@ -1373,11 +1373,11 @@ Nodo s8():
                  tmp.setColumna(t1.beginColumn); tmp.setFila(t1.beginLine);
                  return tmp; }
     | t1=<Idp>  {   Nodo tmp = new Nodo(t1.image);
-                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("id1p");
+                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("Idp");
                  tmp.setColumna(t1.beginColumn); tmp.setFila(t1.beginLine);
                  return tmp; }
     | t1=<Tid> {   Nodo tmp = new Nodo(t1.image);
-                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("id2p");
+                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("Tid");
                  tmp.setColumna(t1.beginColumn); tmp.setFila(t1.beginLine);
                  return tmp; }
     | t1=<Aid> {   Nodo tmp = new Nodo(t1.image);
@@ -1418,9 +1418,10 @@ Nodo s8():
 
     | <Contar> nodo1=contar() { return nodo1; }
 
-    | t1=<Id> { Nodo tmp = new Nodo("id");
+    | t1=<Id> { Nodo tmp = new Nodo(t1.image);
                 tmp.setNumNodo(grausu.contador++);
                 tmp.setValor(t1.image);
+                tmp.setTipo("id");
                 tmp.setColumna(t1.beginColumn);
                 tmp.setFila(t1.beginLine);
                 nodo1 = tmp;
