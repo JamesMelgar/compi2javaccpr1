@@ -62,7 +62,7 @@ public class principal2 extends javax.swing.JFrame {
 
         tx_entrada.setColumns(20);
         tx_entrada.setRows(5);
-        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\nACTUALIZAR TABLA Tabla1 (nombres,valor) VALORES (\"james3\",3)\n       DONDE nombres == \"Morales\" && valor == 3;\n%,\n]");
+        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\nejemplo();\n%,\n]");
         jScrollPane1.setViewportView(tx_entrada);
 
         jLabel1.setText("Entrada");
@@ -123,11 +123,11 @@ public class principal2 extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(0, 511, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -195,20 +195,11 @@ public class principal2 extends javax.swing.JFrame {
     }//GEN-LAST:event_BtGraficarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String numero;
-        Stack<String> pila = new Stack<String>();
-        pila.push("1");
-        pila.push("2");
-        pila.push("3");
-        pila.push("4");
-        numero = pila.peek();
-        System.out.println("pila elemneto"+numero);
-        numero = pila.peek();
-        System.out.println("pila elemneto"+numero);
-        pila.pop();
-        numero = pila.peek();
-        System.out.println("pila elemneto"+numero);
-       
+        if("7".compareTo("8")>0){
+            System.out.println("entro");
+        }else{
+            System.out.println("No entro");
+        }
         
     }//GEN-LAST:event_jButton1ActionPerformed
 

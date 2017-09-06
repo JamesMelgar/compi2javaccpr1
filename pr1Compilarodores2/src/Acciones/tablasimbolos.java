@@ -16,6 +16,15 @@ public class tablasimbolos {
     private String valor;
     private int ambito;
     private String extra;
+    private Integer display;
+
+    public Integer getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(Integer display) {
+        this.display = display;
+    }
 
     public int getAmbito() {
         return ambito;
@@ -34,6 +43,7 @@ public class tablasimbolos {
         setAmbito(0);
         setObj("");
         setExtra("");
+        setDisplay(0);
     }
     
     public ArrayList<tablasimbolos> getSiguiente() {

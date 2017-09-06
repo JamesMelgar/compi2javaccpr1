@@ -7,13 +7,15 @@ package pr1compilarodores2;
 
 import gramatica_usu.Token;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author James
  */
 
-public class Nodo {
+public class Nodo implements Cloneable{
     private String nombre;
     private ArrayList<Nodo> hijos;
     private String valor;
@@ -21,7 +23,34 @@ public class Nodo {
     private int columna;
     private int fila;
     private int numNodo;
+    private String tabla;
+    private String campo;
+    private String obj;
     private String texto;
+
+    public String getTabla() {
+        return tabla;
+    }
+
+    public void setTabla(String tabla) {
+        this.tabla = tabla;
+    }
+
+    public String getCampo() {
+        return campo;
+    }
+
+    public void setCampo(String campo) {
+        this.campo = campo;
+    }
+
+    public String getObj() {
+        return obj;
+    }
+
+    public void setObj(String obj) {
+        this.obj = obj;
+    }
 
     public String getTexto() {
         return texto;
@@ -58,6 +87,9 @@ public class Nodo {
         setColumna(0);
         setTipo("");
         setTexto("");
+        setTabla("");
+        setCampo("");
+        setObj("");
     }
 
     public Nodo(int columna, int fila) {
@@ -110,6 +142,40 @@ public class Nodo {
         this.tipo = tipo;
     }
     
+    /**
+     *
+     * @return
+     */
+    @Override
+    public Object clone(){
+        Nodo obj=null;
+        try{
+            obj=(Nodo)super.clone();
+        }catch(CloneNotSupportedException ex){
+            System.out.println(" no se puede duplicar");
+        }
+
+       
+        return obj;
+    }
+    
+    public Object clone(Nodo objeto){
+        Nodo obj=null;
+        try{
+            obj=(Nodo)super.clone();
+        }catch(CloneNotSupportedException ex){
+            System.out.println(" no se puede duplicar");
+        }
+
+        return obj;
+    }
+    
 
 
+
+
+
+
+
+    
 }

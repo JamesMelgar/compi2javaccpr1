@@ -1141,11 +1141,12 @@ Nodo seleccionar(Nodo raiz):
    Nodo nodo2;
    Nodo nodo3;
    Nodo nodo4;
+   Nodo nodo5;
    Nodo n2;
    Token t1;
 }
 {
-       t1=<Id> { Nodo tmp1 = new Nodo("seleccionar");
+       nodo5=lista_campos() { Nodo tmp1 = new Nodo("seleccionar");
                  tmp1.setNumNodo(grausu.contador++);
                  Nodo tmp2 = new Nodo("listaid");
                  tmp2.setNumNodo(grausu.contador++);
@@ -1154,12 +1155,8 @@ Nodo seleccionar(Nodo raiz):
                  nodo1 = tmp1; 
                  nodo2 = tmp2;
                  nodo3 = tmp3;
-                 Nodo tmp4 = new Nodo(t1.image);
-                 tmp4.setNumNodo(grausu.contador++);
-                 tmp4.setColumna(t1.beginColumn);
-                 tmp4.setFila(t1.beginLine);
-                 nodo2.addHijo(tmp4);
-     } nodo2=listaid(nodo2) <De> { nodo1.addHijo(nodo2); 
+                 nodo2.addHijo(nodo5);
+     } nodo2=listacampos(nodo2) <De> { nodo1.addHijo(nodo2); 
      } t1=<Id> {  Nodo tmp5 = new Nodo(t1.image);
                   tmp5.setNumNodo(grausu.contador++);
                   tmp5.setColumna(t1.beginColumn);
@@ -1167,6 +1164,8 @@ Nodo seleccionar(Nodo raiz):
                   nodo3.addHijo(tmp5);
     } nodo3=listaid(nodo3) { nodo1.addHijo(nodo3); 
     } nodo1=selecwhere(nodo1) nodo1=orden(nodo1) { raiz.addHijo(nodo1); return raiz; } 
+
+//
 
     | <Mult> { Nodo tmp1 = new Nodo("seleccionar");
                  tmp1.setNumNodo(grausu.contador++);
@@ -1177,7 +1176,7 @@ Nodo seleccionar(Nodo raiz):
                  nodo1 = tmp1; 
                  nodo2 = tmp2;
                  nodo3 = tmp3;
-     } nodo2=listaid(nodo2) <De> { nodo1.addHijo(nodo2); 
+     } <De> { nodo1.addHijo(nodo2); 
      } t1=<Id> {  Nodo tmp5 = new Nodo(t1.image);
                   tmp5.setNumNodo(grausu.contador++);
                   tmp5.setColumna(t1.beginColumn);
@@ -1185,6 +1184,41 @@ Nodo seleccionar(Nodo raiz):
                   nodo3.addHijo(tmp5);
     } nodo3=listaid(nodo3) { nodo1.addHijo(nodo3); 
     } nodo1=selecwhere(nodo1) nodo1=orden(nodo1) { raiz.addHijo(nodo1); return raiz; } 
+}
+
+Nodo lista_campos():
+{
+    Token t1;
+}
+{
+        t1=<Id> { Nodo tmp4 = new Nodo(t1.image);
+                 tmp4.setNumNodo(grausu.contador++);
+                 tmp4.setColumna(t1.beginColumn);
+                 tmp4.setFila(t1.beginLine);
+                 return tmp4; }
+
+    | t1=<Idp> { Nodo tmp4 = new Nodo(t1.image);
+                 tmp4.setNumNodo(grausu.contador++);
+                 tmp4.setColumna(t1.beginColumn);
+                 tmp4.setFila(t1.beginLine);
+                 return tmp4; }
+
+    | t1=<Tid> { Nodo tmp4 = new Nodo(t1.image);
+                 tmp4.setNumNodo(grausu.contador++);
+                 tmp4.setColumna(t1.beginColumn);
+                 tmp4.setFila(t1.beginLine);
+                 return tmp4; }
+}
+
+Nodo listacampos(Nodo primo):
+{
+    Token t1;
+    Nodo nodo5;
+}
+{
+       <Cm> nodo5=lista_campos() { 
+                       primo.addHijo(nodo5); } primo=listaid(primo) {return primo; }
+    | { return primo; }
 }
 
 Nodo selecwhere(Nodo primo):

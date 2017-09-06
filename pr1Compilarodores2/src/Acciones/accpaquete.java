@@ -104,6 +104,12 @@ public class accpaquete {
                 manejodetablas.Sentencia_Actualizar(usuario, master, temp);
             }else if(arbol.getNombre().equalsIgnoreCase("actualizar cond")){
                 manejodetablas.Sentencia_Actualizar_cond(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("seleccionar")){
+                manejodetablas.Sentencia_seleccionar(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("mientras")){
+                SentenciasSSL.Sentencia_mientras(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("detener")){
+                System.out.println("Error no se encuentra dentro de un while o para");
             }
         }
     }
@@ -148,6 +154,14 @@ public class accpaquete {
                 return nodo2;
             }else if(arbol.getNombre().equalsIgnoreCase("actualizar cond")){
                 manejodetablas.Sentencia_Actualizar_cond(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("seleccionar")){
+                manejodetablas.Sentencia_seleccionar(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("mientras")){
+                SentenciasSSL.Sentencia_mientras(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("detener")){
+                System.out.println("Error no se encuentra dentro de un while o para");
+            }else if(arbol.getNombre().equalsIgnoreCase("fun_si")){
+                SentenciasSSL.Sentencia_Si(usuario,master, temp);
             }
         }
         return null;
@@ -1154,7 +1168,6 @@ public class accpaquete {
              if(valor==true){
                  Nodo nodo1 = paquete.getHijos().get(0);
                  Nodo nodo2 = expresiones.expresiones(nodo1);
-                 imprimir_nodo(nodo2, "nodo2");
                  if(nodo2.getValor().equalsIgnoreCase("error")){
                      System.out.println("Error en expresion");
                  }else if(nodo2.getValor().equalsIgnoreCase("obj")){
@@ -1167,8 +1180,6 @@ public class accpaquete {
                              for(Nodo primo : obj.getHijos()){
                                     String cadena1 = paquete.getValor()+"."+primo.getNombre();//@obj + .val
                                     String cadena2 = nodo2.getNombre()+"."+primo.getNombre();//@objdevuelto + .val
-                                    System.out.println("cadena1: "+cadena1);
-                                    System.out.println("cadena2: "+cadena2);
                                     tablasimbolos devo=devolver_elemento_tb_pivote(cadena2,tb2);
                                     cambiar_valor_tb(cadena1, devo.getValor());
     //                                boolean val = exite_entabladesimbolo(cadena);
