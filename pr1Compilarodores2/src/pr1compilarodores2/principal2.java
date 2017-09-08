@@ -18,6 +18,9 @@ import java.util.Hashtable;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.io.*;
+import java.net.*;
+
 /**
  *
  * @author James_PC
@@ -33,11 +36,16 @@ public class principal2 extends javax.swing.JFrame {
     public static String texfun;
     public static String textopaquete;
     public static String ruta_master;
+    public static String enviar;
+    public static int port = 2018;
+    public static Thread hilo = new clase_Socket("proceso 1"); 
     
     public principal2() {
         principal2.usua = "bolo";
         principal2.ruta_master = "C:\\Users\\James_PC\\Documents\\compi2javaccpr1\\DB";
         db = "db2";
+        
+        principal2.hilo.start();
         initComponents();
     }
 
@@ -195,12 +203,7 @@ public class principal2 extends javax.swing.JFrame {
     }//GEN-LAST:event_BtGraficarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if("7".compareTo("8")>0){
-            System.out.println("entro");
-        }else{
-            System.out.println("No entro");
-        }
-        
+        principal2.enviar = "mundo feliz";
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
