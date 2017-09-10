@@ -6,8 +6,11 @@ import java.util.Stack;
 import java.util.Collections;
 import pr1compilarodores2.Nodo;
 import pr1compilarodores2.Recorrer;
+
 public class manejodetablas extends accpaquete{
-    
+
+public static String reporte = "";
+
 public static void sentencia_insertar_en_tabla(Nodo usuarios,Nodo master, Nodo paquete){
         String base = pr1compilarodores2.principal2.db;  //la base de datos que esta utilizada
         Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db);
@@ -109,12 +112,14 @@ public static void sentencia_insertar_en_tabla(Nodo usuarios,Nodo master, Nodo p
 //                    imprimir_tabla_simbolos();
                     expresiones.pila.pop();
                 }else{
+                    crearPaquete.pq_mensaje("No se pudo crear tabla no se tiene permiso");
                     System.out.println("Parametros incorrectos");
                 }
             }else{
-                System.out.println("Se ingreso diferentes cantidad de parametros");
+                crearPaquete.pq_mensaje("Error en crear tabla usted ingreso mas parametros");
             }
         }else{
+            crearPaquete.pq_mensaje("No se pudo crear tabla: " + paquete.getValor() + "no se tiene permiso");
             System.out.println("La tabla no exite o no tiene permiso");
         }
     }
@@ -206,9 +211,9 @@ public static void sentencia_insertar_especial_tabla(Nodo usuarios,Nodo master, 
                     tb.setAmbito(0); //ambito cero
                     expresiones.pila.push(tb); //ingreso a la pila un tabla de simbolos
                      llenar_especial_normal(insertar, valores, paquete.getValor());
+                     
             }
-            imprimir_tabla_simbolos();
-
+            
             Nodo llenado = insertar_campo(insertar, tabla);
             if(llenado != null){
                 datos.addHijo(llenado);
@@ -310,11 +315,12 @@ public static void sentencia_insertar_especial_tabla(Nodo usuarios,Nodo master, 
                         if(elvalor.getTipo().equalsIgnoreCase(tipo)==true){
                             tablasimbolos tb2 = expresiones.pila.peek();
                             int numero = tb2.getAmbito();
-                            imprimir_nodo(elvalor, "paquete");
-                            imprimir_nodo(hiInsert, "paquete2");
+                           // imprimir_nodo(elvalor, "paquete");
+                            //imprimir_nodo(hiInsert, "paquete2");
                             tablasimbolos tb1 = new tablasimbolos(hiInsert.getNombre(), elvalor.getTipo(), elvalor.getNombre());
                             tb2.setAmbito(numero);
                             tb2.addHijo(tb1);
+                            imprimir_tabla_simbolos();
                         }
                     }
                      ++con;
@@ -355,8 +361,6 @@ public static void sentencia_insertar_especial_tabla(Nodo usuarios,Nodo master, 
                         if(elvalor.getTipo().equalsIgnoreCase(tipo)==true){
                             tablasimbolos tb2 = expresiones.pila.peek();
                             int numero = tb2.getAmbito();
-                            imprimir_nodo(elvalor, "paquete");
-                            imprimir_nodo(hiInsert, "paquete2");
                             tablasimbolos tb1 = new tablasimbolos(hiInsert.getNombre(), elvalor.getTipo(), elvalor.getNombre());
                             tb2.setAmbito(numero);
                             tb2.addHijo(tb1);
@@ -472,6 +476,10 @@ public static void sentencia_insertar_especial_tabla(Nodo usuarios,Nodo master, 
                       }else{
                           return null;
                       }
+                }else{
+                    Nodo nodo2 = crearnodo(camp.getNombre(), registro.getValor());
+                    imprimir_nodo(nodo2, "entro");
+                    nodo1.addHijo(nodo2);
                 }
 
              }
@@ -1153,6 +1161,7 @@ public static void imprimir_data(Nodo obj){
             " tb:"+obj.getTabla()+" cp:"+obj.getCampo()+" obj:"+obj.getObj()+" tp:"+obj.getTipo();
     System.out.println("Data: "+cadena);
 }
+
 public static Nodo clonar(Nodo n1 ,Nodo n2){
     n1.setValor(n2.getValor());
     n1.setNumNodo(n2.getNumNodo());
@@ -1192,5 +1201,188 @@ public static Nodo unir_tb1_tb2(Nodo tb1, Nodo tb2){
     }
     return tb;
 }
+
+public static void Reporte_seleccionar(Nodo usuarios,Nodo master, Nodo paquete){
+     String base = pr1compilarodores2.principal2.db;  //la base de datos que esta utilizada
+     Nodo db=nodo_buscar_bd(master, pr1compilarodores2.principal2.db);
+     Nodo listaTabla = paquete.getHijos().get(1); 
+     if(listaTabla.getHijos().size()==1){//Solo tiene un hijo.
+         String nombre_tabla = listaTabla.getHijos().get(0).getNombre();
+         Nodo tabla = nodo_buscar_tabla(db,nombre_tabla);
+         boolean valor = accpaquete.tiene_permiso(usuarios, master, base, pr1compilarodores2.principal2.usua , nombre_tabla);
+         if(tabla != null && valor){
+             Nodo campos=new Nodo(""); 
+             campos=clonar(campos, tabla.getHijos().get(1));
+             Nodo datos = tabla.getHijos().get(0);
+             Nodo tb1 = new Nodo("tb1");
+             Nodo data = new Nodo("data");
+             data=eliminar_complementos(db,campos,data,nombre_tabla,""); //eliminar complementos para crear el arbol 
+             
+             for(Nodo row: datos.getHijos()){
+                 Nodo registro = new Nodo(" ");
+                 registro = clonar(registro,data);
+                 registro=llenar_data(registro, row);               
+                 tb1.addHijo(registro);  //Ya tengo los registros
+             }
+             instrucciones_Reporte_seleccion(paquete, tb1);
+         }else{
+             System.out.println("No tiene Permiso o la tabla no exite");
+         }
+     }else{//Tiene dos hijos
+         String nombre_tabla = listaTabla.getHijos().get(0).getNombre();
+         Nodo tabla = nodo_buscar_tabla(db,nombre_tabla);
+         boolean valor = accpaquete.tiene_permiso(usuarios, master, base, pr1compilarodores2.principal2.usua , nombre_tabla);
+         if(tabla != null && valor){
+             Nodo campos=new Nodo(""); 
+             campos=clonar(campos, tabla.getHijos().get(1));
+             Nodo datos = tabla.getHijos().get(0);
+             Nodo tb1 = new Nodo("tb1");
+             Nodo data = new Nodo("data");
+             String Ntabla=nombre_tabla+".";
+             data=eliminar_complementos(db,campos,data,nombre_tabla,Ntabla); //eliminar complementos para crear el arbol 
+             for(Nodo row: datos.getHijos()){
+                 Nodo registro = new Nodo(" ");
+                 registro = clonar(registro,data);
+                 registro=llenar_data(registro, row);               
+                 tb1.addHijo(registro);  //Ya tengo los registros de tabla 1
+             }
+             int v=0; boolean veri=true;
+             for(Nodo ntablas : listaTabla.getHijos()){
+                 if(v>0){
+                     nombre_tabla = listaTabla.getHijos().get(v).getNombre();
+                     tabla = nodo_buscar_tabla(db,nombre_tabla);
+                     valor = accpaquete.tiene_permiso(usuarios, master, base, pr1compilarodores2.principal2.usua , nombre_tabla);
+                     if(tabla != null && valor){ //Llenando la tabla 2
+                         Nodo campos2=new Nodo(""); 
+                         campos2=clonar(campos2, tabla.getHijos().get(1));
+                         Nodo datos2 = tabla.getHijos().get(0);
+                         Nodo tb2 = new Nodo("tb2");
+                         Nodo data2 = new Nodo("data");
+                         Ntabla=nombre_tabla+".";
+                         data2=eliminar_complementos(db,campos2,data2,nombre_tabla,Ntabla);
+                         for(Nodo row: datos2.getHijos()){
+                             Nodo registro = new Nodo(" ");
+                             registro = clonar(registro,data2);
+                             registro=llenar_data(registro, row);               
+                             tb2.addHijo(registro);  //Ya tengo los registros de tabla 1
+                         }
+                        tb1 = unir_tb1_tb2(tb1, tb2);
+                     }else{
+                         veri=false;
+                     }
+                 }
+                 ++v;
+             }
+             if(veri==true){
+                 instrucciones_Reporte_seleccion(paquete, tb1);
+             }else{
+                 System.out.println("Hubo algun error, tabla no exite o no tiene permiso");
+             }
+             
+             
+         }else{
+             System.out.println("No tiene permiso 0 no exite la tabla");
+         }
+     }
+}
+
+public static void instrucciones_Reporte_seleccion(Nodo paquete, Nodo tb1){
+    switch (paquete.getHijos().size()) {
+        case 2:
+            imprimir_reporte_seleccion(tb1);
+            break;
+        case 3:
+            {
+                Nodo hijo=paquete.getHijos().get(2);
+                if(hijo.getNombre().equalsIgnoreCase("ordenar")){
+                    Nodo orden = hijo.getHijos().get(0);
+                    tb1 = ordenar(tb1,orden);
+                    if(tb1!=null){//verificando que no haya ningun error
+                        if(hijo.getValor().equalsIgnoreCase("asc")){
+                            tb1 = Ordenar_asc(tb1);
+                            listaid_reporte_Seleccion(paquete, tb1);
+                        }else{//desc
+                            tb1 = Ordenar_desc(tb1);
+                            listaid_reporte_Seleccion(paquete, tb1);
+                        }
+                    }else{
+                        System.out.println("No exite el id de ordenamiento");
+                    }
+                }else{ //condicion
+                    tb1=condicionwhere(paquete, tb1);
+                    listaid_reporte_Seleccion(paquete, tb1);
+                }         break;
+            }
+        case 4:
+            {
+                tb1=condicionwhere(paquete, tb1); //ordenamos si es el caso
+                Nodo hijo=paquete.getHijos().get(3);
+                Nodo orden = hijo.getHijos().get(0);
+                tb1 = ordenar(tb1,orden);
+                if(tb1!=null){//verificando que no haya ningun error
+                    if(hijo.getValor().equalsIgnoreCase("asc")){
+                        tb1 = Ordenar_asc(tb1);
+                        listaid_reporte_Seleccion(paquete, tb1);
+                    }else{//desc
+                        tb1 = Ordenar_desc(tb1);
+                        listaid_reporte_Seleccion(paquete, tb1);
+                    }
+                }else{
+                    System.out.println("No exite el id de ordenamiento");
+                }     break;
+            }
+        default:
+            break;
+    }
+}
+
+public static void listaid_reporte_Seleccion(Nodo paquete, Nodo tb1){
+    Nodo listaid = paquete.getHijos().get(0);
+    if(listaid.getNombre().equalsIgnoreCase("*")){
+        imprimir_reporte_seleccion(tb1);
+    }else{
+        Nodo new_tb1 = new Nodo("tb1");
+        for(Nodo rec: tb1.getHijos()){
+            Nodo new_data = new Nodo("data");
+            for(Nodo data: rec.getHijos()){
+                for(Nodo id : listaid.getHijos()){
+                    if(id.getNombre().equalsIgnoreCase(data.getNombre())){
+                        new_data.addHijo(data);
+                    }
+                }
+            }
+            new_tb1.addHijo(new_data);
+        }
+        imprimir_reporte_seleccion(tb1);
+    }
+}
+
+public static void imprimir_reporte_seleccion(Nodo tb1){
+    String cadena = manejodetablas.reporte;
+    cadena = cadena + " <Table> \n";
+    
+    for(Nodo rec: tb1.getHijos()){
+        cadena = cadena + "<tr> \n";
+        for(Nodo data: rec.getHijos()){
+            cadena = cadena + "<th>"+ data.getNombre()+"</th> \n";
+        }
+        cadena = cadena + "</tr> \n";
+        break;
+    }
+    
+    for(Nodo rec: tb1.getHijos()){
+        cadena = cadena + "<tr> \n";
+        for(Nodo data: rec.getHijos()){
+            cadena = cadena + "<td>"+ data.getValor()+"</td> \n";
+        }
+        cadena = cadena + "</tr> \n";
+    }
+    cadena = cadena + " </Table>  \n";
+    System.out.println(""+cadena);
+    crearPaquete.pq_salidadatos(cadena);
+    crearPaquete.pq_mensaje(" ");
+}
+
+
 }
 

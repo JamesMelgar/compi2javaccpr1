@@ -7,6 +7,7 @@ package pr1compilarodores2;
 
 import gramatica_xml.graxml;
 import Acciones.tablasimbolos;
+import java.awt.Rectangle;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,6 +21,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.*;
 import java.net.*;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -34,16 +38,37 @@ public class principal2 extends javax.swing.JFrame {
     public static String usua;
     public static String db;
     public static String texfun;
-    public static String textopaquete;
+    public static String textopaquete = "";
     public static String ruta_master;
     public static String enviar;
     public static int port = 2018;
     public static Thread hilo = new clase_Socket("proceso 1"); 
     
+    public static String  Num_aleatorio;
+    public static String dj_ejecucion = "@# #@";
+    public static String dj_mensaje = "@# #@";
+    public static String dj_datos = "@# #@";
+    public static JTextArea tx_resultado;
+    JFrame frmprincipal;  
+    JTextArea txtarea;  
+    JScrollPane scroll; 
+    
     public principal2() {
         principal2.usua = "bolo";
         principal2.ruta_master = "C:\\Users\\James_PC\\Documents\\compi2javaccpr1\\DB";
         db = "db2";
+        
+        frmprincipal = new JFrame();      
+        frmprincipal.setSize(1000,700);  
+        frmprincipal.setTitle("Servidor de Base de Datos");
+        frmprincipal.setLayout(null);                   
+        principal2.tx_resultado = new javax.swing.JTextArea();
+        principal2.tx_resultado.setColumns(20);
+        principal2.tx_resultado.setRows(5);
+        scroll = new JScrollPane( principal2.tx_resultado);    
+        scroll.setBounds(new Rectangle(5,5,980,650));                                                    
+        frmprincipal.add(scroll);                   
+        frmprincipal.show(true); 
         
         principal2.hilo.start();
         initComponents();
@@ -70,7 +95,7 @@ public class principal2 extends javax.swing.JFrame {
 
         tx_entrada.setColumns(20);
         tx_entrada.setRows(5);
-        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\nejemplo();\n%,\n]");
+        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\nFECHA_HORA();\nFECHA();\n %,\n]");
         jScrollPane1.setViewportView(tx_entrada);
 
         jLabel1.setText("Entrada");
@@ -158,17 +183,37 @@ public class principal2 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Botongenerar)
-                    .addComponent(BtGraficar)
-                    .addComponent(jButton1)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(Botongenerar)
+                        .addComponent(BtGraficar))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    public static void iniciar(String mensaje){
+        String tep;
+        if( principal2.usuarios == null){
+            principal2.usuarios = CrearArbol.tryusuario(usuarios); }
+        if(principal2.master == null){
+            principal2.master = CrearArbol.trymaster(master); }
+        if(mensaje.equalsIgnoreCase("")==false){
+            principal2.paquete = CrearArbol.trypaquete(paquete, mensaje);
+            Acciones.accpaquete.tipopaquete(principal2.paquete, principal2.usuarios, principal2.master);
+            tx_resultado.setText(principal2.textopaquete);
+        }
+        
+    }
+    
+    public void cambiar(){
+        tx_salida.setText(principal2.textopaquete);
+    }
+    
     private void BotongenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotongenerarActionPerformed
         String tep;
         if(  principal2.usuarios == null){
@@ -180,9 +225,9 @@ public class principal2 extends javax.swing.JFrame {
         tep = tx_entrada.getText();
         if(tep.equals("a") == false){
 //             System.out.println(tx_entrada.getText());
-             principal2.paquete = CrearArbol.trypaquete(paquete, tep);
-             Acciones.accpaquete.tipopaquete(principal2.paquete, principal2.usuarios, principal2.master);
-             tx_salida.setText(principal2.textopaquete);
+               principal2.paquete = CrearArbol.trypaquete(paquete, tep);
+               Acciones.accpaquete.tipopaquete(principal2.paquete, principal2.usuarios, principal2.master);
+            // tx_salida.setText(principal2.textopaquete);
          }
     }//GEN-LAST:event_BotongenerarActionPerformed
 
@@ -204,8 +249,10 @@ public class principal2 extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         principal2.enviar = "mundo feliz";
+        principal2.tx_resultado.setText("Hola Mundo");
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    
     /**
      * @param args the command line arguments
      */

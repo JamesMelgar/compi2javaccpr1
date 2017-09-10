@@ -126,9 +126,13 @@ raiz.addHijo(nodo1);
       }
     case Reporte:{
       jj_consume_token(Reporte);
+Nodo tmp = new Nodo("reporte");
+               tmp.setNumNodo(grapq.contador++);
+               nodo1 = tmp;
       jj_consume_token(Cm);
-      reporte();
-{if ("" != null) return raiz;}
+      nodo1 = reporte(nodo1);
+raiz.addHijo(nodo1);
+                                      {if ("" != null) return raiz;}
       break;
       }
     default:
@@ -194,11 +198,17 @@ nodo1 = hijo;
     throw new Error("Missing return statement in function");
   }
 
-  final public void reporte() throws ParseException {
+  final public Nodo reporte(Nodo hijo) throws ParseException {Token t1;
+    Nodo nodo1;
     jj_consume_token(Instruccion);
     jj_consume_token(Pp);
-    jj_consume_token(Sql);
+    t1 = jj_consume_token(Sql);
+nodo1 = hijo;
+                      pr1compilarodores2.principal2.texfun = t1.image;
+                      hijo = pr1compilarodores2.CrearArbol.Analisiusuql(nodo1, t1.image);
     jj_consume_token(Cm);
+{if ("" != null) return hijo;}
+    throw new Error("Missing return statement in function");
   }
 
   /** Generated Token Manager. */

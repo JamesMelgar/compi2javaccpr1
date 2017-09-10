@@ -43,16 +43,53 @@ public class clase_Socket extends Thread{
             }
 
             System.out.println("Cliente dice: " + recibido);
-            System.out.println("Enviar a cliente: >>>" + principal2.enviar);
-
-            outw.write(principal2.enviar.toCharArray());
-            outw.flush();
+            if(recibido.length()<4){
+                outw.write("".toCharArray());
+                outw.flush();
+            }else{
+                principal2.iniciar(recibido);
+                if(principal2.textopaquete.equalsIgnoreCase("")==false){
+                    System.out.println("Enviar a cliente: >>>" + principal2.textopaquete);
+                    outw.write(principal2.textopaquete.toCharArray());
+                    outw.flush();
+                    principal2.textopaquete = "";
+                }else{
+                    String pq_datos = Acciones.crearPaquete.enviar_pqSalidaDatos();
+                    String pq_ejc = Acciones.crearPaquete.enviar_pqejecucion();
+                    String pq_men =Acciones.crearPaquete.enviar_pqMensaje();
+                    System.out.println("Enviar a cliente: >>>" + pq_datos);
+                    Thread.sleep(500);
+                    outw.write(pq_datos.toCharArray());
+                    outw.flush();
+                    Thread.sleep(500);
+                    outw.write(pq_ejc.toCharArray());
+                    outw.flush();
+                    Thread.sleep(500);
+                    System.out.println("pr1compilarodores2.clase_Socket.run()"+pq_men);
+                    outw.write(pq_men.toCharArray());
+                    outw.flush();
+                    String texto ;
+                    texto = principal2.dj_mensaje;
+                    int pos = texto.length()-2;
+                    texto = texto.substring(2, pos);
+                    principal2.tx_resultado.setText(texto);
+                    
+                    principal2.dj_ejecucion = "@# #@";
+                    principal2.dj_mensaje = "@# #@";
+                    principal2.dj_datos = "@# #@";
+                }
+                
+                
+            }
+            
             recibido = "";
 
             cbuf = new char[512];
             server.close();
             
             } catch (IOException ex) {
+                Logger.getLogger(clase_Socket.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
                 Logger.getLogger(clase_Socket.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

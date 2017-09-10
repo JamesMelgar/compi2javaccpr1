@@ -1,6 +1,8 @@
 
 package Acciones;
 
+
+import java.util.Date;
 import pr1compilarodores2.Nodo;
 
 
@@ -36,4 +38,72 @@ public class crearPaquete {
         }
         pr1compilarodores2.principal2.textopaquete = cadena;    
     }
+    
+    public static void pq_salidadatos(String Mensaje){
+        String palabra = pr1compilarodores2.principal2.dj_datos;
+        int pos = palabra.length()-2;
+        palabra = palabra.substring(0, pos);
+         pr1compilarodores2.principal2.dj_datos = palabra + " >> " + Mensaje + " \n #@";
+    }
+    
+    public static void pq_ejecucion(String Mensaje){
+        String palabra = pr1compilarodores2.principal2.dj_ejecucion;
+        int pos = palabra.length()-2;
+        palabra = palabra.substring(0, pos);
+        pr1compilarodores2.principal2.dj_ejecucion = palabra + " >> "+Mensaje + " \n #@";
+    }
+    
+    public static void pq_mensaje(String Mensaje){
+        String palabra = pr1compilarodores2.principal2.dj_mensaje;
+        int pos = palabra.length()-2;
+        palabra = palabra.substring(0, pos);
+        java.util.Date fecha = new Date();
+        Mensaje = fecha + " " + pr1compilarodores2.principal2.usua + " "+ Mensaje; 
+        pr1compilarodores2.principal2.dj_mensaje = palabra + " >> " + Mensaje + " \n #@";
+    }
+    //    [
+//	"validar": 1500,
+//	"paquete": "Salida_datos",
+//	"Mensaje": [ 
+//	@# >>Primer mensaje 
+//>>segundo mensaje
+//>>tercer Mensaje @#
+//	]	
+//] 
+    
+    public static String enviar_pqSalidaDatos(){
+        String cadena;
+        cadena = "[ \n \"validar\": ";
+        cadena = cadena + pr1compilarodores2.principal2.Num_aleatorio + ", \n";
+        cadena = cadena + " \"paquete\": \"datos\" , \n";
+        cadena = cadena + " \"mensaje\": [ \n";
+        cadena = cadena + pr1compilarodores2.principal2.dj_datos + " ] \n";
+        cadena = cadena + "]";
+        return cadena;
+    }
+    
+     public static String enviar_pqejecucion(){
+        String cadena;
+        cadena = "[ \n \"validar\": ";
+        cadena = cadena + pr1compilarodores2.principal2.Num_aleatorio + ", \n";
+        cadena = cadena + " \"paquete\": \"exec\" , \n";
+        cadena = cadena + " \"mensaje\": [ \n";
+        cadena = cadena + pr1compilarodores2.principal2.dj_ejecucion + " ] \n";
+        cadena = cadena + "]";
+        return cadena;
+    }
+     
+      public static String enviar_pqMensaje(){
+        String cadena;
+        cadena = "[ \n \"validar\": ";
+        cadena = cadena + pr1compilarodores2.principal2.Num_aleatorio + ", \n";
+        cadena = cadena + " \"paquete\": \"Mensajes\" , \n";
+        cadena = cadena + " \"mensaje\": [ \n";
+        cadena = cadena + pr1compilarodores2.principal2.dj_mensaje + " ] \n";
+        cadena = cadena + "]";
+        return cadena;
+    }
+    
+
 }
+//////////

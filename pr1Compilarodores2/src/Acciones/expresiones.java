@@ -11,10 +11,15 @@ import static Acciones.accpaquete.verificar_parametros_tipos;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import pr1compilarodores2.Nodo;
 import static pr1compilarodores2.principal2.paquete;
 
@@ -25,7 +30,8 @@ public class expresiones {
     
 public static Nodo expresiones(Nodo raiz){
         String cadena;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         Nodo nodo1, nodo2;
         int n1, n2,n3;
         double d1, d2,d3;
@@ -655,6 +661,24 @@ public static Nodo expresiones(Nodo raiz){
                    if(izq.getTipo().equalsIgnoreCase("error")){
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
+                   }else if(izq.getTipo().equalsIgnoreCase("date")){
+                       try {
+                           String dt1;
+                           String dt2;
+                           dt1 = c1.replace("'", "");
+                           dt2 = c2.replace("'", "");
+                           Date date1 = sdf.parse(dt1);
+                           Date date2 = sdf.parse(dt2);
+                           if(date1.compareTo(date2)==0){
+                               nodo1=crear_nodo("1","","bool");
+                               return nodo1; 
+                            }else{
+                               nodo1=crear_nodo("0","","bool");
+                               return nodo1;
+                            }
+                       } catch (ParseException ex) {
+                           Logger.getLogger(expresiones.class.getName()).log(Level.SEVERE, null, ex);
+                       }  
                    }else{
                        if(c1.equalsIgnoreCase(c2)){
                             nodo1=crear_nodo("1","","bool");
@@ -685,6 +709,24 @@ public static Nodo expresiones(Nodo raiz){
                           return nodo1;
                        }
                     }
+               }else if(izq.getTipo().equalsIgnoreCase("date")){
+                       try {
+                           String dt1;
+                           String dt2;
+                           dt1 = c1.replace("'", "");
+                           dt2 = c2.replace("'", "");
+                           Date date1 = sdf.parse(dt1);
+                           Date date2 = sdf.parse(dt2);
+                           if(date1.compareTo(date2)==0){
+                               nodo1=crear_nodo("0","","bool");
+                               return nodo1; 
+                            }else{
+                               nodo1=crear_nodo("1","","bool");
+                               return nodo1;
+                            }
+                       } catch (ParseException ex) {
+                           Logger.getLogger(expresiones.class.getName()).log(Level.SEVERE, null, ex);
+                       } 
                }else{
                    nodo1=crear_nodo("error","","error");
                    return nodo1;
@@ -734,34 +776,50 @@ public static Nodo expresiones(Nodo raiz){
                    }
                }else if(izq.getTipo().equalsIgnoreCase("datatime")){
                    if(der.getTipo().equalsIgnoreCase("datatime")){
-                       String cad[] = cortarCadenaPorcomilla(izq.getNombre());
-                       String cad2[] = cortarCadenaPorcomilla(der.getNombre());
-                       c1=cad[1];
-                       c2=cad2[1];
-                       if (c1.compareTo(c2) > 0){
-                           nodo1=crear_nodo("1","","bool");
-                           return nodo1;
-                       }else{
-                           nodo1=crear_nodo("0","","bool");
-                           return nodo1;
-                       }
+                       c1=izq.getNombre();
+                       c2=der.getNombre();
+                       try {
+                           String dt1;
+                           String dt2;
+                           dt1 = c1.replace("'", "");
+                           dt2 = c2.replace("'", "");
+                           Date date1 = sdf2.parse(dt1);
+                           Date date2 = sdf2.parse(dt2);
+                           if(date1.after(date2)==true){
+                               nodo1=crear_nodo("1","","bool");
+                               return nodo1; 
+                            }else{
+                               nodo1=crear_nodo("0","","bool");
+                               return nodo1;
+                            }
+                       } catch (ParseException ex) {
+                           Logger.getLogger(expresiones.class.getName()).log(Level.SEVERE, null, ex);
+                       } 
                    }else{
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
                    }
                }else if(izq.getTipo().equalsIgnoreCase("date")){
                    if( der.getTipo().equalsIgnoreCase("date")){
-                       String cad[] = cortarCadenaPorcomilla(izq.getNombre());
-                       String cad2[] = cortarCadenaPorcomilla(der.getNombre());
-                       c1=cad[1];
-                       c2=cad2[1];
-                       if (c1.compareTo(c2) > 0){
-                           nodo1=crear_nodo("1","","bool");
-                           return nodo1;
-                       }else{
-                           nodo1=crear_nodo("0","","bool");
-                           return nodo1;
-                       }
+                       c1=izq.getNombre();
+                       c2=der.getNombre();
+                       try {
+                           String dt1;
+                           String dt2;
+                           dt1 = c1.replace("'", "");
+                           dt2 = c2.replace("'", "");
+                           Date date1 = sdf.parse(dt1);
+                           Date date2 = sdf.parse(dt2);
+                           if(date1.after(date2)==true){
+                               nodo1=crear_nodo("1","","bool");
+                               return nodo1; 
+                            }else{
+                               nodo1=crear_nodo("0","","bool");
+                               return nodo1;
+                            }
+                       } catch (ParseException ex) {
+                           Logger.getLogger(expresiones.class.getName()).log(Level.SEVERE, null, ex);
+                       } 
                    }else{
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
@@ -815,34 +873,50 @@ public static Nodo expresiones(Nodo raiz){
                    }
                }else if(izq.getTipo().equalsIgnoreCase("datatime")){
                    if(der.getTipo().equalsIgnoreCase("datatime")){
-                       String cad[] = cortarCadenaPorcomilla(izq.getNombre());
-                       String cad2[] = cortarCadenaPorcomilla(der.getNombre());
-                       c1=cad[1];
-                       c2=cad2[1];
-                       if (c1.compareTo(c2) < 0){
-                           nodo1=crear_nodo("1","","bool");
-                           return nodo1;
-                       }else{
-                           nodo1=crear_nodo("0","","bool");
-                           return nodo1;
-                       }
+                      c1=izq.getNombre();
+                       c2=der.getNombre();
+                       try {
+                           String dt1;
+                           String dt2;
+                           dt1 = c1.replace("'", "");
+                           dt2 = c2.replace("'", "");
+                           Date date1 = sdf2.parse(dt1);
+                           Date date2 = sdf2.parse(dt2);
+                           if(date1.before(date2)==true){
+                               nodo1=crear_nodo("1","","bool");
+                               return nodo1; 
+                            }else{
+                               nodo1=crear_nodo("0","","bool");
+                               return nodo1;
+                            }
+                       } catch (ParseException ex) {
+                           Logger.getLogger(expresiones.class.getName()).log(Level.SEVERE, null, ex);
+                       } 
                    }else{
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
                    }
                }else if(izq.getTipo().equalsIgnoreCase("date")){
                    if( der.getTipo().equalsIgnoreCase("date")){
-                       String cad[] = cortarCadenaPorcomilla(izq.getNombre());
-                       String cad2[] = cortarCadenaPorcomilla(der.getNombre());
-                       c1=cad[1];
-                       c2=cad2[1];
-                       if (c1.compareTo(c2) < 0){
-                           nodo1=crear_nodo("1","","bool");
-                           return nodo1;
-                       }else{
-                           nodo1=crear_nodo("0","","bool");
-                           return nodo1;
-                       }
+                       c1=izq.getNombre();
+                       c2=der.getNombre();
+                       try {
+                           String dt1;
+                           String dt2;
+                           dt1 = c1.replace("'", "");
+                           dt2 = c2.replace("'", "");
+                           Date date1 = sdf.parse(dt1);
+                           Date date2 = sdf.parse(dt2);
+                           if(date1.before(date2)==true){
+                               nodo1=crear_nodo("1","","bool");
+                               return nodo1; 
+                            }else{
+                               nodo1=crear_nodo("0","","bool");
+                               return nodo1;
+                            }
+                       } catch (ParseException ex) {
+                           Logger.getLogger(expresiones.class.getName()).log(Level.SEVERE, null, ex);
+                       } 
                    }else{
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
@@ -896,34 +970,50 @@ public static Nodo expresiones(Nodo raiz){
                    }
                }else if(izq.getTipo().equalsIgnoreCase("datatime")){
                    if(der.getTipo().equalsIgnoreCase("datatime")){
-                       String cad[] = cortarCadenaPorcomilla(izq.getNombre());
-                       String cad2[] = cortarCadenaPorcomilla(der.getNombre());
-                       c1=cad[1];
-                       c2=cad2[1];
-                       if (c1.compareTo(c2) <= 0){
-                           nodo1=crear_nodo("1","","bool");
-                           return nodo1;
-                       }else{
-                           nodo1=crear_nodo("0","","bool");
-                           return nodo1;
-                       }
+                       c1=izq.getNombre();
+                       c2=der.getNombre();
+                       try {
+                           String dt1;
+                           String dt2;
+                           dt1 = c1.replace("'", "");
+                           dt2 = c2.replace("'", "");
+                           Date date1 = sdf2.parse(dt1);
+                           Date date2 = sdf2.parse(dt2);
+                           if(date1.after(date2)==true || date1.equals(date2)==true){
+                               nodo1=crear_nodo("1","","bool");
+                               return nodo1; 
+                            }else{
+                               nodo1=crear_nodo("0","","bool");
+                               return nodo1;
+                            }
+                       } catch (ParseException ex) {
+                           Logger.getLogger(expresiones.class.getName()).log(Level.SEVERE, null, ex);
+                       } 
                    }else{
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
                    }
                }else if(izq.getTipo().equalsIgnoreCase("date")){
                    if( der.getTipo().equalsIgnoreCase("date")){
-                       String cad[] = cortarCadenaPorcomilla(izq.getNombre());
-                       String cad2[] = cortarCadenaPorcomilla(der.getNombre());
-                       c1=cad[1];
-                       c2=cad2[1];
-                       if (c1.compareTo(c2) <= 0){
-                           nodo1=crear_nodo("1","","bool");
-                           return nodo1;
-                       }else{
-                           nodo1=crear_nodo("0","","bool");
-                           return nodo1;
-                       }
+                      c1=izq.getNombre();
+                       c2=der.getNombre();
+                       try {
+                           String dt1;
+                           String dt2;
+                           dt1 = c1.replace("'", "");
+                           dt2 = c2.replace("'", "");
+                           Date date1 = sdf.parse(dt1);
+                           Date date2 = sdf.parse(dt2);
+                           if(date1.after(date2)==true || date1.equals(date2)==true){
+                               nodo1=crear_nodo("1","","bool");
+                               return nodo1; 
+                            }else{
+                               nodo1=crear_nodo("0","","bool");
+                               return nodo1;
+                            }
+                       } catch (ParseException ex) {
+                           Logger.getLogger(expresiones.class.getName()).log(Level.SEVERE, null, ex);
+                       } 
                    }else{
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
@@ -977,34 +1067,50 @@ public static Nodo expresiones(Nodo raiz){
                    }
                }else if(izq.getTipo().equalsIgnoreCase("datatime")){
                    if(der.getTipo().equalsIgnoreCase("datatime")){
-                       String cad[] = cortarCadenaPorcomilla(izq.getNombre());
-                       String cad2[] = cortarCadenaPorcomilla(der.getNombre());
-                       c1=cad[1];
-                       c2=cad2[1];
-                       if (c1.compareTo(c2) >= 0){
-                           nodo1=crear_nodo("1","","bool");
-                           return nodo1;
-                       }else{
-                           nodo1=crear_nodo("0","","bool");
-                           return nodo1;
-                       }
+                       c1=izq.getNombre();
+                       c2=der.getNombre();
+                       try {
+                           String dt1;
+                           String dt2;
+                           dt1 = c1.replace("'", "");
+                           dt2 = c2.replace("'", "");
+                           Date date1 = sdf2.parse(dt1);
+                           Date date2 = sdf2.parse(dt2);
+                           if(date1.before(date2)==true || date1.equals(date2)==true){
+                               nodo1=crear_nodo("1","","bool");
+                               return nodo1; 
+                            }else{
+                               nodo1=crear_nodo("0","","bool");
+                               return nodo1;
+                            }
+                       } catch (ParseException ex) {
+                           Logger.getLogger(expresiones.class.getName()).log(Level.SEVERE, null, ex);
+                       } 
                    }else{
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
                    }
                }else if(izq.getTipo().equalsIgnoreCase("date")){
                    if( der.getTipo().equalsIgnoreCase("date")){
-                       String cad[] = cortarCadenaPorcomilla(izq.getNombre());
-                       String cad2[] = cortarCadenaPorcomilla(der.getNombre());
-                       c1=cad[1];
-                       c2=cad2[1];
-                       if (c1.compareTo(c2) >= 0){
-                           nodo1=crear_nodo("1","","bool");
-                           return nodo1;
-                       }else{
-                           nodo1=crear_nodo("0","","bool");
-                           return nodo1;
-                       }
+                       c1=izq.getNombre();
+                       c2=der.getNombre();
+                       try {
+                           String dt1;
+                           String dt2;
+                           dt1 = c1.replace("'", "");
+                           dt2 = c2.replace("'", "");
+                           Date date1 = sdf.parse(dt1);
+                           Date date2 = sdf.parse(dt2);
+                           if(date1.before(date2)==true || date1.equals(date2)==true){
+                               nodo1=crear_nodo("1","","bool");
+                               return nodo1; 
+                            }else{
+                               nodo1=crear_nodo("0","","bool");
+                               return nodo1;
+                            }
+                       } catch (ParseException ex) {
+                           Logger.getLogger(expresiones.class.getName()).log(Level.SEVERE, null, ex);
+                       } 
                    }else{
                        nodo1=crear_nodo("error","","error");
                        return nodo1;

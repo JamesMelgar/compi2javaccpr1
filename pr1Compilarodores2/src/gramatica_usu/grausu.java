@@ -41,7 +41,11 @@ Nodo inicio(Nodo raiz) throws ParseException {
     case Seleccionar:
     case Otorgar:
     case Denegar:
+    case Backup:
+    case Restaurar:
     case Imprimir:
+    case Fecha:
+    case FechaH:
     case Contar:
     case Id:
     case Simbolo:{
@@ -146,6 +150,40 @@ raiz.addHijo(nodo1);
     case Imprimir:{
       jj_consume_token(Imprimir);
       raiz = imprimir(raiz);
+      raiz = instrucciones(raiz);
+{if ("" != null) return raiz;}
+      break;
+      }
+    case Backup:{
+      jj_consume_token(Backup);
+      raiz = backup(raiz);
+      raiz = instrucciones(raiz);
+{if ("" != null) return raiz;}
+      break;
+      }
+    case Restaurar:{
+      jj_consume_token(Restaurar);
+      raiz = restaurar(raiz);
+      raiz = instrucciones(raiz);
+{if ("" != null) return raiz;}
+      break;
+      }
+    case Fecha:{
+      jj_consume_token(Fecha);
+Nodo tmp = new Nodo("Fecha");
+                tmp.setNumNodo(grausu.contador++);
+                raiz.addHijo(tmp);
+      pt();
+      raiz = instrucciones(raiz);
+{if ("" != null) return raiz;}
+      break;
+      }
+    case FechaH:{
+      jj_consume_token(FechaH);
+Nodo tmp = new Nodo("FechaH");
+                tmp.setNumNodo(grausu.contador++);
+                raiz.addHijo(tmp);
+      pt();
       raiz = instrucciones(raiz);
 {if ("" != null) return raiz;}
       break;
@@ -747,6 +785,27 @@ padre.addHijo(nodo1);
     case Imprimir:{
       jj_consume_token(Imprimir);
       padre = imprimir(padre);
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
+      break;
+      }
+    case Fecha:{
+      jj_consume_token(Fecha);
+Nodo tmp = new Nodo("Fecha");
+                tmp.setNumNodo(grausu.contador++);
+                padre.addHijo(tmp);
+      pt();
+      padre = proceconte(padre);
+{if ("" != null) return padre;}
+      break;
+      }
+    case FechaH:{
+      jj_consume_token(FechaH);
+Nodo tmp = new Nodo("FechaH");
+                tmp.setNumNodo(grausu.contador++);
+                padre.addHijo(tmp);
+                {if ("" != null) return padre;}
+      pt();
       padre = proceconte(padre);
 {if ("" != null) return padre;}
       break;
@@ -2471,7 +2530,7 @@ Nodo tmp = new Nodo("caso");
 Nodo tmp = new Nodo("caso");
                  tmp.setNumNodo(grausu.contador++);
                  tmp.setValor(t1.image);
-                 tmp.setTipo("num");
+                 tmp.setTipo("int");
                  tmp.setColumna(t1.beginColumn);
                  tmp.setFila(t1.beginLine);
                  {if ("" != null) return tmp;}
@@ -2672,58 +2731,6 @@ Nodo tmp = new Nodo("contar");
     try { return !jj_3_2(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(1, xla); }
-  }
-
-  private boolean jj_3R_45()
- {
-    if (jj_scan_token(Aid)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_19()
- {
-    if (jj_3R_21()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3R_22()) { jj_scanpos = xsp; break; }
-    }
-    return false;
-  }
-
-  private boolean jj_3R_44()
- {
-    if (jj_scan_token(Tid)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_20()
- {
-    if (jj_scan_token(Or)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_43()
- {
-    if (jj_scan_token(Idp)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_42()
- {
-    if (jj_scan_token(Texto)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_17()
- {
-    if (jj_3R_19()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3R_20()) { jj_scanpos = xsp; break; }
-    }
-    return false;
   }
 
   private boolean jj_3R_41()
@@ -3137,6 +3144,58 @@ Nodo tmp = new Nodo("contar");
     return false;
   }
 
+  private boolean jj_3R_45()
+ {
+    if (jj_scan_token(Aid)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_19()
+ {
+    if (jj_3R_21()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3R_22()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  private boolean jj_3R_44()
+ {
+    if (jj_scan_token(Tid)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_20()
+ {
+    if (jj_scan_token(Or)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_43()
+ {
+    if (jj_scan_token(Idp)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_42()
+ {
+    if (jj_scan_token(Texto)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_17()
+ {
+    if (jj_3R_19()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3R_20()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
   /** Generated Token Manager. */
   public grausuTokenManager token_source;
   SimpleCharStream jj_input_stream;
@@ -3160,10 +3219,10 @@ Nodo tmp = new Nodo("contar");
       jj_la1_init_3();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x3ff000,0x3ff000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x1cfff000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x3000000,0x3000000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x80000000,0x0,0x60000000,0x0,};
+      jj_la1_0 = new int[] {0x4bff000,0x4bff000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x1cfff000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x3000000,0x3000000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x80000000,0x0,0x60000000,0x0,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x48,0x48,0x3e80,0xf8000000,0x0,0x0,0xf8000000,0xf8000000,0x0,0x20004f,0x0,0x0,0x0,0x3200,0x30000,0x0,0x30000,0x3e80,0x0,0x0,0x0,0x0,0x0,0x400000,0x400000,0x0,0x0,0x0,0x400000,0x4000000,0x0,0x1800000,0x70,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x70,0x0,0x70,0x0,0x0,0x0,0x0,0x0,0x0,};
+      jj_la1_1 = new int[] {0x78,0x78,0x3e80,0xf8000000,0x0,0x0,0xf8000000,0xf8000000,0x0,0x20007f,0x0,0x0,0x0,0x3200,0x30000,0x0,0x30000,0x3e80,0x0,0x0,0x0,0x0,0x0,0x400000,0x400000,0x0,0x0,0x0,0x400000,0x4000000,0x0,0x1800000,0x70,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x70,0x0,0x70,0x0,0x0,0x0,0x0,0x0,0x0,};
    }
    private static void jj_la1_init_2() {
       jj_la1_2 = new int[] {0x80,0x80,0x0,0x81,0x0,0x7e,0x81,0x81,0x0,0xc80,0xc00,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x1f0d80,0x0,0x0,0x0,0x0,0x1000380,0x380,0x0,0x0,0x0,0x380,0x0,0x5f1f80,0x0,0x0,0xfc000000,0xfc000000,0x600000,0x600000,0x1800000,0x1800000,0x2000000,0x5f1f80,0x0,0x5f1f80,0x0,0x180,0x0,0x30000,0x0,0x600000,};

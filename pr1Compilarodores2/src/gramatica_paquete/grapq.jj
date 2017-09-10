@@ -192,7 +192,11 @@ Nodo tipopaquete(Nodo raiz):
       <Cm> nodo1=usql(nodo1) {  raiz.addHijo(nodo1);
                                       return raiz; }
 
-    | <Reporte> <Cm> reporte() { return raiz; }
+    | <Reporte> { Nodo tmp = new Nodo("reporte");
+               tmp.setNumNodo(grapq.contador++);
+               nodo1 = tmp; }
+      <Cm> nodo1=reporte(nodo1) {  raiz.addHijo(nodo1);
+                                      return raiz; }
 }
 
 void error():
@@ -232,10 +236,18 @@ Nodo usql(Nodo hijo):
      <Cm> { return hijo; }
 } 
 
-void reporte():
-{}
+
+Nodo reporte(Nodo hijo):
 {
-    <Instruccion> <Pp> <Sql> <Cm>
+    Token t1;
+    Nodo nodo1;
+}
+{
+    <Instruccion> <Pp> t1=<Sql> { nodo1 = hijo;
+                      pr1compilarodores2.principal2.texfun = t1.image;
+                      hijo = pr1compilarodores2.CrearArbol.Analisiusuql(nodo1, t1.image); 
+    }
+     <Cm> { return hijo; }
 }
 
 

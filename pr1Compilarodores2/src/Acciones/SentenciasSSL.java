@@ -10,9 +10,10 @@ import pr1compilarodores2.Recorrer;
 
 public class SentenciasSSL extends manejodetablas{
     
-    public static void Sentencia_mientras(Nodo usuarios,Nodo master, Nodo paquete){
+    public static Nodo Sentencia_mientras(Nodo usuarios,Nodo master, Nodo paquete){
         int ambito;
         int display;
+        Nodo vacio = new Nodo("");
         tablasimbolos tb = expresiones.pila.peek();
         Nodo condicion = new Nodo("");
         Nodo instrucc = new Nodo("");
@@ -30,12 +31,15 @@ public class SentenciasSSL extends manejodetablas{
                 if(seguir.getNombre().equalsIgnoreCase("detener")){
                     salir=1;
                     break;
+                }else if(seguir.getObj().equalsIgnoreCase("retorno")){
+                     return seguir;
                 }
             }
             Sacar_ambito();
             nodo8 = expresiones.expresiones(condicion);
         }
         display = tb.getDisplay()-1;  tb.setDisplay(display);        
+        return vacio;
     }
     
     public static Nodo Sentencia_Si(Nodo usuarios,Nodo master, Nodo paquete){
@@ -57,9 +61,11 @@ public class SentenciasSSL extends manejodetablas{
                             Sacar_ambito();
                             return nuevo;
                         }else{
-                            System.out.println("Este detener no esta dentro de un if o un break");
+                            crearPaquete.pq_mensaje("Error se encontro detener dentro de un if");
                         }
                         break;
+                    }else if(seguir.getObj().equalsIgnoreCase("retorno")){
+                             return seguir;
                     }
                 }
         }else{
@@ -76,6 +82,8 @@ public class SentenciasSSL extends manejodetablas{
                             System.out.println("Este detener no esta dentro de un if o un break");
                         }
                         break;
+                    }else if(seguir.getObj().equalsIgnoreCase("retorno")){
+                             return seguir;
                     }
                 }
             }
@@ -96,6 +104,73 @@ public class SentenciasSSL extends manejodetablas{
              }
         }
         ambito=tb.getAmbito()-1;   tb.setAmbito(ambito);
+    }
+    
+    public static Nodo sentencia_switch(Nodo usuarios,Nodo master, Nodo paquete){
+        int ambito;
+        int display;
+        Nodo vacio = new Nodo("");
+        tablasimbolos tb = expresiones.pila.peek(); //revisa tabla de simbolo
+        Nodo condicion = new Nodo("");
+        Nodo casos = new Nodo("");
+        int seguir=0;
+        condicion = clonar(condicion, paquete.getHijos().get(0));
+        casos =  clonar(casos, paquete.getHijos().get(1));
+        Nodo nodo8 = expresiones.expresiones(condicion); //nombre: valor tipo: tipo
+        imprimir_nodo(nodo8, "reporte");
+        display = tb.getDisplay()+1;  tb.setDisplay(display);
+        for(Nodo Ucaso : casos.getHijos()){
+            if(seguir==0){
+               if(Ucaso.getNombre().equalsIgnoreCase("caso")){
+                   if(nodo8.getTipo().equalsIgnoreCase(Ucaso.getTipo())){
+                       if(nodo8.getNombre().equalsIgnoreCase(Ucaso.getValor())){
+                           seguir=1;
+                           ambito=tb.getAmbito()+1;   tb.setAmbito(ambito);  //agrego un numero mas al ambito
+                            for(Nodo recorre : Ucaso.getHijos()){  //recorro las sentencias
+                                Nodo seguiendo = intrucciones_ssl(usuarios, master, recorre); //el nodo que devuelve
+                                if(seguiendo.getNombre().equalsIgnoreCase("detener")){
+                                    seguir=2; //para que ya no siga haciendo nada en el switch
+                                    break;
+                                }else if(seguiendo.getObj().equalsIgnoreCase("retorno")){
+                                    return seguiendo;
+                                }
+                            }
+                            Sacar_ambito();
+                       }
+                   }else{
+                       crearPaquete.pq_ejecucion("Se encontro error de tipo en switch pero se siguio la ejecucion");
+                   }
+               }else if(Ucaso.getNombre().equalsIgnoreCase("defecto")){
+                    ambito=tb.getAmbito()+1;   tb.setAmbito(ambito);
+                   for(Nodo recorre : Ucaso.getHijos()){  //recorro las sentencias
+                                Nodo seguiendo = intrucciones_ssl(usuarios, master, recorre); //el nodo que devuelve
+                                if(seguiendo.getNombre().equalsIgnoreCase("detener")){
+                                    seguir=2; //para que ya no siga haciendo nada en el switch
+                                    break;
+                                }else if(seguiendo.getObj().equalsIgnoreCase("retorno")){
+                                    return seguiendo;
+                                }
+                            }
+                            Sacar_ambito();
+               }
+            }else if(seguir==1){
+               if(Ucaso.getNombre().equalsIgnoreCase("caso")){ //verifico que se un caso
+                ambito=tb.getAmbito()+1;   tb.setAmbito(ambito);  //agrego un numero mas al ambito
+                for(Nodo recorre : Ucaso.getHijos()){  //recorro las sentencias
+                    Nodo seguiendo = intrucciones_ssl(usuarios, master, recorre); //el nodo que devuelve
+                    if(seguiendo.getNombre().equalsIgnoreCase("detener")){
+                        seguir=2; //para que ya no siga haciendo nada en el switch
+                        break;
+                    }else if(seguiendo.getObj().equalsIgnoreCase("retorno")){
+                         return seguiendo;
+                    }
+                }
+                Sacar_ambito();
+               }
+            }
+        }
+        display = tb.getDisplay()-1;  tb.setDisplay(display); 
+        return vacio;
     }
     
     public static Nodo intrucciones_ssl(Nodo usuario,Nodo master, Nodo arbol){
@@ -132,19 +207,31 @@ public class SentenciasSSL extends manejodetablas{
         }else if(arbol.getNombre().equalsIgnoreCase("asignar") == true){
             sentencia_asignar(usuario, master, temp);
         }else if(arbol.getNombre().equalsIgnoreCase("retorno") == true){
-            Nodo nodo2 = sentencia_Retorno(usuario, master, temp);   
+            Nodo nodo2 = sentencia_Retorno(usuario, master, temp);  
             imprimir_nodo(nodo2, "texto****");
+            nodo2.setObj("retorno");
             return nodo2;
         }else if(arbol.getNombre().equalsIgnoreCase("actualizar cond")){
             manejodetablas.Sentencia_Actualizar_cond(usuario, master, temp);
         }else if(arbol.getNombre().equalsIgnoreCase("seleccionar")){
             manejodetablas.Sentencia_seleccionar(usuario, master, temp);
-        }else if(arbol.getNombre().equalsIgnoreCase("Mientras")){
-            Sentencia_mientras(usuario, master, temp);
         }else if(arbol.getNombre().equalsIgnoreCase("detener")){
             nuevo.setNombre("detener");
         }else if(arbol.getNombre().equalsIgnoreCase("fun_si")){
             nuevo=Sentencia_Si(usuario,master, temp);
+            if(nuevo.getObj().equalsIgnoreCase("retorno")){
+                    return nuevo;
+            }
+        }else if (arbol.getNombre().equalsIgnoreCase("switch")){
+                Nodo nodo2 = SentenciasSSL.sentencia_switch(usuario, master, temp);
+                if(nodo2.getObj().equalsIgnoreCase("retorno")){
+                    return nodo2;
+                }
+        }else if(arbol.getNombre().equalsIgnoreCase("mientras")){
+                Nodo nodo2 = SentenciasSSL.Sentencia_mientras(usuario, master, temp);
+                if(nodo2.getObj().equalsIgnoreCase("retorno")){
+                   return nodo2;
+                }
         }else{
           
         }

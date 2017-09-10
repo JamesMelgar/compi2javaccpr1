@@ -245,6 +245,14 @@ Nodo instrucciones(Nodo raiz):
     | <Seleccionar> raiz=seleccionar(raiz) pt() raiz=instrucciones(raiz) { return raiz; }
     | <Contar> nodo1=contar() { raiz.addHijo(nodo1); } pt() raiz=instrucciones(raiz) { return raiz; }
     | <Imprimir> raiz=imprimir(raiz) raiz=instrucciones(raiz) { return raiz; }
+    | <Backup>  raiz=backup(raiz) raiz=instrucciones(raiz) { return raiz; }
+    | <Restaurar>   raiz=restaurar(raiz) raiz=instrucciones(raiz) { return raiz; }
+    | <Fecha> { Nodo tmp = new Nodo("Fecha");
+                tmp.setNumNodo(grausu.contador++);
+                raiz.addHijo(tmp); } pt() raiz=instrucciones(raiz) { return raiz; }
+    | <FechaH> { Nodo tmp = new Nodo("FechaH");
+                tmp.setNumNodo(grausu.contador++);
+                raiz.addHijo(tmp); } pt() raiz=instrucciones(raiz) { return raiz; }
     
     | t1=<Id> <Pai> { Nodo tmp = new Nodo("llamada");
                       tmp.setNumNodo(grausu.contador++);
@@ -571,6 +579,13 @@ Nodo proceconte(Nodo padre):
     | <Detener> padre=detener(padre) padre=proceconte(padre) { return padre; }
     | <Selec> padre=selecciona(padre) padre=proceconte(padre) { return padre; }
     | <Imprimir> padre=imprimir(padre) padre=proceconte(padre) { return padre; }
+    | <Fecha> { Nodo tmp = new Nodo("Fecha");
+                tmp.setNumNodo(grausu.contador++);
+                padre.addHijo(tmp); } pt() padre=proceconte(padre) { return padre; }
+    | <FechaH> { Nodo tmp = new Nodo("FechaH");
+                tmp.setNumNodo(grausu.contador++);
+                padre.addHijo(tmp);
+                return padre; } pt() padre=proceconte(padre) { return padre; }
 
     | <Para> padre=para(padre) padre=proceconte(padre) { return padre; }
     
@@ -1636,7 +1651,7 @@ Nodo puntual():
     | t1=<Num> { Nodo tmp = new Nodo("caso");
                  tmp.setNumNodo(grausu.contador++);
                  tmp.setValor(t1.image);
-                 tmp.setTipo("num");
+                 tmp.setTipo("int");
                  tmp.setColumna(t1.beginColumn);
                  tmp.setFila(t1.beginLine);
                  return tmp; }
