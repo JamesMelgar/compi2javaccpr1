@@ -2594,7 +2594,7 @@ Nodo tmp2 = new Nodo("sentencias");
                                           n2=tmp2;
     n2 = proceconte(n2);
     llf();
-nodo1.addHijo(n2); {if ("" != null) return nodo1;}
+nodo1.addHijo(n2);  padre.addHijo(nodo1); {if ("" != null) return padre;}
     throw new Error("Missing return statement in function");
   }
 

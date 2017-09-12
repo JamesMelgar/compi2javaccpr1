@@ -1691,7 +1691,7 @@ Nodo para(Nodo padre):
     } nodo1=pinterno(nodo1) <Paf> <Lli> { Nodo tmp2 = new Nodo("sentencias");
                                           tmp2.setNumNodo(grausu.contador++);
                                           n2=tmp2;
-    } n2=proceconte(n2) llf() { nodo1.addHijo(n2); return nodo1; }
+    } n2=proceconte(n2) llf() { nodo1.addHijo(n2);  padre.addHijo(nodo1); return padre; }
 }
 
 Nodo pinterno(Nodo hijo):

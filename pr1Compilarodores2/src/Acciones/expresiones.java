@@ -1288,6 +1288,20 @@ public static Nodo acciones_exp(Nodo raiz){
                 }
             }
         }
+    }else if(raiz.getNombre().equalsIgnoreCase("fecha()")){
+        String fecha = "";
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        fecha = "'"+dateFormat.format(date)+"'";
+        Nodo nodo1=crear_nodo(fecha,"","date"); 
+        return nodo1;
+    }else if(raiz.getNombre().equalsIgnoreCase("fecha_hora()")){
+        String fecha = "";
+        Date date = new Date();
+        DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        fecha = "'"+hourdateFormat.format(date)+"'";
+        Nodo nodo1=crear_nodo(fecha,"","datatime"); 
+        return nodo1;
     }else{
         if(raiz.getTipo().equalsIgnoreCase("text")){
             raiz.setNombre(concacadena(raiz.getNombre(), ""));

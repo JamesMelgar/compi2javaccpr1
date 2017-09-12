@@ -59,7 +59,7 @@ public class principal2 extends javax.swing.JFrame {
         db = "db2";
         
         frmprincipal = new JFrame();      
-        frmprincipal.setSize(1000,700);  
+        frmprincipal.setSize(100,70);  
         frmprincipal.setTitle("Servidor de Base de Datos");
         frmprincipal.setLayout(null);                   
         principal2.tx_resultado = new javax.swing.JTextArea();
@@ -95,7 +95,7 @@ public class principal2 extends javax.swing.JFrame {
 
         tx_entrada.setColumns(20);
         tx_entrada.setRows(5);
-        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\nFECHA_HORA();\nFECHA();\n %,\n]");
+        tx_entrada.setText("[\n\"validar\": 1500,\n\"paquete\": \"usql\",\n\"Instruccion\": %\nejemplo();\n %,\n]");
         jScrollPane1.setViewportView(tx_entrada);
 
         jLabel1.setText("Entrada");

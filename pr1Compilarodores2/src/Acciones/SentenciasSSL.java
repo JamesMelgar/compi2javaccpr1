@@ -232,10 +232,79 @@ public class SentenciasSSL extends manejodetablas{
                 if(nodo2.getObj().equalsIgnoreCase("retorno")){
                    return nodo2;
                 }
+        }else if(arbol.getNombre().equalsIgnoreCase("fechah")){
+                obtenerfechayhora();
+        }else if(arbol.getNombre().equalsIgnoreCase("fecha")){
+                obtenerfecha();
+        }else if(arbol.getNombre().equalsIgnoreCase("ciclo para")){
+                Nodo nodo2 = SentenciasSSL.Sentencia_para(usuario, master, temp);
+                if(nodo2.getObj().equalsIgnoreCase("retorno")){
+                   return nodo2;
+                }
         }else{
           
         }
         return nuevo;
+    }
+    
+    public static Nodo Sentencia_para(Nodo usuarios,Nodo master, Nodo paquete){
+        int ambito;
+        int display;
+        Nodo vacio = new Nodo("");
+        tablasimbolos tb = expresiones.pila.peek();
+        Nodo valor = new Nodo("");
+        Nodo cond = new Nodo("");
+        Nodo dec = new Nodo("");
+        Nodo sentencias = new Nodo("");
+        int salir=0;
+        valor = clonar(valor, paquete.getHijos().get(0));
+        cond =  clonar(cond, paquete.getHijos().get(1));
+        dec =  clonar(dec, paquete.getHijos().get(2));
+        sentencias = clonar(sentencias, paquete.getHijos().get(3));
+        String variable = valor.getNombre();
+        Nodo nodo8 = expresiones.expresiones(valor.getHijos().get(0));
+        display = tb.getDisplay()+1;  tb.setDisplay(display);
+        if(nodo8.getTipo().equalsIgnoreCase("int")){
+            if(devolver_elemento_tb(variable)==null){
+                ambito=tb.getAmbito()+1;   tb.setAmbito(ambito);
+                agregar_a_tabla(variable, "int", nodo8.getNombre());
+                Nodo nodo7 = expresiones.expresiones(cond);
+                imprimir_nodo(nodo7, "rep");
+                imprimir_tabla_simbolos();
+                while(nodo7.getNombre().equalsIgnoreCase("1") && salir==0){ 
+                    ambito=tb.getAmbito()+1;   tb.setAmbito(ambito);
+                    for(Nodo recorre : sentencias.getHijos()){
+                        Nodo seguir = intrucciones_ssl(usuarios, master, recorre);
+                        if(seguir.getNombre().equalsIgnoreCase("detener")){
+                            salir=1;
+                            break;
+                        }else if(seguir.getObj().equalsIgnoreCase("retorno")){
+                             return seguir;
+                        }
+                    }
+                    Sacar_ambito();
+                    tablasimbolos elemento = devolver_elemento_tb(variable); //valor de la tabla a cambiar
+                    if(dec.getNombre().equalsIgnoreCase("decremento")){
+                        int numero = Integer.valueOf(elemento.getValor());
+                        numero = numero - 1;
+                        elemento.setValor(Integer.toString(numero));
+                    }else{
+                        int numero = Integer.valueOf(elemento.getValor());
+                        numero = numero + 1;
+                        elemento.setValor(Integer.toString(numero));
+                    }
+                    imprimir_tabla_simbolos();
+                    nodo7 = expresiones.expresiones(cond);
+                }
+                Sacar_ambito();
+            }else{
+                 crearPaquete.pq_mensaje("Error en ciclo para esta variable ya existe");
+            }
+        }else{
+            crearPaquete.pq_mensaje("Error en para igualando un tipo distinto");
+        }
+        display = tb.getDisplay()-1;  tb.setDisplay(display); 
+        return vacio;
     }
     
         

@@ -5,6 +5,9 @@
  */
 package Acciones;
 import static Acciones.expresiones.crear_nodo;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import pr1compilarodores2.Nodo;
 
 public class accpaquete {
@@ -151,6 +154,16 @@ public class accpaquete {
                    crearPaquete.pq_mensaje("Error retorno vino dentro de un procedimiento");
                     System.out.println("error");
                 }
+            }else if(arbol.getNombre().equalsIgnoreCase("fechah")){
+                obtenerfechayhora();
+            }else if(arbol.getNombre().equalsIgnoreCase("fecha")){
+                obtenerfecha();
+            }else if(arbol.getNombre().equalsIgnoreCase("ciclo para")){
+                Nodo nodo2 = SentenciasSSL.Sentencia_para(usuario, master, temp);
+                if(nodo2.getObj().equalsIgnoreCase("retorno")){
+                    crearPaquete.pq_mensaje("Error retorno vino dentro de un procedimiento");
+                    System.out.println("error");
+                }
             }
         }
     }
@@ -249,11 +262,35 @@ public class accpaquete {
                 if(nodo2.getObj().equalsIgnoreCase("retorno")){
                     return nodo2;
                 }
+            }else if(arbol.getNombre().equalsIgnoreCase("fechah")){
+                obtenerfechayhora();
+            }else if(arbol.getNombre().equalsIgnoreCase("fecha")){
+                obtenerfecha();
+            }else if(arbol.getNombre().equalsIgnoreCase("ciclo para")){
+                System.out.println("Acciones.accpaquete.fun_tipousql()");
+                Nodo nodo2 = SentenciasSSL.Sentencia_para(usuario, master, temp);
+                if(nodo2.getObj().equalsIgnoreCase("retorno")){
+                    return nodo2;
+                }
             }
         }
         return null;
     }
     
+    public static void obtenerfecha(){
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        System.out.println("Fecha: "+dateFormat.format(date));
+        crearPaquete.pq_salidadatos("FECHA: "+dateFormat.format(date));
+    }
+    
+     public static void obtenerfechayhora(){
+        Date date = new Date();
+        DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        System.out.println("Hora y fecha: "+hourdateFormat.format(date));
+        crearPaquete.pq_salidadatos("FECHA y hora: "+hourdateFormat.format(date));
+    }
+     
     public static void crearusuario(Nodo usuario, Nodo hijo){
         boolean valor;
         String cadena;
