@@ -20,7 +20,7 @@ public static void sentencia_insertar_en_tabla(Nodo usuarios,Nodo master, Nodo p
             Nodo campos = tabla.getHijos().get(1); //Nodo campos
             Nodo datos = tabla.getHijos().get(0);
             if(campos.getHijos().size()==paquete.getHijos().size()){
-                realizar_ope_para(paquete); //Realizo las operaciones en valor
+                realizar_ope_para(paquete); //Realizo las operaciones en valor ya las modificaciones
                 valor = verificar_parametros_tipos(paquete, campos);//Verifico que los tipos del paquete y campos sean iguales
                 if(valor){
                     if(!expresiones.pila.empty()){ //si la pila esta vacia
@@ -35,25 +35,53 @@ public static void sentencia_insertar_en_tabla(Nodo usuarios,Nodo master, Nodo p
                         expresiones.pila.push(tb); //ingreso a la pila un tabla de simbolos
                         llenar_tabla(paquete);
                      }
-                    imprimir_tabla_simbolos();
+                    //imprimir_tabla_simbolos();
                      boolean verificar = true; //Aqui voy hacer las verificacion <pk> <fk> etc
                     for(Nodo arbol : campos.getHijos()){//verificacion
                         String valores = devolver_valor_tb(arbol.getNombre());
+                        if(arbol.getHijos().isEmpty()){
+                            eliminar_elemento_tabladeSimbolos(arbol.getNombre());
+                        }
                         for(Nodo complemento: arbol.getHijos()){
-                            if(complemento.getNombre().equalsIgnoreCase("<pk>")){
-                                valor = metodo_pk(datos, arbol.getNombre(), valores);
-                                if(valor==false){ verificar=false; }
-                            }else if(complemento.getNombre().equalsIgnoreCase("<auto>")){
-                                
-                            }else if(complemento.getNombre().equalsIgnoreCase("<unico>")){
-                                valor = metodo_unico(datos, arbol.getNombre(), valores);
-                                if(valor==false){ verificar=false; }
-                            }else if(complemento.getNombre().equalsIgnoreCase("<NNulo>")){
-                                valor = metodo_nnulo(valores);
-                                if(valor==false){ verificar=false; }
-                            }else if(complemento.getNombre().equalsIgnoreCase("<fk>")){
-                                valor = metodo_buscar_fk(complemento.getValor(),complemento.getTipo(),valores);
-                                if(valor==false){ verificar=false; }
+                            
+                            if(valores.equalsIgnoreCase("nulo")){
+                                if(complemento.getNombre().equalsIgnoreCase("<pk>")){
+                                    boolean auto = existe_complemento(arbol, "<auto>");
+                                    if(auto){
+                                       String numero = complemento_auto(datos, arbol.getNombre());
+                                        tablasimbolos ts1 = devolver_elemento_tb(arbol.getNombre());
+                                        ts1.setTipo("int"); ts1.setValor(numero);
+                                    }else{
+                                        System.out.println("No vamos por buen camino");
+                                    }
+                                }else if(complemento.getNombre().equalsIgnoreCase("<auto>")){
+                                    String numero = complemento_auto(datos, arbol.getNombre());
+                                    tablasimbolos ts1 = devolver_elemento_tb(arbol.getNombre());
+                                    ts1.setTipo("int"); ts1.setValor(numero);
+                                }else{
+                                    boolean auto = existe_complemento(arbol, "<NNulo>");
+                                    if(auto){
+                                        verificar=false;
+                                    }else{
+                                        eliminar_elemento_tabladeSimbolos(arbol.getNombre());
+                                    }
+                                }
+                            }else{
+                                if(complemento.getNombre().equalsIgnoreCase("<pk>")){
+                                    valor = metodo_pk(datos, arbol.getNombre(), valores);
+                                    if(valor==false){ verificar=false; }
+                                }else if(complemento.getNombre().equalsIgnoreCase("<auto>")){
+                                        System.out.println("Entro");
+                                }else if(complemento.getNombre().equalsIgnoreCase("<unico>")){
+                                    valor = metodo_unico(datos, arbol.getNombre(), valores);
+                                    if(valor==false){ verificar=false; }
+                                }else if(complemento.getNombre().equalsIgnoreCase("<NNulo>")){
+                                    valor = metodo_nnulo(valores);
+                                    if(valor==false){ verificar=false; }
+                                }else if(complemento.getNombre().equalsIgnoreCase("<fk>")){ 
+                                    valor = metodo_buscar_fk(complemento.getValor(),complemento.getTipo(),valores);
+                                    if(valor==false){ verificar=false; }
+                                }
                             }
                         }
                     }
@@ -73,7 +101,7 @@ public static void sentencia_insertar_en_tabla(Nodo usuarios,Nodo master, Nodo p
                                     if(objeto != null && valor5 == true){
                                         Nodo nodo2=crearnodo("obj", pivote.getObj());
                                         nodo2.setTipo(arbol.getNombre());
-                                        imprimir_nodo(nodo2, "***base***");
+//                                        imprimir_nodo(nodo2, "***base***");
                                         for( Nodo reco : objeto.getHijos()){ //recoriendo el objeto
                                             String cadena = arbol.getNombre()+"."+reco.getNombre();//nombre.codigo
                                             String valores =devolver_valor_tb(cadena);
@@ -81,9 +109,6 @@ public static void sentencia_insertar_en_tabla(Nodo usuarios,Nodo master, Nodo p
                                                 verificacion=false;
                                                 System.out.println("Este atributo no a sido instanciado");
                                             }else{
-//                                                 if(reco.getValor().equalsIgnoreCase("text")){
-//                                                     valores = "\""+valores+"\"";
-//                                                 }
                                                  Nodo nodo3 = crearnodo(reco.getNombre(), valores);
                                                  nodo2.addHijo(nodo3);
                                             }
@@ -102,7 +127,7 @@ public static void sentencia_insertar_en_tabla(Nodo usuarios,Nodo master, Nodo p
                         if(verificacion==true){
                             datos.addHijo(nodo1);
                             System.out.println("Insercion correcta");
-                            Crearmaster.master();
+                          Crearmaster.master(); //////////////////////////////////////modoifique esto
                         }else{
                             System.out.println("Error de inserccion");
                         }
@@ -119,7 +144,7 @@ public static void sentencia_insertar_en_tabla(Nodo usuarios,Nodo master, Nodo p
                 crearPaquete.pq_mensaje("Error en crear tabla usted ingreso mas parametros");
             }
         }else{
-            crearPaquete.pq_mensaje("No se pudo crear tabla: " + paquete.getValor() + "no se tiene permiso");
+            crearPaquete.pq_mensaje("No se pudo crear tabla: " + paquete.getValor() + "no se tiene permiso"+pos_error(paquete));
             System.out.println("La tabla no exite o no tiene permiso");
         }
     }
@@ -210,8 +235,7 @@ public static void sentencia_insertar_especial_tabla(Nodo usuarios,Nodo master, 
                     tablasimbolos tb = new tablasimbolos("nombre", "tipo", "valor"); //creo la tabla de simbolos
                     tb.setAmbito(0); //ambito cero
                     expresiones.pila.push(tb); //ingreso a la pila un tabla de simbolos
-                     llenar_especial_normal(insertar, valores, paquete.getValor());
-                     
+                    llenar_especial_normal(insertar, valores, paquete.getValor());
             }
             
             Nodo llenado = insertar_campo(insertar, tabla);
@@ -250,13 +274,31 @@ public static void sentencia_insertar_especial_tabla(Nodo usuarios,Nodo master, 
                     Nodo elvalor = valores.getHijos().get(con);
                     if(elvalor.getValor().equalsIgnoreCase("obj")){
                         if(elvalor.getTexto().equalsIgnoreCase(tipo)==false){ //verificando que los tipos sean iguales
-                            System.out.println("tipos de parametros incorrectos");
+                            System.out.println("tipos de parametros incorrectoss");
                             return false;
                         }
+                    }else if(elvalor.getNombre().equalsIgnoreCase("nulo")){
+                        
                     }else{
                         if(elvalor.getTipo().equalsIgnoreCase(tipo)==false){
-                            System.out.println("tipos de parametros incorrectos");
-                            return false;
+                           if(tipo.equalsIgnoreCase("int")){
+                                if(elvalor.getTipo().equalsIgnoreCase("bool")){
+                                    elvalor.setTipo("int");
+                                }else{
+                                    System.out.println("tipos de parametros incorrectos");
+                                    return false;
+                                }
+                           }else if(tipo.equalsIgnoreCase("double")){
+                                 if(elvalor.getTipo().equalsIgnoreCase("bool") || elvalor.getTipo().equalsIgnoreCase("int")){
+                                    elvalor.setTipo("double");
+                                }else{
+                                    System.out.println("tipos de parametros incorrectos");
+                                    return false;
+                                }
+                           }else{
+                             System.out.println("tipos de parametros incorrectos");
+                             return false;
+                           }
                         }
                     }
                      ++con;
@@ -315,13 +357,16 @@ public static void sentencia_insertar_especial_tabla(Nodo usuarios,Nodo master, 
                         if(elvalor.getTipo().equalsIgnoreCase(tipo)==true){
                             tablasimbolos tb2 = expresiones.pila.peek();
                             int numero = tb2.getAmbito();
-                           // imprimir_nodo(elvalor, "paquete");
-                            //imprimir_nodo(hiInsert, "paquete2");
                             tablasimbolos tb1 = new tablasimbolos(hiInsert.getNombre(), elvalor.getTipo(), elvalor.getNombre());
                             tb2.setAmbito(numero);
                             tb2.addHijo(tb1);
-                            imprimir_tabla_simbolos();
-                        }
+                        }else if(elvalor.getTipo().equalsIgnoreCase("NULO")){
+                             tablasimbolos tb2 = expresiones.pila.peek();
+                             int numero = tb2.getAmbito();
+                             tablasimbolos tb1 = new tablasimbolos(hiInsert.getNombre(), elvalor.getTipo(), elvalor.getNombre());
+                             tb2.setAmbito(numero);
+                             tb2.addHijo(tb1);
+                        }//falta modificar el tipo int y bool
                     }
                      ++con;
                 }else{
@@ -419,13 +464,14 @@ public static void sentencia_insertar_especial_tabla(Nodo usuarios,Nodo master, 
             }
          }else{
              tablasimbolos registro =devolver_elemento_tb_pivote(camp.getNombre(), actual);
+             
              if(registro==null){
                  if(existe_complemento(camp, "<pk>")){
                      if(existe_complemento(camp, "<auto>")){
                          cad = complemento_auto(datos, camp.getNombre());
                          Nodo nodo2 = crearnodo(camp.getNombre(), cad);
                          nodo1.addHijo(nodo2);
-                         imprimir_nodo(nodo2, "nodo2");
+                        imprimir_nodo(nodo2, "nodo2");
                      }else{
                          return null;
                      }
@@ -471,14 +517,13 @@ public static void sentencia_insertar_especial_tabla(Nodo usuarios,Nodo master, 
                 }else if(existe_complemento(camp, "<unico>")){
                       if(metodo_unico(datos, camp.getNombre(), registro.getValor())){
                           Nodo nodo2 = crearnodo(camp.getNombre(), registro.getValor());
-                          imprimir_nodo(nodo2, "entro");
+//                          imprimir_nodo(nodo2, "entro");
                           nodo1.addHijo(nodo2);
                       }else{
                           return null;
                       }
                 }else{
                     Nodo nodo2 = crearnodo(camp.getNombre(), registro.getValor());
-                    imprimir_nodo(nodo2, "entro");
                     nodo1.addHijo(nodo2);
                 }
 
@@ -518,7 +563,7 @@ public static String complemento_auto(Nodo datos, String id){
         valor = Integer.toString(numero);
         return valor;
     }
-    return "2";
+    return "0";
 
 }
 
@@ -540,6 +585,18 @@ public static Nodo devolver_Nodo_row(Nodo row, String campo){
     return null;
 }
 
+public static void eliminar_Nodo_row(Nodo row, String campo){
+    int numero = 0;
+    numero = row.getHijos().size()-1;
+    while(numero >= 0){
+       if(row.getHijos().get(numero).getNombre().equalsIgnoreCase(campo)){
+           row.getHijos().remove(numero);
+           break;
+       }
+       --numero;
+    }
+}
+
 public static Nodo devolver_Nodo_row_obj(Nodo row, String campo){
     for(Nodo primo : row.getHijos()){
         if(primo.getTipo().equalsIgnoreCase(campo)){
@@ -547,6 +604,18 @@ public static Nodo devolver_Nodo_row_obj(Nodo row, String campo){
         }
     }
     return null;
+}
+
+public static void eliminar_Nodo_row_obj(Nodo row, String campo){
+    int numero = 0;
+    numero = row.getHijos().size()-1;
+    while(numero >= 0){
+       if(row.getHijos().get(numero).getTipo().equalsIgnoreCase(campo)){
+           row.getHijos().remove(numero);
+           break;
+       }
+       --numero;
+    }
 }
 
 public static void Sentencia_Actualizar(Nodo usuarios,Nodo master, Nodo paquete){
@@ -560,6 +629,7 @@ public static void Sentencia_Actualizar(Nodo usuarios,Nodo master, Nodo paquete)
         realizar_ope_para(valores);
         valor = verificar_especial_valores(campos, valores, paquete.getValor()); //verifico que los campos sean iguales 
         if(campos.getHijos().size()==valores.getHijos().size() && valor){
+           
             if(!expresiones.pila.empty()){ //si la pila esta vacia
                      tablasimbolos pivote = expresiones.pila.peek(); //guardar la pila anterior
                      tablasimbolos tb = new tablasimbolos("nombre", "tipo", "valor"); //creo la tabla de simbolos
@@ -572,10 +642,9 @@ public static void Sentencia_Actualizar(Nodo usuarios,Nodo master, Nodo paquete)
                     expresiones.pila.push(tb); //ingreso a la pila un tabla de simbolos
                      llenar_especial_normal(campos, valores, paquete.getValor());
             }
-            //imprimir_tabla_simbolos();
             Nodo row = tabla.getHijos().get(0);
             for(Nodo cambios : row.getHijos()){
-                imprimir_nodo(cambios, "base");
+//            imprimir_nodo(cambios, "base");
                 actualizar_campos(tabla, cambios);
                 Crearmaster.master();
             }
@@ -596,9 +665,29 @@ public static void actualizar_campos(Nodo tabla, Nodo row){
      Nodo datos = tabla.getHijos().get(0);
      boolean valor=true;
      int contador = 0;
+     imprimir_tabla_simbolos();
      for(tablasimbolos tb: actual.getSiguiente()){
          if(contador==0){
-             if(tb.getObj().equalsIgnoreCase("")){
+             if(tb.getTipo().equalsIgnoreCase("nulo")){
+                 Nodo camp = devolver_campo(campos, tb.getNombre());//busca en archivo db
+                 Nodo actualizar = devolver_Nodo_row(row, tb.getNombre());
+                 if(actualizar!=null){
+                     if(existe_complemento(camp, "<pk>") || existe_complemento(camp, "<NNulo>")){
+                         
+                     }else{
+                         eliminar_Nodo_row(row, tb.getNombre());
+                     }
+                 }else{
+                      Nodo obj = devolver_Nodo_row_obj(row, tb.getNombre());
+                     if(obj!= null){
+                         if(existe_complemento(camp, "<NNulo>")==false){
+                             eliminar_Nodo_row_obj(row, tb.getNombre());
+                         }
+                     }else{
+                         System.out.println("No elimino");
+                     }
+                 }
+             }else if(tb.getObj().equalsIgnoreCase("")){
                  Nodo camp = devolver_campo(campos, tb.getNombre());//busca en archivo db
                  if(existe_complemento(camp, "<pk>")){
                      if(metodo_pk(datos, camp.getNombre(), tb.getValor())){
@@ -684,11 +773,11 @@ public static void actualizar_campos(Nodo tabla, Nodo row){
                      }
                      if(b1=true){
                          Nodo actualizar = devolver_Nodo_row_obj(row, tb.getNombre());
-                         imprimir_nodo(actualizar, "actualizar");
+//                         imprimir_nodo(actualizar, "actualizar");
                          if(actualizar!=null){
                              System.out.println("entro pero hay error");
                              actualizar.setHijos(nodo2.getHijos());
-                             imprimir_nodo(nodo2, "nodo2");
+//                             imprimir_nodo(nodo2, "nodo2");
                          }else{
                             row.addHijo(nodo2);
                          }
@@ -737,7 +826,6 @@ public static void Sentencia_Actualizar_cond(Nodo usuarios,Nodo master, Nodo paq
                     expresiones.pila.push(tb); //ingreso a la pila un tabla de simbolos
                      llenar_especial_normal(campos, valores, paquete.getValor());
             }
-            //imprimir_tabla_simbolos();
             Nodo row = tabla.getHijos().get(0);
             Nodo condicion = paquete.getHijos().get(2);
             for(Nodo cambios : row.getHijos()){
@@ -753,9 +841,6 @@ public static void Sentencia_Actualizar_cond(Nodo usuarios,Nodo master, Nodo paq
                 }else{
                     expresiones.pila.pop();
                 }
-                imprimir_nodo(nodo8, "nodo8");
-                //imprimir_tabla_simbolos();
-
             }
             expresiones.pila.pop();
         }else{
@@ -831,12 +916,13 @@ public static void Sentencia_seleccionar(Nodo usuarios,Nodo master, Nodo paquete
              for(Nodo row: datos.getHijos()){
                  Nodo registro = new Nodo(" ");
                  registro = clonar(registro,data);
-                 registro=llenar_data(registro, row);               
+                 registro=llenar_data(registro, row);  
+                 colocar_Nulos_data(registro);
                  tb1.addHijo(registro);  //Ya tengo los registros
              }
              instrucciones_seleccion(paquete, tb1);
          }else{
-             System.out.println("No tiene Permiso o la tabla no exite");
+             crearPaquete.pq_mensaje("Instruccion Seleccionar incorrecta"+pos_error(paquete));
          }
      }else{//Tiene dos hijos
          String nombre_tabla = listaTabla.getHijos().get(0).getNombre();
@@ -884,16 +970,26 @@ public static void Sentencia_seleccionar(Nodo usuarios,Nodo master, Nodo paquete
                  ++v;
              }
              if(veri==true){
+                 imprimir_tabla_simbolos();
                  instrucciones_seleccion(paquete, tb1);
              }else{
-                 System.out.println("Hubo algun error, tabla no exite o no tiene permiso");
+                 crearPaquete.pq_mensaje("Instruccion Seleccionar incorrecta"+pos_error(paquete));
              }
              
              
          }else{
-             System.out.println("No tiene permiso 0 no exite la tabla");
+             crearPaquete.pq_mensaje("Instruccion Seleccionar incorrecta"+pos_error(paquete));
          }
      }
+}
+
+public static Nodo colocar_Nulos_data(Nodo registro){
+    for(Nodo rec :  registro.getHijos() ){
+        if(rec.getValor().equalsIgnoreCase("")){
+            rec.setValor("Nulo");
+        }
+    }
+    return registro;
 }
 
 public static void instrucciones_seleccion(Nodo paquete, Nodo tb1){
@@ -968,12 +1064,19 @@ public static void listaid_Seleccion(Nodo paquete, Nodo tb1){
 }
 
 public static void imprimir_seleccion(Nodo tb1){
+    String cadena="";
+    int numero=0;
     for(Nodo rec: tb1.getHijos()){
         System.out.println("data");
+        cadena = cadena + "REGISTRO"+numero+"\n";
         for(Nodo data: rec.getHijos()){
-            imprimir_nodo(data, "Seleccion");
+           imprimir_nodo(data, "Seleccion");
+           cadena = cadena + "Nombre: "+data.getNombre()+" valor:"+data.getValor()+"\n";
         }
+        ++numero;
     }
+    crearPaquete.pq_mensaje("Instruccion Seleccionar correcta");
+    crearPaquete.pq_salidadatos(cadena);
 }
 
 public static Nodo condicionwhere(Nodo paquete, Nodo tb1){
@@ -990,7 +1093,6 @@ public static Nodo condicionwhere(Nodo paquete, Nodo tb1){
                copia=clonar(copia, rec);
                new_tb1.addHijo(copia);
           }else{
-               System.out.println("condicion ");
           }
        }         
     expresiones.pila.pop();
@@ -1381,6 +1483,19 @@ public static void imprimir_reporte_seleccion(Nodo tb1){
     System.out.println(""+cadena);
     crearPaquete.pq_salidadatos(cadena);
     crearPaquete.pq_mensaje(" ");
+}
+
+public static void eliminar_elemento_tabladeSimbolos(String nombre){
+   tablasimbolos simbolos = expresiones.pila.peek();
+   int numero = 0;
+   numero = simbolos.getSiguiente().size()-1;
+   while(numero >= 0){
+       if(simbolos.getSiguiente().get(numero).getNombre().equalsIgnoreCase(nombre)){
+           simbolos.getSiguiente().remove(numero);
+       }
+       numero = numero - 1;
+   }
+
 }
 
 

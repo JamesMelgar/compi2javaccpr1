@@ -24,6 +24,8 @@ public class accpaquete {
            tipousql(usuario,master,temp);
         }else if(temp.getNombre().equalsIgnoreCase("reporte") == true){
             tipopaq(usuario,master,temp);
+        }else if(temp.getNombre().equalsIgnoreCase("fin") == true){
+             pr1compilarodores2.principal2.usua="";
         }else{
             System.out.println(temp.getNombre());
         }
@@ -109,7 +111,6 @@ public class accpaquete {
                 USQLDUMP.crear_pitacora(">> Instruccion imprimir");
                 sentencia_imprimir(usuario, master, temp);
             }else if(arbol.getNombre().equalsIgnoreCase("llamada") == true){
-                USQLDUMP.crear_pitacora(">> Instruccion  llamada");
                 sentencia_llamada(usuario, master, temp);
             }else if(arbol.getNombre().equalsIgnoreCase("declarar") == true){
                 USQLDUMP.crear_pitacora(">> Instruccion declarar");
@@ -164,6 +165,12 @@ public class accpaquete {
                     crearPaquete.pq_mensaje("Error retorno vino dentro de un procedimiento");
                     System.out.println("error");
                 }
+            }else if(arbol.getNombre().equalsIgnoreCase("eliminar db")){
+                USQLDUMP.crear_pitacora(">> Instruccion eliminar db");
+                sentencia_elimnar_db(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("eliminar usu")){
+                USQLDUMP.crear_pitacora(">> Instruccion eliminar Usuario");
+                sentencia_elimnar_usu(usuario, master, temp);
             }
         }
     }
@@ -272,6 +279,12 @@ public class accpaquete {
                 if(nodo2.getObj().equalsIgnoreCase("retorno")){
                     return nodo2;
                 }
+            }else if(arbol.getNombre().equalsIgnoreCase("eliminar db")){
+                USQLDUMP.crear_pitacora(">> Instruccion eliminar db");
+                sentencia_elimnar_db(usuario, master, temp);
+            }else if(arbol.getNombre().equalsIgnoreCase("eliminar usu")){
+                USQLDUMP.crear_pitacora(">> Instruccion eliminar Usuario");
+                sentencia_elimnar_usu(usuario, master, temp);
             }
         }
         return null;
@@ -309,10 +322,10 @@ public class accpaquete {
              temp.addHijo(nodo1);
              temp.addHijo(nodo2);
              pr1compilarodores2.principal2.usuarios.addHijo(temp);
-             crearPaquete.pq_mensaje("Sentencia Usar correcta db: "+temp.getNombre());
+             crearPaquete.pq_mensaje("Usuario: "+temp.getNombre()+" Creado correctamente");
              crearxml.Usuario();
         }else{
-            crearPaquete.pq_mensaje("No se pudo crear el usuario: "+temp.getNombre());
+            crearPaquete.pq_mensaje("No se pudo crear el usuario: "+temp.getNombre()+pos_error(temp));
         }
         
     }
@@ -797,7 +810,7 @@ public class accpaquete {
         boolean valor = exite_objusql(master, pr1compilarodores2.principal2.db, paquete.getValor());
         if(db != null && valor==false){
              Nodo nodo1=crearnodo(paquete.getValor(), "");
-             crearPaquete.pq_mensaje("El objeto "+ paquete.getValor() +"a sido creado");
+             crearPaquete.pq_mensaje("El objeto "+ paquete.getValor() +" a sido creado");
              for(Nodo arbol : paquete.getHijos()){
                  Nodo nodo2 = crearnodo(arbol.getNombre(), arbol.getTipo());
                  nodo1.addHijo(nodo2);
@@ -806,6 +819,8 @@ public class accpaquete {
               tmp.addHijo(nodo1);
               Crearmaster.master();
               agregar_permiso(usuarios, master, pr1compilarodores2.principal2.db, pr1compilarodores2.principal2.usua, paquete.getValor());
+        }else{
+           crearPaquete.pq_mensaje("El objeto "+ paquete.getValor() +" No a sido creado"+pos_error(paquete));
         }
     }
     
@@ -939,11 +954,11 @@ public class accpaquete {
              nodo1.addHijo(n3);
              Nodo tmp=db.getHijos().get(0);
              tmp.addHijo(nodo1);
-             crearPaquete.pq_mensaje(""+paquete.getValor());
+             crearPaquete.pq_mensaje("Se creo la funcion: "+paquete.getValor());
              Crearmaster.master();
              agregar_permiso(usuarios, master, pr1compilarodores2.principal2.db, pr1compilarodores2.principal2.usua, paquete.getValor());
         }else{
-            crearPaquete.pq_mensaje("No se pudo crear la funcion "+paquete.getValor());
+            crearPaquete.pq_mensaje("No se pudo crear la funcion "+paquete.getValor()+pos_error(paquete));
         }
     }
     
@@ -958,31 +973,30 @@ public class accpaquete {
               boolean valor4 = verificar_fk(master, paquete);
               crearPaquete.pq_ejecucion("Verificando complementos");
               if(valor==true && valor2==true && valor3==true && valor4==true){ 
-               
-              String ruta = pr1compilarodores2.principal2.ruta_master+"\\"+pr1compilarodores2.principal2.db+"\\"+paquete.getValor()+".usac";
-              String texto=remplazar(ruta);
-              System.out.println("Acciones.accpaquete.sentencia_crear_tabla()"+texto);
-              Nodo nodo1 = crearnodo(paquete.getValor(), texto);
-              
-              Nodo n1 = crearnodo("datos", "");
-              Nodo n2 = crearnodo("campos", "");
-              for(Nodo arbol : paquete.getHijos()){
-                  arbol.setValor(arbol.getTipo());
-                  n2.addHijo(arbol);
-              }
-              nodo1.addHijo(n1);
-              nodo1.addHijo(n2);
-              db.addHijo(nodo1);
-              crearPaquete.pq_mensaje("Sentencia crear tabla correcta");
-              }
-              else{ 
-                  crearPaquete.pq_ejecucion("Sentencia crear tabla incorrecta");
-              }
-              crearPaquete.pq_ejecucion("");
-              Crearmaster.master();
-              agregar_permiso(usuarios, master, pr1compilarodores2.principal2.db, pr1compilarodores2.principal2.usua, paquete.getValor());
+                 
+                  String ruta = pr1compilarodores2.principal2.ruta_master+"\\"+pr1compilarodores2.principal2.db+"\\"+paquete.getValor()+".usac";
+                  String texto=remplazar(ruta);
+                  Nodo nodo1 = crearnodo(paquete.getValor(), texto);
+
+                  Nodo n1 = crearnodo("datos", "");
+                  Nodo n2 = crearnodo("campos", "");
+                  for(Nodo arbol : paquete.getHijos()){
+                      arbol.setValor(arbol.getTipo());
+                      n2.addHijo(arbol);
+                  }
+                  nodo1.addHijo(n1);
+                  nodo1.addHijo(n2);
+                  db.addHijo(nodo1);
+                  crearPaquete.pq_mensaje("Sentencia crear tabla correcta");
+                  }
+                  else{ 
+                      crearPaquete.pq_ejecucion("Sentencia crear tabla incorrecta");
+                  }
+                  crearPaquete.pq_ejecucion("");
+                  Crearmaster.master();
+                  agregar_permiso(usuarios, master, pr1compilarodores2.principal2.db, pr1compilarodores2.principal2.usua, paquete.getValor());
         }else{
-            crearPaquete.pq_mensaje("Sentencia crear tabla incorrecta");
+            crearPaquete.pq_mensaje("Sentencia crear tabla incorrecta"+pos_error(paquete));
         }
     }
     
@@ -1018,7 +1032,7 @@ public class accpaquete {
     public static boolean verificar_objeto(Nodo tabla, Nodo master){
         boolean valor;
         for(Nodo arbol : tabla.getHijos()){
-            if(arbol.getValor() != null){
+            if(!"".equals(arbol.getValor())){
                  valor = exite_solo_obj(master, pr1compilarodores2.principal2.db, arbol.getTipo());
                 if(valor==false){
                     return false;
@@ -1175,21 +1189,33 @@ public class accpaquete {
              for(Nodo arbol : proce.getHijos()){
                 Nodo para=paquete.getHijos().get(con);
                 para.setValor(arbol.getNombre());
-                if(arbol.getValor().equals("int")){
-                    if(para.getTipo().equalsIgnoreCase("int")==false){
-                        return false;
-                    }
+                if(para.getTipo().equalsIgnoreCase("nulo")){
+
                 }else if(arbol.getTipo().equalsIgnoreCase("obj")){
                     if(arbol.getValor().equalsIgnoreCase(para.getTexto())==false){
                         System.out.println("tipos de parametros incorrectos");
                         return false;
                     }
                 }else{
-//                    imprimir_nodo(arbol, "arbol");
-//                    imprimir_nodo(para, "para");para.getTexto()
                     if(arbol.getValor().equalsIgnoreCase(para.getTipo())==false){
-                        System.out.println("tipos de parametros incorrectos");
-                        return false;
+                        if(arbol.getValor().equalsIgnoreCase("int")){
+                            if(para.getTipo().equalsIgnoreCase("bool")){
+                                para.setTipo("int");
+                            }else{
+                                System.out.println("tipos de parametros incorrectos");
+                                return false;
+                            }
+                        }else if(arbol.getValor().equalsIgnoreCase("double")){
+                             if(para.getTipo().equalsIgnoreCase("bool") || para.getTipo().equalsIgnoreCase("int")){
+                                para.setTipo("double");
+                            }else{
+                                System.out.println("tipos de parametros incorrectos");
+                                return false;
+                            }
+                        }else{
+                             System.out.println("tipos de parametros incorrectos");
+                             return false;
+                        }
                     }
                 }
                 ++con;
@@ -1266,7 +1292,13 @@ public class accpaquete {
                System.out.println("No se puede asignar un tipo objeto");
            }else{
                 if(variables.getTipo().equalsIgnoreCase("int")){ //verificacion de tipos
-                    if(nodo2.getTipo().equalsIgnoreCase("int")){
+                    if(nodo2.getTipo().equalsIgnoreCase("bool") || nodo2.getTipo().equalsIgnoreCase("int")){
+                        nodo2.setTipo("int");
+                        valor=true;
+                    }
+                }else if(variables.getTipo().equalsIgnoreCase("double")){
+                    if(nodo2.getTipo().equalsIgnoreCase("bool") || nodo2.getTipo().equalsIgnoreCase("int") || nodo2.getTipo().equalsIgnoreCase("double") ){
+                        nodo2.setTipo("double");
                         valor=true;
                     }
                 }else if(variables.getTipo().equalsIgnoreCase(nodo2.getTipo())){
@@ -1394,6 +1426,22 @@ public class accpaquete {
                    String tipo = devolver_tipo_tb(paquete.getValor());
                    if(nodo2.getTipo().equalsIgnoreCase(tipo)){
                      cambiar_valor_tb(paquete.getValor(), nodo2.getNombre());
+                   }else if(tipo.equalsIgnoreCase("int")){
+                        if(nodo2.getTipo().equalsIgnoreCase("bool")){
+                            tablasimbolos tb = SentenciasSSL.devolver_elemento_tb(paquete.getValor());
+                            tb.setTipo("int");
+                            cambiar_valor_tb(paquete.getValor(), nodo2.getNombre());
+                        }else{
+                            System.out.println("No son de mismo tipo asignacion");
+                        }
+                    }else if(tipo.equalsIgnoreCase("double")){
+                        if(nodo2.getTipo().equalsIgnoreCase("bool") || nodo2.getTipo().equalsIgnoreCase("int")){
+                            tablasimbolos tb = SentenciasSSL.devolver_elemento_tb(paquete.getValor());
+                            tb.setTipo("double");
+                            cambiar_valor_tb(paquete.getValor(), nodo2.getNombre());
+                        }else{
+                            System.out.println("No son de mismo tipo asignacion");
+                        }
                     }else{
                        System.out.println("No son de mismo tipo asignacion");
                     }
@@ -1465,5 +1513,47 @@ public class accpaquete {
              return nodo2;
          }
          return nodo2;
+    }
+    
+    public static void sentencia_elimnar_db (Nodo usuarios,Nodo master, Nodo paquete){
+        boolean valor1 = buscar_bd(master, paquete.getValor());
+        boolean valor2 = tiene_permiso(usuarios, master, paquete.getValor(), pr1compilarodores2.principal2.usua , paquete.getValor());
+        crearPaquete.pq_ejecucion("buscando si el usuario tiene permiso para eliminar");
+        if(valor1 && valor2){
+           int n = master.getHijos().size()-1;
+           while(n>=0){
+               if(master.getHijos().get(n).getNombre().equalsIgnoreCase(paquete.getValor())){
+                   master.getHijos().remove(n);
+                   crearPaquete.pq_mensaje("Se elimono db: "+paquete.getValor());
+                   Crearmaster.master();
+               }
+               --n;
+           }
+        }else{
+            crearPaquete.pq_mensaje("No se pudo eliminar db: "+paquete.getValor()+pos_error(paquete));
+        } 
+    }
+    
+    public static void sentencia_elimnar_usu (Nodo usuarios,Nodo master, Nodo paquete){
+        String nusu = pr1compilarodores2.principal2.usua;
+        if(nusu.equalsIgnoreCase("admin")){
+           int n = usuarios.getHijos().size()-1;
+           while(n>=0){
+               if(usuarios.getHijos().get(n).getNombre().equalsIgnoreCase(paquete.getValor())){
+                   usuarios.getHijos().remove(n);
+                   crearPaquete.pq_mensaje("Se elimino usuario: "+paquete.getValor());
+                   crearxml.Usuario();
+               }
+               --n;
+           }
+        }else{
+            crearPaquete.pq_mensaje("No se tiene permiso admin: "+paquete.getValor()+pos_error(paquete));
+        }
+    }
+    
+    public static String pos_error(Nodo paquete){
+        //fila es la linea
+        String cadena = " Linea: "+Integer.toString(paquete.getFila())+" Columna: "+Integer.toString(paquete.getColumna());
+        return cadena;
     }
 }

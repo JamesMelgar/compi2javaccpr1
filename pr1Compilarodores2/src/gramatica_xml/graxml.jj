@@ -62,8 +62,8 @@ TOKEN :
     | < Boolf: "</bool>">
     | < Datei: "<date>">
     | < Datef: "</date>">
-    | < Dateti: "<datetime>">
-    | < Datetf: "</datetime>">
+    | < Dateti: "<datatime>">
+    | < Datetf: "</datatime>">
     | < Attri: "<attr>">
     | < Attrf: "</attr>">
     | < Obji: "<obj>">
@@ -528,7 +528,7 @@ Nodo tipo(Nodo nodo1):
     |t1=<Date> { nodo1.setTipo("date");
                  nodo1.setValor(t1.image);
                  return nodo1; }
-    |t1=<Datetime> { nodo1.setTipo("datetime");
+    |t1=<Datatime> { nodo1.setTipo("datatime");
                      nodo1.setValor(t1.image);
                      return nodo1; }
 }
@@ -843,7 +843,7 @@ Nodo tbcont2(Nodo raiz):
                       tmp.setNumNodo(graxml.contador++);
                      tmp.setColumna(t1.beginColumn);
                      tmp.setFila(t1.beginLine);
-                     tmp.setValor("datetime");
+                     tmp.setValor("datatime");
                      nodo1 = tmp; 
                  } 
      <Datetf> {raiz.addHijo(nodo1);} raiz=tbcont2(raiz) { return raiz; }

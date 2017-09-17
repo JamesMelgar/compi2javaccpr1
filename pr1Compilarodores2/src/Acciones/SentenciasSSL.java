@@ -264,13 +264,14 @@ public class SentenciasSSL extends manejodetablas{
         String variable = valor.getNombre();
         Nodo nodo8 = expresiones.expresiones(valor.getHijos().get(0));
         display = tb.getDisplay()+1;  tb.setDisplay(display);
+        if(nodo8.getTipo().equalsIgnoreCase("bool")){
+            nodo8.setTipo("int");
+        }
         if(nodo8.getTipo().equalsIgnoreCase("int")){
             if(devolver_elemento_tb(variable)==null){
                 ambito=tb.getAmbito()+1;   tb.setAmbito(ambito);
                 agregar_a_tabla(variable, "int", nodo8.getNombre());
                 Nodo nodo7 = expresiones.expresiones(cond);
-                imprimir_nodo(nodo7, "rep");
-                imprimir_tabla_simbolos();
                 while(nodo7.getNombre().equalsIgnoreCase("1") && salir==0){ 
                     ambito=tb.getAmbito()+1;   tb.setAmbito(ambito);
                     for(Nodo recorre : sentencias.getHijos()){
@@ -293,7 +294,6 @@ public class SentenciasSSL extends manejodetablas{
                         numero = numero + 1;
                         elemento.setValor(Integer.toString(numero));
                     }
-                    imprimir_tabla_simbolos();
                     nodo7 = expresiones.expresiones(cond);
                 }
                 Sacar_ambito();

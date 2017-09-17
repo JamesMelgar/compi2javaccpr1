@@ -103,6 +103,7 @@ TOKEN :
     | < Funcion: "funcion">
     | < Tabla: "tabla">
     | < Usuario: "usuario">
+    | < User: "user">
     | < Colocar: "colocar">
     | < Pass: "password">
     | < Agregar: "Agregar">
@@ -901,7 +902,7 @@ Nodo eliminar(Nodo raiz):
                         raiz.addHijo(nodo1);
     } pt() { return raiz; }
 
-    | <Usuario> t1=<Id> { Nodo tmp = new Nodo("eliminar usu");
+    | <User> t1=<Id> { Nodo tmp = new Nodo("eliminar usu");
                         tmp.setNumNodo(grausu.contador++);
                         tmp.setValor(t1.image);
                         tmp.setColumna(t1.beginColumn);
@@ -1232,7 +1233,7 @@ Nodo listacampos(Nodo primo):
 }
 {
        <Cm> nodo5=lista_campos() { 
-                       primo.addHijo(nodo5); } primo=listaid(primo) {return primo; }
+                       primo.addHijo(nodo5); } primo=listacampos(primo) {return primo; }
     | { return primo; }
 }
 
@@ -1450,7 +1451,7 @@ Nodo s8():
                  tmp.setColumna(t1.beginColumn); tmp.setFila(t1.beginLine);
                  return tmp; } 
     | t1=<Datetime>{   Nodo tmp = new Nodo(t1.image);
-                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("datatime");
+                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("datetime");
                  tmp.setColumna(t1.beginColumn); tmp.setFila(t1.beginLine);
                  return tmp; } 
     | t1=<Date> {   Nodo tmp = new Nodo(t1.image);
@@ -1466,6 +1467,10 @@ Nodo s8():
     | <Pai> nodo1=s0() <Paf> { return nodo1; }
 
     | <Contar> nodo1=contar() { return nodo1; }
+
+    | <Nulo> {   Nodo tmp = new Nodo("nulo");
+                 tmp.setNumNodo(grausu.contador++); tmp.setTipo("nulo");
+                 return tmp; } 
 
     | t1=<Id> { Nodo tmp = new Nodo(t1.image);
                 tmp.setNumNodo(grausu.contador++);

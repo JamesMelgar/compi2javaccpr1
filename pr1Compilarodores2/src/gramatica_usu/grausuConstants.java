@@ -83,143 +83,145 @@ public interface grausuConstants {
   /** RegularExpression Id. */
   int Usuario = 45;
   /** RegularExpression Id. */
-  int Colocar = 46;
+  int User = 46;
   /** RegularExpression Id. */
-  int Pass = 47;
+  int Colocar = 47;
   /** RegularExpression Id. */
-  int Agregar = 48;
+  int Pass = 48;
   /** RegularExpression Id. */
-  int Quitar = 49;
+  int Agregar = 49;
   /** RegularExpression Id. */
-  int Cambiar = 50;
+  int Quitar = 50;
   /** RegularExpression Id. */
-  int En = 51;
+  int Cambiar = 51;
   /** RegularExpression Id. */
-  int Valores = 52;
+  int En = 52;
   /** RegularExpression Id. */
-  int Retorno = 53;
+  int Valores = 53;
   /** RegularExpression Id. */
-  int Donde = 54;
+  int Retorno = 54;
   /** RegularExpression Id. */
-  int Asc = 55;
+  int Donde = 55;
   /** RegularExpression Id. */
-  int Desc = 56;
+  int Asc = 56;
   /** RegularExpression Id. */
-  int De = 57;
+  int Desc = 57;
   /** RegularExpression Id. */
-  int OrdenP = 58;
+  int De = 58;
   /** RegularExpression Id. */
-  int Text = 59;
+  int OrdenP = 59;
   /** RegularExpression Id. */
-  int Integer = 60;
+  int Text = 60;
   /** RegularExpression Id. */
-  int Double = 61;
+  int Integer = 61;
   /** RegularExpression Id. */
-  int Bool = 62;
+  int Double = 62;
   /** RegularExpression Id. */
-  int TDate = 63;
+  int Bool = 63;
   /** RegularExpression Id. */
-  int TDateT = 64;
+  int TDate = 64;
   /** RegularExpression Id. */
-  int NoNulo = 65;
+  int TDateT = 65;
   /** RegularExpression Id. */
-  int Nulo = 66;
+  int NoNulo = 66;
   /** RegularExpression Id. */
-  int AutoI = 67;
+  int Nulo = 67;
   /** RegularExpression Id. */
-  int LlaveP = 68;
+  int AutoI = 68;
   /** RegularExpression Id. */
-  int LlaveF = 69;
+  int LlaveP = 69;
   /** RegularExpression Id. */
-  int Unico = 70;
+  int LlaveF = 70;
   /** RegularExpression Id. */
-  int Id = 71;
+  int Unico = 71;
   /** RegularExpression Id. */
-  int Idp = 72;
+  int Id = 72;
   /** RegularExpression Id. */
-  int Tid = 73;
+  int Idp = 73;
   /** RegularExpression Id. */
-  int Aidp = 74;
+  int Tid = 74;
   /** RegularExpression Id. */
-  int Aid = 75;
+  int Aidp = 75;
   /** RegularExpression Id. */
-  int Taid = 76;
+  int Aid = 76;
   /** RegularExpression Id. */
-  int Ruta = 77;
+  int Taid = 77;
   /** RegularExpression Id. */
-  int RutaZ = 78;
+  int Ruta = 78;
   /** RegularExpression Id. */
-  int RutaU = 79;
+  int RutaZ = 79;
   /** RegularExpression Id. */
-  int Bo = 80;
+  int RutaU = 80;
   /** RegularExpression Id. */
-  int Num = 81;
+  int Bo = 81;
   /** RegularExpression Id. */
-  int Dou = 82;
+  int Num = 82;
   /** RegularExpression Id. */
-  int Date = 83;
+  int Dou = 83;
   /** RegularExpression Id. */
-  int Datetime = 84;
+  int Date = 84;
   /** RegularExpression Id. */
-  int Suma = 85;
+  int Datetime = 85;
   /** RegularExpression Id. */
-  int Resta = 86;
+  int Suma = 86;
   /** RegularExpression Id. */
-  int Divi = 87;
+  int Resta = 87;
   /** RegularExpression Id. */
-  int Mult = 88;
+  int Divi = 88;
   /** RegularExpression Id. */
-  int Pote = 89;
+  int Mult = 89;
   /** RegularExpression Id. */
-  int Iguales = 90;
+  int Pote = 90;
   /** RegularExpression Id. */
-  int Dife = 91;
+  int Iguales = 91;
   /** RegularExpression Id. */
-  int Mayorq = 92;
+  int Dife = 92;
   /** RegularExpression Id. */
-  int Menorq = 93;
+  int Mayorq = 93;
   /** RegularExpression Id. */
-  int Menori = 94;
+  int Menorq = 94;
   /** RegularExpression Id. */
-  int Mayori = 95;
+  int Menori = 95;
   /** RegularExpression Id. */
-  int And = 96;
+  int Mayori = 96;
   /** RegularExpression Id. */
-  int Or = 97;
+  int And = 97;
   /** RegularExpression Id. */
-  int Not = 98;
+  int Or = 98;
   /** RegularExpression Id. */
-  int Simbolo = 99;
+  int Not = 99;
   /** RegularExpression Id. */
-  int Dolar = 100;
+  int Simbolo = 100;
   /** RegularExpression Id. */
-  int Pai = 101;
+  int Dolar = 101;
   /** RegularExpression Id. */
-  int Paf = 102;
+  int Pai = 102;
   /** RegularExpression Id. */
-  int Pt = 103;
+  int Paf = 103;
   /** RegularExpression Id. */
-  int Cm = 104;
+  int Pt = 104;
   /** RegularExpression Id. */
-  int Lli = 105;
+  int Cm = 105;
   /** RegularExpression Id. */
-  int Llf = 106;
+  int Lli = 106;
   /** RegularExpression Id. */
-  int Igual = 107;
+  int Llf = 107;
   /** RegularExpression Id. */
-  int Pp = 108;
+  int Igual = 108;
   /** RegularExpression Id. */
-  int Cii = 109;
+  int Pp = 109;
   /** RegularExpression Id. */
-  int Cif = 110;
+  int Cii = 110;
   /** RegularExpression Id. */
-  int punto = 111;
+  int Cif = 111;
   /** RegularExpression Id. */
-  int Ucom = 112;
+  int punto = 112;
   /** RegularExpression Id. */
-  int Texto = 113;
+  int Ucom = 113;
   /** RegularExpression Id. */
-  int Comilla = 114;
+  int Texto = 114;
+  /** RegularExpression Id. */
+  int Comilla = 115;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -276,6 +278,7 @@ public interface grausuConstants {
     "\"funcion\"",
     "\"tabla\"",
     "\"usuario\"",
+    "\"user\"",
     "\"colocar\"",
     "\"password\"",
     "\"Agregar\"",

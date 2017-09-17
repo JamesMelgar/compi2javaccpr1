@@ -74,7 +74,7 @@ public static Nodo expresiones(Nodo raiz){
                       cadena= concacadena(c1, c2);
                       nodo1=crear_nodo(cadena, "", "text");
                       return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
+                  }else if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else{ 
@@ -109,7 +109,7 @@ public static Nodo expresiones(Nodo raiz){
                       cadena= concacadena(c1, c2);
                       nodo1=crear_nodo(cadena, "", "text");
                       return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
+                  }else if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("error", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
@@ -144,7 +144,7 @@ public static Nodo expresiones(Nodo raiz){
                       cadena=  concacadena(c1, c2);
                       nodo1=crear_nodo(cadena, "", "text");
                       return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
+                  }else if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("error", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
@@ -176,7 +176,7 @@ public static Nodo expresiones(Nodo raiz){
                     cadena= concacadena(c1, c2);
                     nodo1=crear_nodo(cadena,"","text");
                     return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
+                  }else if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date") ){
                     c1=izq.getNombre();
                     c2=der.getNombre();
                     cadena= concacadena(c1, c2);
@@ -186,8 +186,8 @@ public static Nodo expresiones(Nodo raiz){
                     nodo1=crear_nodo("error","","error");
                     return nodo1;
                   }//op date
-              }else if(izq.getTipo().equalsIgnoreCase("datatime") || izq.getTipo().equalsIgnoreCase("date")){
-                  if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date")){
+              }else if(izq.getTipo().equalsIgnoreCase("datetime") || izq.getTipo().equalsIgnoreCase("date")){
+                  if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date")){
                     nodo1=crear_nodo("error","","error");
                     return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("int")){
@@ -237,7 +237,7 @@ public static Nodo expresiones(Nodo raiz){
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
+                  }else if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
@@ -265,7 +265,7 @@ public static Nodo expresiones(Nodo raiz){
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
+                  }else if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
@@ -297,7 +297,7 @@ public static Nodo expresiones(Nodo raiz){
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("error","","error");
                       return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
+                  }else if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("error", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
@@ -307,7 +307,7 @@ public static Nodo expresiones(Nodo raiz){
               }else if(izq.getTipo().equalsIgnoreCase("text")){
                   nodo1=crear_nodo("error","","error");
                   return nodo1; //op date
-              }else if(izq.getTipo().equalsIgnoreCase("datatime") || izq.getTipo().equalsIgnoreCase("date")){
+              }else if(izq.getTipo().equalsIgnoreCase("datetime") || izq.getTipo().equalsIgnoreCase("date")){
                   nodo1=crear_nodo("error","","error");
                   return nodo1;
               }else if(izq.getTipo().equalsIgnoreCase("error")){
@@ -341,7 +341,7 @@ public static Nodo expresiones(Nodo raiz){
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
+                  }else if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
@@ -373,7 +373,7 @@ public static Nodo expresiones(Nodo raiz){
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
+                  }else if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("error", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
@@ -405,7 +405,7 @@ public static Nodo expresiones(Nodo raiz){
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
+                  }else if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("error", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
@@ -415,7 +415,7 @@ public static Nodo expresiones(Nodo raiz){
               }else if(izq.getTipo().equalsIgnoreCase("text")){
                  nodo1=crear_nodo("", "", "error");
                  return nodo1;
-              }else if(izq.getTipo().equalsIgnoreCase("datatime") || izq.getTipo().equalsIgnoreCase("date")){
+              }else if(izq.getTipo().equalsIgnoreCase("datetime") || izq.getTipo().equalsIgnoreCase("date")){
                   if(der.getTipo().equalsIgnoreCase("text")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
@@ -457,7 +457,7 @@ public static Nodo expresiones(Nodo raiz){
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
+                  }else if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
@@ -485,7 +485,7 @@ public static Nodo expresiones(Nodo raiz){
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
+                  }else if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("error", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
@@ -517,7 +517,7 @@ public static Nodo expresiones(Nodo raiz){
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
+                  }else if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("error", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
@@ -527,7 +527,7 @@ public static Nodo expresiones(Nodo raiz){
               }else if(izq.getTipo().equalsIgnoreCase("text")){
                  nodo1=crear_nodo("", "", "error");
                  return nodo1;
-              }else if(izq.getTipo().equalsIgnoreCase("datatime") || izq.getTipo().equalsIgnoreCase("date")){
+              }else if(izq.getTipo().equalsIgnoreCase("datetime") || izq.getTipo().equalsIgnoreCase("date")){
                   if(der.getTipo().equalsIgnoreCase("text")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
@@ -569,7 +569,7 @@ public static Nodo expresiones(Nodo raiz){
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
+                  }else if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
@@ -597,7 +597,7 @@ public static Nodo expresiones(Nodo raiz){
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
+                  }else if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("error", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
@@ -629,7 +629,7 @@ public static Nodo expresiones(Nodo raiz){
                   }else if(der.getTipo().equalsIgnoreCase("text")){
                       nodo1=crear_nodo("", "", "error");
                       return nodo1;
-                  }else if(der.getTipo().equalsIgnoreCase("datatime") || der.getTipo().equalsIgnoreCase("date") ){
+                  }else if(der.getTipo().equalsIgnoreCase("datetime") || der.getTipo().equalsIgnoreCase("date") ){
                       nodo1=crear_nodo("error", "", "error");
                       return nodo1;
                   }else if(der.getTipo().equalsIgnoreCase("error")){
@@ -639,7 +639,7 @@ public static Nodo expresiones(Nodo raiz){
               }else if(izq.getTipo().equalsIgnoreCase("text")){
                  nodo1=crear_nodo("", "", "error");
                  return nodo1;
-              }else if(izq.getTipo().equalsIgnoreCase("datatime") || izq.getTipo().equalsIgnoreCase("date")){
+              }else if(izq.getTipo().equalsIgnoreCase("datetime") || izq.getTipo().equalsIgnoreCase("date")){
                   if(der.getTipo().equalsIgnoreCase("text")){
                     c1=izq.getNombre();
                     c2=der.getNombre();
@@ -657,7 +657,18 @@ public static Nodo expresiones(Nodo raiz){
           }else if(raiz.getNombre().equalsIgnoreCase("==")){
                c1=izq.getNombre();
                c2=der.getNombre();
-               if(izq.getTipo().equalsIgnoreCase(der.getTipo())){
+               if(c1.equalsIgnoreCase("NULO")){
+                   if(c2.equalsIgnoreCase("NULO")){
+                        nodo1=crear_nodo("1","","bool");
+                        return nodo1; 
+                   }else{
+                       nodo1=crear_nodo("0","","bool");
+                       return nodo1;
+                   }
+               }else if(c2.equalsIgnoreCase("NULO")){
+                    nodo1=crear_nodo("0","","bool");
+                    return nodo1;
+               }else if(izq.getTipo().equalsIgnoreCase(der.getTipo())){
                    if(izq.getTipo().equalsIgnoreCase("error")){
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
@@ -688,6 +699,61 @@ public static Nodo expresiones(Nodo raiz){
                           return nodo1;
                        }
                     }
+               }else if(izq.getTipo().equalsIgnoreCase("int")){
+                   if(der.getTipo().equalsIgnoreCase("bool")){
+                       if(c1.equalsIgnoreCase(c2)){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1; 
+                       }else{
+                          nodo1=crear_nodo("0","","bool");
+                          return nodo1;
+                       }
+                   }else{
+                       nodo1=crear_nodo("error","","error");
+                       return nodo1;
+                   }
+               }else if(izq.getTipo().equalsIgnoreCase("bool")){
+                   if(der.getTipo().equalsIgnoreCase("int")){
+                       if(c1.equalsIgnoreCase(c2)){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1; 
+                       }else{
+                          nodo1=crear_nodo("0","","bool");
+                          return nodo1;
+                       }
+                   }else if(der.getTipo().equalsIgnoreCase("double")){
+                       if(c1.equalsIgnoreCase(c2)){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1; 
+                       }else{
+                          nodo1=crear_nodo("0","","bool");
+                          return nodo1;
+                       }
+                   }else{
+                       nodo1=crear_nodo("error","","error");
+                       return nodo1;
+                   }
+               }else if(izq.getTipo().equalsIgnoreCase("double")){
+                   if(der.getTipo().equalsIgnoreCase("int")){
+                       if(c1.equalsIgnoreCase(c2)){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1; 
+                       }else{
+                          nodo1=crear_nodo("0","","bool");
+                          return nodo1;
+                       }
+                   }else if(der.getTipo().equalsIgnoreCase("bool")){
+                       if(c1.equalsIgnoreCase(c2)){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1; 
+                       }else{
+                          nodo1=crear_nodo("0","","bool");
+                          return nodo1;
+                       }
+                   }else{
+                       nodo1=crear_nodo("error","","error");
+                       return nodo1;
+                   }
                }else{
                    nodo1=crear_nodo("error","","error");
                    return nodo1;
@@ -696,7 +762,19 @@ public static Nodo expresiones(Nodo raiz){
           }else if(raiz.getNombre().equalsIgnoreCase("!=")){
                c1=izq.getNombre();
                c2=der.getNombre();
-               if(izq.getTipo().equalsIgnoreCase(der.getTipo())){
+               if(c1.equalsIgnoreCase("NULO")){
+                   if(c2.equalsIgnoreCase("NULO")){
+                        nodo1=crear_nodo("0","","bool");
+                        return nodo1; 
+                   }else{
+                       nodo1=crear_nodo("1","","bool");
+                       return nodo1;
+                   }
+               }else if(c2.equalsIgnoreCase("NULO")){
+                    nodo1=crear_nodo("1","","bool");
+                    return nodo1;
+               
+               }else if(izq.getTipo().equalsIgnoreCase(der.getTipo())){
                    if(izq.getTipo().equalsIgnoreCase("error")){
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
@@ -727,34 +805,130 @@ public static Nodo expresiones(Nodo raiz){
                        } catch (ParseException ex) {
                            Logger.getLogger(expresiones.class.getName()).log(Level.SEVERE, null, ex);
                        } 
-               }else{
-                   nodo1=crear_nodo("error","","error");
-                   return nodo1;
-               } //**************************************************************************************mayor   
-          }else if(raiz.getNombre().equalsIgnoreCase(">")){
-               if(izq.getTipo().equalsIgnoreCase("int")){
+               }else if(izq.getTipo().equalsIgnoreCase("bool")){
                    if(der.getTipo().equalsIgnoreCase("int")){
-                    n1=Integer.parseInt(izq.getNombre());
-                    n2=Integer.parseInt(der.getNombre());
-                    if(n1>n2){
-                        nodo1=crear_nodo("1","","bool");
-                    }else{
-                        nodo1=crear_nodo("0","","bool");
-                    }                 
-                    return nodo1;
+                       if(c1.equalsIgnoreCase(c2)){
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1; 
+                       }else{
+                          nodo1=crear_nodo("1","","bool");
+                          return nodo1;
+                       }
+                   }else if(der.getTipo().equalsIgnoreCase("double")){
+                       if(c1.equalsIgnoreCase(c2)){
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1; 
+                       }else{
+                          nodo1=crear_nodo("1","","bool");
+                          return nodo1;
+                       }
+                   }else{
+                       nodo1=crear_nodo("error","","error");
+                       return nodo1;
+                   }
+               }else if(izq.getTipo().equalsIgnoreCase("int")){
+                   if(der.getTipo().equalsIgnoreCase("double")){
+                       if(c1.equalsIgnoreCase(c2)){
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1; 
+                       }else{
+                          nodo1=crear_nodo("1","","bool");
+                          return nodo1;
+                       }
+                   }else if(der.getTipo().equalsIgnoreCase("bool")){
+                       if(c1.equalsIgnoreCase(c2)){
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1; 
+                       }else{
+                          nodo1=crear_nodo("1","","bool");
+                          return nodo1;
+                       }
                    }else{
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
                    }
                }else if(izq.getTipo().equalsIgnoreCase("double")){
-                   if(der.getTipo().equalsIgnoreCase("double")){ 
+                   if(der.getTipo().equalsIgnoreCase("int")){
+                       if(c1.equalsIgnoreCase(c2)){
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1; 
+                       }else{
+                          nodo1=crear_nodo("1","","bool");
+                          return nodo1;
+                       }
+                   }else if(der.getTipo().equalsIgnoreCase("bool")){
+                       if(c1.equalsIgnoreCase(c2)){
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1; 
+                       }else{
+                          nodo1=crear_nodo("1","","bool");
+                          return nodo1;
+                       }
+                   }else{
+                       nodo1=crear_nodo("error","","error");
+                       return nodo1;
+                   }
+               }else{
+                   nodo1=crear_nodo("error","","error");
+                   return nodo1;
+               } //**************************************************************************************mayor   
+          }else if(raiz.getNombre().equalsIgnoreCase(">")){
+              if(izq.getNombre().equalsIgnoreCase("NULO")){
+                    nodo1=crear_nodo("0","","bool");
+                    return nodo1; 
+               }else if(der.getNombre().equalsIgnoreCase("NULO")){
+                    nodo1=crear_nodo("0","","bool");
+                    return nodo1; 
+               }else if(izq.getTipo().equalsIgnoreCase("int")){
+                   if(der.getTipo().equalsIgnoreCase("int") || der.getTipo().equalsIgnoreCase("bool")){
+                        n1=Integer.parseInt(izq.getNombre());
+                        n2=Integer.parseInt(der.getNombre());
+                        if(n1>n2){
+                            nodo1=crear_nodo("1","","bool");
+                        }else{
+                            nodo1=crear_nodo("0","","bool");
+                        }                 
+                        return nodo1;
+                   }else if(der.getTipo().equalsIgnoreCase("double")){
                        d1=Double.parseDouble(izq.getNombre());
                        d2=Double.parseDouble(der.getNombre());
-                    if(d1>d2){
-                        nodo1=crear_nodo("1","","bool");
-                    }else{
-                        nodo1=crear_nodo("0","","bool");
-                    } 
+                        if(d1>d2){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1;
+                        }else{
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1;
+                        } 
+                   }else{
+                       nodo1=crear_nodo("error","","error");
+                       return nodo1;
+                   }
+               }else if(izq.getTipo().equalsIgnoreCase("double")){
+                   if(der.getTipo().equalsIgnoreCase("double") || der.getTipo().equalsIgnoreCase("int") || der.getTipo().equalsIgnoreCase("bool")){ 
+                       d1=Double.parseDouble(izq.getNombre());
+                       d2=Double.parseDouble(der.getNombre());
+                        if(d1>d2){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1;
+                        }else{
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1;
+                        } 
+                   }else{
+                       nodo1=crear_nodo("error","","error");
+                       return nodo1;
+                   }
+               }else if(izq.getTipo().equalsIgnoreCase("bool")){
+                   if(der.getTipo().equalsIgnoreCase("double") || der.getTipo().equalsIgnoreCase("int") || der.getTipo().equalsIgnoreCase("bool")){ 
+                       d1=Double.parseDouble(izq.getNombre());
+                       d2=Double.parseDouble(der.getNombre());
+                        if(d1>d2){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1;
+                        }else{
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1;
+                        } 
                    }else{
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
@@ -774,8 +948,8 @@ public static Nodo expresiones(Nodo raiz){
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
                    }
-               }else if(izq.getTipo().equalsIgnoreCase("datatime")){
-                   if(der.getTipo().equalsIgnoreCase("datatime")){
+               }else if(izq.getTipo().equalsIgnoreCase("datetime")){
+                   if(der.getTipo().equalsIgnoreCase("datetime")){
                        c1=izq.getNombre();
                        c2=der.getNombre();
                        try {
@@ -829,29 +1003,62 @@ public static Nodo expresiones(Nodo raiz){
                    return nodo1;
                }  //***************************************************************************************menor 
           }else if(raiz.getNombre().equalsIgnoreCase("<")){
-               if(izq.getTipo().equalsIgnoreCase("int")){
-                   if(der.getTipo().equalsIgnoreCase("int")){
-                    n1=Integer.parseInt(izq.getNombre());
-                    n2=Integer.parseInt(der.getNombre());
-                    if(n1<n2){
-                        nodo1=crear_nodo("1","","bool");
-                    }else{
-                        nodo1=crear_nodo("0","","bool");
-                    }                 
-                    return nodo1;
+               if(izq.getNombre().equalsIgnoreCase("NULO")){
+                    nodo1=crear_nodo("0","","bool");
+                    return nodo1; 
+               }else if(der.getNombre().equalsIgnoreCase("NULO")){
+                    nodo1=crear_nodo("0","","bool");
+                    return nodo1; 
+               }else if(izq.getTipo().equalsIgnoreCase("int")){
+                   if(der.getTipo().equalsIgnoreCase("int") || der.getTipo().equalsIgnoreCase("bool")){
+                        n1=Integer.parseInt(izq.getNombre());
+                        n2=Integer.parseInt(der.getNombre());
+                        if(n1<n2){
+                            nodo1=crear_nodo("1","","bool");
+                        }else{
+                            nodo1=crear_nodo("0","","bool");
+                        }                 
+                        return nodo1;
+                   }else if(der.getTipo().equalsIgnoreCase("double")){
+                       d1=Double.parseDouble(izq.getNombre());
+                       d2=Double.parseDouble(der.getNombre());
+                        if(d1<d2){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1;
+                        }else{
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1;
+                        } 
                    }else{
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
                    }
                }else if(izq.getTipo().equalsIgnoreCase("double")){
-                   if(der.getTipo().equalsIgnoreCase("double")){ 
+                   if(der.getTipo().equalsIgnoreCase("double") || der.getTipo().equalsIgnoreCase("int") || der.getTipo().equalsIgnoreCase("bool")){ 
                        d1=Double.parseDouble(izq.getNombre());
                        d2=Double.parseDouble(der.getNombre());
-                    if(d1<d2){
-                        nodo1=crear_nodo("1","","bool");
-                    }else{
-                        nodo1=crear_nodo("0","","bool");
-                    } 
+                        if(d1<d2){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1;
+                        }else{
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1;
+                        } 
+                   }else{
+                       nodo1=crear_nodo("error","","error");
+                       return nodo1;
+                   }
+               }else if(izq.getTipo().equalsIgnoreCase("bool")){
+                   if(der.getTipo().equalsIgnoreCase("double") || der.getTipo().equalsIgnoreCase("int") || der.getTipo().equalsIgnoreCase("bool")){ 
+                       d1=Double.parseDouble(izq.getNombre());
+                       d2=Double.parseDouble(der.getNombre());
+                        if(d1<d2){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1;
+                        }else{
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1;
+                        } 
                    }else{
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
@@ -871,8 +1078,8 @@ public static Nodo expresiones(Nodo raiz){
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
                    }
-               }else if(izq.getTipo().equalsIgnoreCase("datatime")){
-                   if(der.getTipo().equalsIgnoreCase("datatime")){
+               }else if(izq.getTipo().equalsIgnoreCase("datetime")){
+                   if(der.getTipo().equalsIgnoreCase("datetime")){
                       c1=izq.getNombre();
                        c2=der.getNombre();
                        try {
@@ -926,29 +1133,62 @@ public static Nodo expresiones(Nodo raiz){
                    return nodo1;
                }  //***************************************************************************************menor o igual
           } else if(raiz.getNombre().equalsIgnoreCase("<=")){
-               if(izq.getTipo().equalsIgnoreCase("int")){
-                   if(der.getTipo().equalsIgnoreCase("int")){
-                    n1=Integer.parseInt(izq.getNombre());
-                    n2=Integer.parseInt(der.getNombre());
-                    if(n1<=n2){
-                        nodo1=crear_nodo("1","","bool");
-                    }else{
-                        nodo1=crear_nodo("0","","bool");
-                    }                 
-                    return nodo1;
+               if(izq.getNombre().equalsIgnoreCase("NULO")){
+                    nodo1=crear_nodo("0","","bool");
+                    return nodo1; 
+               }else if(der.getNombre().equalsIgnoreCase("NULO")){
+                    nodo1=crear_nodo("0","","bool");
+                    return nodo1; 
+               }else if(izq.getTipo().equalsIgnoreCase("int")){
+                   if(der.getTipo().equalsIgnoreCase("int") || der.getTipo().equalsIgnoreCase("bool")){
+                        n1=Integer.parseInt(izq.getNombre());
+                        n2=Integer.parseInt(der.getNombre());
+                        if(n1<=n2){
+                            nodo1=crear_nodo("1","","bool");
+                        }else{
+                            nodo1=crear_nodo("0","","bool");
+                        }                 
+                        return nodo1;
+                   }else if(der.getTipo().equalsIgnoreCase("double")){
+                       d1=Double.parseDouble(izq.getNombre());
+                       d2=Double.parseDouble(der.getNombre());
+                        if(d1<=d2){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1;
+                        }else{
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1;
+                        } 
                    }else{
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
                    }
                }else if(izq.getTipo().equalsIgnoreCase("double")){
-                   if(der.getTipo().equalsIgnoreCase("double")){ 
+                   if(der.getTipo().equalsIgnoreCase("double") || der.getTipo().equalsIgnoreCase("int") || der.getTipo().equalsIgnoreCase("bool")){ 
                        d1=Double.parseDouble(izq.getNombre());
                        d2=Double.parseDouble(der.getNombre());
-                    if(d1<=d2){
-                        nodo1=crear_nodo("1","","bool");
-                    }else{
-                        nodo1=crear_nodo("0","","bool");
-                    } 
+                        if(d1<=d2){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1;
+                        }else{
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1;
+                        } 
+                   }else{
+                       nodo1=crear_nodo("error","","error");
+                       return nodo1;
+                   }
+               }else if(izq.getTipo().equalsIgnoreCase("bool")){
+                   if(der.getTipo().equalsIgnoreCase("double") || der.getTipo().equalsIgnoreCase("int") || der.getTipo().equalsIgnoreCase("bool")){ 
+                       d1=Double.parseDouble(izq.getNombre());
+                       d2=Double.parseDouble(der.getNombre());
+                        if(d1<=d2){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1;
+                        }else{
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1;
+                        } 
                    }else{
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
@@ -968,8 +1208,8 @@ public static Nodo expresiones(Nodo raiz){
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
                    }
-               }else if(izq.getTipo().equalsIgnoreCase("datatime")){
-                   if(der.getTipo().equalsIgnoreCase("datatime")){
+               }else if(izq.getTipo().equalsIgnoreCase("datetime")){
+                   if(der.getTipo().equalsIgnoreCase("datetime")){
                        c1=izq.getNombre();
                        c2=der.getNombre();
                        try {
@@ -1023,29 +1263,62 @@ public static Nodo expresiones(Nodo raiz){
                    return nodo1;
                } //***************************************************************************************mayor o igual
           } else if(raiz.getNombre().equalsIgnoreCase(">=")){
-               if(izq.getTipo().equalsIgnoreCase("int")){
-                   if(der.getTipo().equalsIgnoreCase("int")){
-                    n1=Integer.parseInt(izq.getNombre());
-                    n2=Integer.parseInt(der.getNombre());
-                    if(n1>=n2){
-                        nodo1=crear_nodo("1","","bool");
-                    }else{
-                        nodo1=crear_nodo("0","","bool");
-                    }                 
-                    return nodo1;
+               if(izq.getNombre().equalsIgnoreCase("NULO")){
+                    nodo1=crear_nodo("0","","bool");
+                    return nodo1; 
+               }else if(der.getNombre().equalsIgnoreCase("NULO")){
+                    nodo1=crear_nodo("0","","bool");
+                    return nodo1; 
+               }else if(izq.getTipo().equalsIgnoreCase("int")){
+                   if(der.getTipo().equalsIgnoreCase("int") || der.getTipo().equalsIgnoreCase("bool")){
+                        n1=Integer.parseInt(izq.getNombre());
+                        n2=Integer.parseInt(der.getNombre());
+                        if(n1>=n2){
+                            nodo1=crear_nodo("1","","bool");
+                        }else{
+                            nodo1=crear_nodo("0","","bool");
+                        }                 
+                        return nodo1;
+                   }else if(der.getTipo().equalsIgnoreCase("double")){
+                       d1=Double.parseDouble(izq.getNombre());
+                       d2=Double.parseDouble(der.getNombre());
+                        if(d1>=d2){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1;
+                        }else{
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1;
+                        } 
                    }else{
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
                    }
                }else if(izq.getTipo().equalsIgnoreCase("double")){
-                   if(der.getTipo().equalsIgnoreCase("double")){ 
+                   if(der.getTipo().equalsIgnoreCase("double") || der.getTipo().equalsIgnoreCase("int") || der.getTipo().equalsIgnoreCase("bool")){ 
                        d1=Double.parseDouble(izq.getNombre());
                        d2=Double.parseDouble(der.getNombre());
-                    if(d1>=d2){
-                        nodo1=crear_nodo("1","","bool");
-                    }else{
-                        nodo1=crear_nodo("0","","bool");
-                    } 
+                        if(d1>=d2){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1;
+                        }else{
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1;
+                        } 
+                   }else{
+                       nodo1=crear_nodo("error","","error");
+                       return nodo1;
+                   }
+               }else if(izq.getTipo().equalsIgnoreCase("bool")){
+                   if(der.getTipo().equalsIgnoreCase("double") || der.getTipo().equalsIgnoreCase("int") || der.getTipo().equalsIgnoreCase("bool")){ 
+                       d1=Double.parseDouble(izq.getNombre());
+                       d2=Double.parseDouble(der.getNombre());
+                        if(d1>=d2){
+                            nodo1=crear_nodo("1","","bool");
+                            return nodo1;
+                        }else{
+                            nodo1=crear_nodo("0","","bool");
+                            return nodo1;
+                        } 
                    }else{
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
@@ -1065,8 +1338,8 @@ public static Nodo expresiones(Nodo raiz){
                        nodo1=crear_nodo("error","","error");
                        return nodo1;
                    }
-               }else if(izq.getTipo().equalsIgnoreCase("datatime")){
-                   if(der.getTipo().equalsIgnoreCase("datatime")){
+               }else if(izq.getTipo().equalsIgnoreCase("datetime")){
+                   if(der.getTipo().equalsIgnoreCase("datetime")){
                        c1=izq.getNombre();
                        c2=der.getNombre();
                        try {
@@ -1300,8 +1573,10 @@ public static Nodo acciones_exp(Nodo raiz){
         Date date = new Date();
         DateFormat hourdateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         fecha = "'"+hourdateFormat.format(date)+"'";
-        Nodo nodo1=crear_nodo(fecha,"","datatime"); 
+        Nodo nodo1=crear_nodo(fecha,"","datetime"); 
         return nodo1;
+    }else if(raiz.getNombre().equalsIgnoreCase("nulo")){
+            return raiz;
     }else{
         if(raiz.getTipo().equalsIgnoreCase("text")){
             raiz.setNombre(concacadena(raiz.getNombre(), ""));
@@ -1355,8 +1630,6 @@ public static Nodo acciones_exp(Nodo raiz){
                         System.out.println("correcto");
                         return nodo2;
                     }else{
-                        imprimir_estenodo(nodo2, "nodo2");
-                        imprimir_estenodo(fun,"fun");
                         System.out.println("Error retorno de tipos diferentes");
                     }
                         nodo2=crear_nodo("error","","error");
